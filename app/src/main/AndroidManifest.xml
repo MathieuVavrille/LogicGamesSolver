@@ -27,7 +27,7 @@
             android:name="com.mvavrill.logicGamesSolver.controller.CameraActivity"
             android:exported="false" />
         <activity
-            android:name="com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuInputActivity"
+            android:name="com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuActivity"
             android:exported="false" />
         <activity
             android:name="com.mvavrill.logicGamesSolver.controller.MainActivity"

@@ -1,4 +1,4 @@
-package com.mvavrill.logicGamesSolver.view.games.sudoku.kakuro;
+package com.mvavrill.logicGamesSolver.view.games.kakuro;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -11,12 +11,12 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
-import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuInputActivity;
+import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuActivity;
 import com.mvavrill.logicGamesSolver.model.DigitCell;
 
 public class KakuroView extends View implements GestureDetector.OnGestureListener {
 
-    private SudokuInputActivity sudokuInputActivity;
+    private SudokuActivity sudokuInputActivity;
 
     private float gridWidth;
     private float gridSeparatorSize;
@@ -156,7 +156,7 @@ public class KakuroView extends View implements GestureDetector.OnGestureListene
         invalidate();
     }
 
-    public void setGridActivity(SudokuInputActivity sudokuInputActivity) {
+    public void setGridActivity(SudokuActivity sudokuInputActivity) {
         this.sudokuInputActivity = sudokuInputActivity;
     }
 }

@@ -15,7 +15,7 @@ import com.mvavrill.logicGamesSolver.view.games.sudoku.SudokuView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SudokuInputActivity extends AppCompatActivity {
+public class SudokuActivity extends AppCompatActivity {
 
     private final List<DigitCell[][]> gridHistory= new ArrayList<>();
     private int plottedGridId = 0;

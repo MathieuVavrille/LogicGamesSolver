@@ -11,7 +11,7 @@
     
     <view
         android:id="@+id/kakuro_grid_view"
-        class="com.mvavrill.logicGamesSolver.view.games.sudoku.kakuro.KakuroView"
+        class="com.mvavrill.logicGamesSolver.view.games.kakuro.KakuroView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"

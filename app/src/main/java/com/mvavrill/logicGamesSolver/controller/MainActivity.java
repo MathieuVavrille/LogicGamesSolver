@@ -9,7 +9,7 @@ import android.widget.Button;
 
 import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.games.kakuro.KakuroActivity;
-import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuInputActivity;
+import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuActivity;
 
 public class MainActivity extends AppCompatActivity {
     private static final String[] CAMERA_PERMISSION = new String[]{Manifest.permission.CAMERA};
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         sudoku = findViewById(R.id.main_button_sudoku);
         sudoku.setOnClickListener(view -> {
-            Intent gridActivityIntent = new Intent(MainActivity.this, SudokuInputActivity.class);
+            Intent gridActivityIntent = new Intent(MainActivity.this, SudokuActivity.class);
             startActivity(gridActivityIntent);
         });
         kakuro = findViewById(R.id.main_button_kakuro);

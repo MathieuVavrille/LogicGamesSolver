@@ -9,14 +9,14 @@ import android.widget.Button;
 import android.widget.PopupWindow;
 
 import com.mvavrill.logicGamesSolver.R;
-import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuInputActivity;
+import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuActivity;
 
 public class PopupDigit {
     private final int i;
     private final int j;
-    private final SudokuInputActivity grid;
+    private final SudokuActivity grid;
 
-    public PopupDigit(final int i, final int j, final SudokuInputActivity grid) {
+    public PopupDigit(final int i, final int j, final SudokuActivity grid) {
         this.i = i;
         this.j = j;
         this.grid = grid;
