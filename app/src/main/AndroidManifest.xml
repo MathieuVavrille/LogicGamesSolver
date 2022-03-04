@@ -15,7 +15,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SudokuSolver"
+        android:theme="@style/Theme.LogicGamesSolver"
         tools:targetApi="31">
         <activity
             android:name="com.mvavrill.logicGamesSolver.controller.games.kakuro.KakuroActivity"
