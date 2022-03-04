@@ -12,7 +12,7 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuActivity;
-import com.mvavrill.logicGamesSolver.model.DigitCell;
+import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
 
 public class KakuroView extends View implements GestureDetector.OnGestureListener {
 

@@ -2,7 +2,7 @@ package com.mvavrill.logicGamesSolver.model.games.sudoku;
 
 import android.util.Log;
 
-import com.mvavrill.logicGamesSolver.model.DigitCell;
+import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
 
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;

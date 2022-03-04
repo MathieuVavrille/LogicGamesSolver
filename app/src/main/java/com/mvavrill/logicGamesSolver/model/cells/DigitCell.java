@@ -1,8 +1,8 @@
-package com.mvavrill.logicGamesSolver.model;
+package com.mvavrill.logicGamesSolver.model.cells;
 
 import java.util.Arrays;
 
-public class DigitCell {
+public class DigitCell implements Cell {
 
     private boolean isFixed;
     private final int value;

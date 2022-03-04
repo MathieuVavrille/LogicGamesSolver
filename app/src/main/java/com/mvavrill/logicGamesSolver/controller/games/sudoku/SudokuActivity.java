@@ -8,7 +8,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.PopupDigit;
-import com.mvavrill.logicGamesSolver.model.DigitCell;
+import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
 import com.mvavrill.logicGamesSolver.model.games.sudoku.SudokuSolver;
 import com.mvavrill.logicGamesSolver.view.games.sudoku.SudokuView;
 
