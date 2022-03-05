@@ -33,8 +33,6 @@ public class DigitCell implements Cell {
     }
 
     public void fix(final boolean b) {isFixed = b;}
-    public void fix() {isFixed = true;}
-    public void unfix() {isFixed = false;}
 
     public boolean isFixed() {
         return isFixed;

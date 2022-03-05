@@ -14,9 +14,9 @@ import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuActivity;
 public class PopupDigit {
     private final int i;
     private final int j;
-    private final SudokuActivity grid;
+    private final PopupCallback grid;
 
-    public PopupDigit(final int i, final int j, final SudokuActivity grid) {
+    public PopupDigit(final int i, final int j, final PopupCallback grid) {
         this.i = i;
         this.j = j;
         this.grid = grid;
@@ -37,7 +37,7 @@ public class PopupDigit {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                grid.setGridValue(i,j,1);
+                grid.callback(i,j,1);
                 popupWindow.dismiss();
             }
         });
@@ -45,7 +45,7 @@ public class PopupDigit {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                grid.setGridValue(i,j,2);
+                grid.callback(i,j,2);
                 popupWindow.dismiss();
             }
         });
@@ -53,7 +53,7 @@ public class PopupDigit {
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                grid.setGridValue(i,j,3);
+                grid.callback(i,j,3);
                 popupWindow.dismiss();
             }
         });
@@ -61,7 +61,7 @@ public class PopupDigit {
         button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                grid.setGridValue(i,j,4);
+                grid.callback(i,j,4);
                 popupWindow.dismiss();
             }
         });
@@ -69,7 +69,7 @@ public class PopupDigit {
         button5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                grid.setGridValue(i,j,5);
+                grid.callback(i,j,5);
                 popupWindow.dismiss();
             }
         });
@@ -77,7 +77,7 @@ public class PopupDigit {
         button6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                grid.setGridValue(i,j,6);
+                grid.callback(i,j,6);
                 popupWindow.dismiss();
             }
         });
@@ -85,7 +85,7 @@ public class PopupDigit {
         button7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                grid.setGridValue(i,j,7);
+                grid.callback(i,j,7);
                 popupWindow.dismiss();
             }
         });
@@ -93,7 +93,7 @@ public class PopupDigit {
         button8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                grid.setGridValue(i,j,8);
+                grid.callback(i,j,8);
                 popupWindow.dismiss();
             }
         });
@@ -101,7 +101,7 @@ public class PopupDigit {
         button9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                grid.setGridValue(i,j,9);
+                grid.callback(i,j,9);
                 popupWindow.dismiss();
             }
         });

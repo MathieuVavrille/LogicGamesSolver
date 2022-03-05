@@ -1,10 +1,10 @@
 package com.mvavrill.logicGamesSolver.model.cells;
 
-public class DoubleHintCell implements Cell {
+public class DoubleIntCell implements Cell {
     private final int hint1;
     private final int hint2;
 
-    public DoubleHintCell(int hint1, int hint2) {
+    public DoubleIntCell(int hint1, int hint2) {
         this.hint1 = hint1;
         this.hint2 = hint2;
     }
