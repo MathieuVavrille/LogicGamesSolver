@@ -32,6 +32,10 @@ public class DigitCell implements Cell {
         this.hints = d.hints == null ? null : Arrays.copyOf(d.hints, 9);
     }
 
+    public DigitCell copy() {
+        return new DigitCell(this);
+    }
+
     public void fix(final boolean b) {isFixed = b;}
 
     public boolean isFixed() {

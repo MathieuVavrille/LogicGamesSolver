@@ -59,11 +59,11 @@ public class KakuroView extends View implements GestureDetector.OnGestureListene
     protected void onDraw(Canvas canvas) {
         if (grid == null)
             return;
-        cellWidth = gridWidth / 9f;
+        cellWidth = gridWidth / grid.length;
         paint.setTextAlign(Paint.Align.CENTER);
-        for (int y = 0; y < 9; y++) {
-            for (int x = 0; x < 9; x++) {
-                DrawCell.draw(canvas, grid[y][x], x, y, cellWidth);
+        for (int y = 0; y < grid.length; y++) {
+            for (int x = 0; x < grid[y].length; x++) {
+                DrawCell.draw(canvas, grid[y][x], x*cellWidth, y*cellWidth, cellWidth);
             }
         }
         drawGridLines(canvas);
@@ -72,7 +72,7 @@ public class KakuroView extends View implements GestureDetector.OnGestureListene
     private void drawGridLines(final Canvas canvas) {
         paint.setColor(Color.BLACK);
         paint.setStrokeWidth(gridSeparatorSize);
-        for (int i = 1; i <= grid.length-1; i++) {
+        for (int i = 1; i <= grid.length; i++) {
             canvas.drawLine(i * cellWidth, 0, i * cellWidth, gridWidth, paint);
             canvas.drawLine(0, i * cellWidth, gridWidth, i * cellWidth, paint);
         }
@@ -100,7 +100,7 @@ public class KakuroView extends View implements GestureDetector.OnGestureListene
         if (e.getY() < gridWidth) {
             int cellX = (int) (e.getX() / cellWidth);
             int cellY = (int) (e.getY() / cellWidth);
-            kakuroActivity.popup(cellY, cellX);
+            kakuroActivity.isClicked(cellY, cellX);
         }
         return true;
     }

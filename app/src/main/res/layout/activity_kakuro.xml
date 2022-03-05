@@ -21,24 +21,24 @@
         app:layout_constraintRight_toRightOf="parent"/>
 
     <Button
-        android:id="@+id/kakuro_button_add_line"
+        android:id="@+id/kakuro_button_increase"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toLeftOf="@id/kakuro_button_add_column"
+        app:layout_constraintRight_toLeftOf="@id/kakuro_button_decrease"
         app:layout_constraintTop_toBottomOf="@id/kakuro_grid_view"
         app:layout_constraintBottom_toTopOf="@id/kakuro_button_outline"
-        android:text="Add Line"
+        android:text="Increase"
         android:textSize="20sp" />
     <Button
-        android:id="@+id/kakuro_button_add_column"
+        android:id="@+id/kakuro_button_decrease"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintLeft_toRightOf="@id/kakuro_button_add_line"
+        app:layout_constraintLeft_toRightOf="@id/kakuro_button_increase"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/kakuro_button_add_line"
-        app:layout_constraintBottom_toBottomOf="@id/kakuro_button_add_line"
-        android:text="Add Column"
+        app:layout_constraintTop_toTopOf="@id/kakuro_button_increase"
+        app:layout_constraintBottom_toBottomOf="@id/kakuro_button_increase"
+        android:text="Decrease"
         android:textSize="20sp" />
 
     <Button
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/kakuro_button_add_line"
+        app:layout_constraintTop_toBottomOf="@id/kakuro_button_increase"
         app:layout_constraintBottom_toTopOf="@id/kakuro_button_undo"
         android:text="Set values"
         android:textSize="20sp" />

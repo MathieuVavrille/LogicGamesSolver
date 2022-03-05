@@ -9,6 +9,14 @@ public class DoubleIntCell implements Cell {
         this.hint2 = hint2;
     }
 
+    public DoubleIntCell() {
+        this(-1,-1);
+    }
+
+    public DoubleIntCell copy() {
+        return new DoubleIntCell(hint1,hint2);
+    }
+
     public int getHint1() {
         return hint1;
     }
