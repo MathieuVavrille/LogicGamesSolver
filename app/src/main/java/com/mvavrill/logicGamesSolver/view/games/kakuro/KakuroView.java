@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -76,7 +77,19 @@ public class KakuroView extends View implements GestureDetector.OnGestureListene
             canvas.drawLine(i * cellWidth, 0, i * cellWidth, gridWidth, paint);
             canvas.drawLine(0, i * cellWidth, gridWidth, i * cellWidth, paint);
         }
-
+        paint.setColor(Color.WHITE);
+        paint.setStrokeWidth(gridSeparatorSize/2);
+        for (int i = 1; i < grid.length; i++) {
+            for (int j = 1; j < grid[i].length; j++) {
+                if (grid[i-1][j-1] instanceof EmptyCell
+                        && grid[i-1][j] instanceof EmptyCell
+                        && grid[i][j-1] instanceof EmptyCell
+                        && grid[i][j] instanceof EmptyCell) {
+                    canvas.drawLine(j * cellWidth, i*cellWidth-cellWidth/9, j * cellWidth, i*cellWidth+cellWidth/9, paint);
+                    canvas.drawLine(j*cellWidth-cellWidth/9, i * cellWidth, j*cellWidth+cellWidth/9, i * cellWidth, paint);
+                }
+            }
+        }
     }
 
     @Override

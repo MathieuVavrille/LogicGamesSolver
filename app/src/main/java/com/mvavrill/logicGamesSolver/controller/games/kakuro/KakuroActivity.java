@@ -81,19 +81,29 @@ public class KakuroActivity extends AppCompatActivity implements PopupCallback {
 
     public void recomputeNeighbours(Cell[][] modifiedGrid, int i, int j) {
         if (modifiedGrid[i][j] instanceof EmptyCell) {
+            // Modify current grid
             if (i+1 < modifiedGrid.length && modifiedGrid[i+1][j] instanceof DigitCell
-                    || j+1 < modifiedGrid.length && modifiedGrid[i][j+1] instanceof DigitCell)
-                modifiedGrid[i][j] = new DoubleIntCell();
-            if (modifiedGrid[i-1][j] instanceof DoubleIntCell && !(j+1 < modifiedGrid.length && modifiedGrid[i-1][j+1] instanceof DigitCell))
-                modifiedGrid[i-1][j] = new EmptyCell();
-            if (modifiedGrid[i][j-1] instanceof DoubleIntCell && !(i+1 < modifiedGrid.length && modifiedGrid[i+1][j-1] instanceof DigitCell))
-                modifiedGrid[i][j-1] = new EmptyCell();
+                    && j+1 < modifiedGrid.length && modifiedGrid[i][j+1] instanceof DigitCell)
+                modifiedGrid[i][j] = new DoubleIntCell(-1,-1);
+            if (i+1 < modifiedGrid.length && modifiedGrid[i+1][j] instanceof DigitCell)
+                modifiedGrid[i][j] = new DoubleIntCell(null,-1);
+            if (j+1 < modifiedGrid.length && modifiedGrid[i][j+1] instanceof DigitCell)
+                modifiedGrid[i][j] = new DoubleIntCell(-1,null);
+            // Modify upper and left ones
+            if (modifiedGrid[i-1][j] instanceof DoubleIntCell)
+                modifiedGrid[i-1][j] = ((DoubleIntCell) modifiedGrid[i-1][j]).removeSecond();
+            if (modifiedGrid[i][j-1] instanceof DoubleIntCell)
+            modifiedGrid[i][j-1] = ((DoubleIntCell) modifiedGrid[i][j-1]).removeFirst();
         }
         else { // instance of DigitCell
             if (modifiedGrid[i-1][j] instanceof EmptyCell)
-                modifiedGrid[i-1][j] = new DoubleIntCell();
+                modifiedGrid[i-1][j] = new DoubleIntCell(null,-1);
+            else if (modifiedGrid[i-1][j] instanceof DoubleIntCell)
+                modifiedGrid[i-1][j] = ((DoubleIntCell) modifiedGrid[i-1][j]).addSecond(-1);
             if (modifiedGrid[i][j-1] instanceof EmptyCell)
-                modifiedGrid[i][j-1] = new DoubleIntCell();
+                modifiedGrid[i][j-1] = new DoubleIntCell(-1,null);
+            else if (modifiedGrid[i][j-1] instanceof DoubleIntCell)
+                modifiedGrid[i][j-1] = ((DoubleIntCell) modifiedGrid[i][j-1]).addFirst(-1);
         }
     }
 
@@ -120,9 +130,9 @@ public class KakuroActivity extends AppCompatActivity implements PopupCallback {
         }*/
     }
     private Cell[][] gridCopy(final Cell[][] grid) {
-        Cell[][] newGrid = new Cell[9][9];
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
+        Cell[][] newGrid = new Cell[grid.length][grid.length];
+        for (int i = 0; i < newGrid.length; i++) {
+            for (int j = 0; j < newGrid[j].length; j++) {
                 newGrid[i][j] = grid[i][j].copy();
             }
         }

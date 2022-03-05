@@ -64,8 +64,10 @@ public class DrawCell {
         paint.setStrokeWidth(cellWidth/40f);
         canvas.drawLine(x,y,x+cellWidth, y+cellWidth, paint);
         paint.setTextSize(cellWidth / 4f);
-        canvas.drawText(cell.getHint1() == -1 ? "12" : ""+cell.getHint1(), x+cellWidth*0.75f, y+cellWidth*0.375f, paint);
-        canvas.drawText(cell.getHint2() == -1 ? "23" : ""+cell.getHint1(), x+cellWidth/4f, y+cellWidth*0.875f, paint);
+        if (cell.getHint1() != null)
+            canvas.drawText(cell.getHint1() == -1 ? "X" : ""+cell.getHint1(), x+cellWidth*0.75f, y+cellWidth*0.375f, paint);
+        if (cell.getHint2() != null)
+            canvas.drawText(cell.getHint2() == -1 ? "X" : ""+cell.getHint2(), x+cellWidth/4f, y+cellWidth*0.875f, paint);
     }
 
     public static void draw(final Canvas canvas, final Cell cell, final float x, final float y, final float cellWidth) {
