@@ -9,8 +9,10 @@ import android.util.Log;
 import android.widget.Button;
 
 import com.mvavrill.logicGamesSolver.R;
+import com.mvavrill.logicGamesSolver.controller.popups.PopupDigitFragment;
 import com.mvavrill.logicGamesSolver.controller.games.kakuro.KakuroActivity;
 import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuActivity;
+import com.mvavrill.logicGamesSolver.controller.popups.PopupNumberFragment;
 
 public class MainActivity extends AppCompatActivity implements CallbackWithInteger {
     private static final String[] CAMERA_PERMISSION = new String[]{Manifest.permission.CAMERA};
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
         });
         Button test = findViewById(R.id.main_button_test);
         test.setOnClickListener(view -> {
-            new PopupDigitFragment(null,this).show(getSupportFragmentManager(), "");
+            new PopupNumberFragment(null,this).show(getSupportFragmentManager(), "");
         });
     }
 

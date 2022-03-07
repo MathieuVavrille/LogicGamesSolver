@@ -1,7 +1,8 @@
-package com.mvavrill.logicGamesSolver.controller;
+package com.mvavrill.logicGamesSolver.controller.popups;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.FragmentManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import androidx.fragment.app.DialogFragment;
 
 import com.mvavrill.logicGamesSolver.R;
+import com.mvavrill.logicGamesSolver.controller.CallbackWithInteger;
 
 public class PopupDigitFragment extends DialogFragment {
 
@@ -35,19 +37,18 @@ public class PopupDigitFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        AlertDialog d = new AlertDialog.Builder(getActivity()).create();
+        AlertDialog dialog = new AlertDialog.Builder(getActivity()).create();
         View buttonsView =  inflater.inflate(R.layout.popup_digit1_9,null);
         for (int i = 0; i < 9; i++) {
             final int fi = i;
             Button button = buttonsView.findViewById(buttonsIds[i]);
             button.setOnClickListener(view -> {
                 callback.callbackWithInteger(callbackData, fi+1);
-                d.dismiss();
+                dialog.dismiss();
             });
         }
-        d.setView(buttonsView);
-        d.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        return d;//builder.create();
+        dialog.setView(buttonsView);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        return dialog;
     }
-
 }

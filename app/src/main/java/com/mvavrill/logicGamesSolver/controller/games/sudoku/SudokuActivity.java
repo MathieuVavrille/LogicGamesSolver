@@ -9,15 +9,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.CallbackWithInteger;
 import com.mvavrill.logicGamesSolver.controller.GridHistory;
-import com.mvavrill.logicGamesSolver.controller.PopupCallback;
-import com.mvavrill.logicGamesSolver.controller.PopupDigit;
-import com.mvavrill.logicGamesSolver.controller.PopupDigitFragment;
+import com.mvavrill.logicGamesSolver.controller.popups.PopupCallback;
+import com.mvavrill.logicGamesSolver.controller.popups.PopupDigitFragment;
 import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
 import com.mvavrill.logicGamesSolver.model.games.sudoku.SudokuSolver;
 import com.mvavrill.logicGamesSolver.view.games.sudoku.SudokuView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SudokuActivity extends AppCompatActivity implements PopupCallback, CallbackWithInteger {
 
@@ -50,27 +46,27 @@ public class SudokuActivity extends AppCompatActivity implements PopupCallback, 
 
     @Override
     public void callback(int i, int j, int v) {
-        setGridValue(i,j,v);
-    }
-
-    public void setGridValue(int I, int J, int v) {
         DigitCell[][] currentGrid = gridCopy(gridHistory.getCurrent());
-        currentGrid[I][J] = new DigitCell(true, v-1);
+        currentGrid[i][j] = new DigitCell(true, v);
         DigitCell[][] newSudokuGrid = new SudokuSolver(currentGrid).extractInformation();
         if (newSudokuGrid != null) {
-            for (int i = 0; i < 9; i++) {
-                for (int j = 0; j < 9; j++) {
-                    newSudokuGrid[i][j].fix(currentGrid[i][j].isFixed());
+            for (int li = 0; li < 9; li++) {
+                for (int lj = 0; lj < 9; lj++) {
+                    newSudokuGrid[li][lj].fix(currentGrid[li][lj].isFixed());
                 }
             }
             gridHistory.addElement(newSudokuGrid);
         }
     }
 
+    public void setGridValue(int i, int J, int v) {
+    }
+
     public void popup(int i, int j) {
         Bundle b = new Bundle();
         b.putSerializable("i",i);
         b.putSerializable("j",j);
+        b.putSerializable("hints", gridHistory.getCurrent()[i][j].getHints());
         new PopupDigitFragment(b,this).show(getSupportFragmentManager(), "");
     }
 

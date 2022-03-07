@@ -4,26 +4,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import com.mvavrill.logicGamesSolver.R;
+import com.mvavrill.logicGamesSolver.controller.CallbackWithInteger;
 import com.mvavrill.logicGamesSolver.controller.GridHistory;
-import com.mvavrill.logicGamesSolver.controller.PopupCallback;
-import com.mvavrill.logicGamesSolver.controller.PopupDigit;
+import com.mvavrill.logicGamesSolver.controller.popups.PopupDigitFragment;
+import com.mvavrill.logicGamesSolver.controller.popups.PopupNumberFragment;
 import com.mvavrill.logicGamesSolver.model.cells.*;
 import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
 import com.mvavrill.logicGamesSolver.model.cells.DoubleIntCell;
 import com.mvavrill.logicGamesSolver.model.cells.EmptyCell;
+import com.mvavrill.logicGamesSolver.model.games.kakuro.KakuroSolver;
+import com.mvavrill.logicGamesSolver.model.games.sudoku.SudokuSolver;
 import com.mvavrill.logicGamesSolver.view.games.kakuro.KakuroView;
 
-public class KakuroActivity extends AppCompatActivity implements PopupCallback {
+public class KakuroActivity extends AppCompatActivity implements CallbackWithInteger {
 
     private KakuroView kakuroView;
     private ConstraintLayout gridConstraintLayout;
 
     private GridHistory<Cell[][]> gridHistory;
-    private Button increaseButton;
-    private Button decreaseButton;
     private Button outlineButton;
     private boolean isOutline = true;
 
@@ -33,16 +35,26 @@ public class KakuroActivity extends AppCompatActivity implements PopupCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kakuro);
         gridConstraintLayout = findViewById(R.id.kakuro_constraint_layout);
-        increaseButton = findViewById(R.id.kakuro_button_increase);
-        decreaseButton = findViewById(R.id.kakuro_button_decrease);
+        Button decreaseButton = findViewById(R.id.kakuro_button_decrease);
+        decreaseButton.setOnClickListener(view -> {
+                gridHistory.addElement(gridCopy(gridHistory.getCurrent(),-1));
+            if (gridHistory.getCurrent().length == 3)
+                decreaseButton.setEnabled(false);
+        });
+        Button increaseButton = findViewById(R.id.kakuro_button_increase);
+        increaseButton.setOnClickListener(view -> {
+            gridHistory.addElement(gridCopy(gridHistory.getCurrent(),1));
+            decreaseButton.setEnabled(true);
+        });
         outlineButton = findViewById(R.id.kakuro_button_outline);
+        outlineButton.setText("Set values");
         outlineButton.setOnClickListener(view -> {
             if (isOutline) {
-                outlineButton.setText("Set values");
+                outlineButton.setText("Set outline");
                 isOutline = false;
             }
             else {
-                outlineButton.setText("Set outline");
+                outlineButton.setText("Set values");
                 isOutline = true;
             }
         });
@@ -62,11 +74,11 @@ public class KakuroActivity extends AppCompatActivity implements PopupCallback {
         exitButton.setOnClickListener(view -> finish());
     }
 
-    public void isClicked(int i, int j) {
+    public void isClicked(int i, int j, boolean isFirst) {
         if (isOutline) {
             if (i == 0 || j == 0)
                 return;
-            Cell[][] currentGrid = gridCopy(gridHistory.getCurrent());
+            Cell[][] currentGrid = gridCopy(gridHistory.getCurrent(), 0);
             if (currentGrid[i][j] instanceof DigitCell)
                 currentGrid[i][j] = new EmptyCell();
             else
@@ -75,7 +87,56 @@ public class KakuroActivity extends AppCompatActivity implements PopupCallback {
             gridHistory.addElement(currentGrid);
         }
         else {
+            Cell[][] currentGrid = gridHistory.getCurrent();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("i",i);
+            bundle.putSerializable("j",j);
+            bundle.putSerializable("first",isFirst);
+            if (currentGrid[i][j] instanceof DigitCell) {
+                bundle.putSerializable("hints", ((DigitCell) currentGrid[i][j]).getHints());
+                new PopupDigitFragment(bundle, this).show(getSupportFragmentManager(), "");
+            }
+            else if (currentGrid[i][j] instanceof DoubleIntCell) {
+                new PopupNumberFragment(bundle, this).show(getSupportFragmentManager(), "");
+            }
+        }
+    }
 
+    @Override
+    public void callbackWithInteger(Bundle callbackBundle, int v) {
+        int i = (int) callbackBundle.get("i");
+        int j = (int) callbackBundle.get("j");
+        boolean isFirst = (boolean) callbackBundle.get("first");
+        Cell[][] currentGrid = gridCopy(gridHistory.getCurrent(), 0);
+        if (currentGrid[i][j] instanceof DigitCell) {
+            currentGrid[i][j] = new DigitCell(true, v-1);
+        }
+        else if (currentGrid[i][j] instanceof DoubleIntCell){
+            DoubleIntCell cell = (DoubleIntCell) currentGrid[i][j];
+            if (isFirst) {
+                if (cell.getHint1() == null)
+                    currentGrid[i][j] = new DoubleIntCell(null, v);
+                else
+                    currentGrid[i][j] = new DoubleIntCell(v, cell.getHint2());
+            }
+            else {
+                if (cell.getHint2() == null)
+                    currentGrid[i][j] = new DoubleIntCell(v, null);
+                else
+                    currentGrid[i][j] = new DoubleIntCell(cell.getHint1(), v);
+            }
+        }
+        else
+            throw new IllegalStateException("Cannot fix empty cell");
+        Cell[][] newKakuroGrid = new KakuroSolver(currentGrid).extractInformation();
+        if (newKakuroGrid != null) {
+            for (int li = 0; li < 9; li++) {
+                for (int lj = 0; lj < 9; lj++) {
+                    if (newKakuroGrid[li][lj] instanceof DigitCell)
+                        ((DigitCell)newKakuroGrid[li][lj]).fix(((DigitCell)currentGrid[li][lj]).isFixed());
+                }
+            }
+            gridHistory.addElement(newKakuroGrid);
         }
     }
 
@@ -107,40 +168,13 @@ public class KakuroActivity extends AppCompatActivity implements PopupCallback {
         }
     }
 
-    public void popup(int i, int j) {
-        new PopupDigit(i,j,this).run();
-    }
-
-    @Override
-    public void callback(int i, int j, int v) {
-        setGridValue(i,j,v);
-    }
-
-    public void setGridValue(int I, int J, int v) {
-        /*Cell[][] currentGrid = gridCopy(gridHistory.getCurrent());
-        currentGrid[I][J] = new DigitCell(true, v - 1);
-        DigitCell[][] newSudokuGrid = new SudokuSolver(currentGrid).extractInformation();
-        if (newSudokuGrid != null) {
-            for (int i = 0; i < 9; i++) {
-                for (int j = 0; j < 9; j++) {
-                    newSudokuGrid[i][j].fix(currentGrid[i][j].isFixed());
-                }
-            }
-            gridHistory.addElement(newSudokuGrid);
-        }*/
-    }
-    private Cell[][] gridCopy(final Cell[][] grid) {
-        Cell[][] newGrid = new Cell[grid.length][grid.length];
+    private Cell[][] gridCopy(final Cell[][] grid, final int increase) {
+        Cell[][] newGrid = new Cell[grid.length+increase][grid.length+increase];
         for (int i = 0; i < newGrid.length; i++) {
-            for (int j = 0; j < newGrid[j].length; j++) {
-                newGrid[i][j] = grid[i][j].copy();
+            for (int j = 0; j < newGrid[i].length; j++) {
+                newGrid[i][j] = (i >= grid.length || j >= grid.length) ? new EmptyCell() : grid[i][j].copy();
             }
         }
         return newGrid;
-    }
-
-    @Override
-    public ConstraintLayout getGridConstraintLayout() {
-        return gridConstraintLayout;
     }
 }

@@ -9,7 +9,7 @@ public class DigitCell implements Cell {
     private final boolean[] hints;
 
     public DigitCell() {
-        this(false, -1, new boolean[]{true,true,true,true,true,true,true,true,true});
+        this(false, -1, new boolean[]{true,true,true,true,true,true,true,true,true,true});
     }
 
     public DigitCell(final boolean isFixed, final int v) {
@@ -29,7 +29,7 @@ public class DigitCell implements Cell {
     public DigitCell(final DigitCell d) {
         this.isFixed = d.isFixed;
         this.value = d.value;
-        this.hints = d.hints == null ? null : Arrays.copyOf(d.hints, 9);
+        this.hints = d.hints == null ? null : Arrays.copyOf(d.hints, 10);
     }
 
     public DigitCell copy() {

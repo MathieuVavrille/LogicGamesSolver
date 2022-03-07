@@ -20,7 +20,7 @@ public class SudokuSolver {
 
     public DigitCell[][] extractInformation() {
         Model model = new Model("sudoku");
-        IntVar[][] vars = model.intVarMatrix(9, 9 , 0, 8);
+        IntVar[][] vars = model.intVarMatrix(9, 9 , 1, 9);
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 restrictVarFromCell(grid[i][j], vars[i][j]);
@@ -60,13 +60,6 @@ public class SudokuSolver {
             Log.d("Mat","restrict");
             var.eq(cell.getValue()).post();
         }
-        /*else {
-            boolean[] hints = cell.getHints();
-            for (int i = 0; i < 9; i++) {
-                if (!hints[i])
-                    var.ne(i).post();
-            }
-        }*/
     }
 
     private DigitCell[][] gridFromVars(final IntVar[][] vars) {
@@ -76,7 +69,7 @@ public class SudokuSolver {
                 if (vars[i][j].isInstantiated())
                     res[i][j] = new DigitCell(false, vars[i][j].getValue());
                 else {
-                    boolean[] hints = new boolean[9];
+                    boolean[] hints = new boolean[1];
                     DisposableValueIterator iterator = vars[i][j].getValueIterator(true);
                     while(iterator.hasNext()){
                         hints[iterator.next()] = true;

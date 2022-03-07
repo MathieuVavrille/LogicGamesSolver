@@ -111,9 +111,11 @@ public class KakuroView extends View implements GestureDetector.OnGestureListene
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
         if (e.getY() < gridWidth) {
-            int cellX = (int) (e.getX() / cellWidth);
-            int cellY = (int) (e.getY() / cellWidth);
-            kakuroActivity.isClicked(cellY, cellX);
+            int j = (int) (e.getX() / cellWidth);
+            int i = (int) (e.getY() / cellWidth);
+            float cellX = j*cellWidth;
+            float cellY = i*cellWidth;
+            kakuroActivity.isClicked(i, j, Math.abs(e.getX()-cellX-cellWidth)+Math.abs(e.getY()-cellY) < Math.abs(e.getX()-cellX)+Math.abs(e.getY()-cellY-cellWidth));
         }
         return true;
     }
