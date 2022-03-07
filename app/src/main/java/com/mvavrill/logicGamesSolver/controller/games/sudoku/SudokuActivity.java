@@ -7,9 +7,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.mvavrill.logicGamesSolver.R;
+import com.mvavrill.logicGamesSolver.controller.CallbackWithInteger;
 import com.mvavrill.logicGamesSolver.controller.GridHistory;
 import com.mvavrill.logicGamesSolver.controller.PopupCallback;
 import com.mvavrill.logicGamesSolver.controller.PopupDigit;
+import com.mvavrill.logicGamesSolver.controller.PopupDigitFragment;
 import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
 import com.mvavrill.logicGamesSolver.model.games.sudoku.SudokuSolver;
 import com.mvavrill.logicGamesSolver.view.games.sudoku.SudokuView;
@@ -17,7 +19,7 @@ import com.mvavrill.logicGamesSolver.view.games.sudoku.SudokuView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SudokuActivity extends AppCompatActivity implements PopupCallback {
+public class SudokuActivity extends AppCompatActivity implements PopupCallback, CallbackWithInteger {
 
     private GridHistory<DigitCell[][]> gridHistory;
     private ConstraintLayout gridConstraintLayout;
@@ -66,7 +68,10 @@ public class SudokuActivity extends AppCompatActivity implements PopupCallback {
     }
 
     public void popup(int i, int j) {
-        new PopupDigit(i,j,this).run();
+        Bundle b = new Bundle();
+        b.putSerializable("i",i);
+        b.putSerializable("j",j);
+        new PopupDigitFragment(b,this).show(getSupportFragmentManager(), "");
     }
 
     private DigitCell[][] gridCopy(final DigitCell[][] grid) {
@@ -82,5 +87,10 @@ public class SudokuActivity extends AppCompatActivity implements PopupCallback {
     @Override
     public ConstraintLayout getGridConstraintLayout() {
         return gridConstraintLayout;
+    }
+
+    @Override
+    public void callbackWithInteger(Bundle callbackBundle, int v) {
+        setGridValue((int) callbackBundle.get("i"), (int) callbackBundle.get("j"), v);
     }
 }

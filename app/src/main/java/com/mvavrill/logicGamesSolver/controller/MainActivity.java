@@ -5,13 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.games.kakuro.KakuroActivity;
 import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CallbackWithInteger {
     private static final String[] CAMERA_PERMISSION = new String[]{Manifest.permission.CAMERA};
     private static final int CAMERA_REQUEST_CODE = 10;
 
@@ -32,6 +33,15 @@ public class MainActivity extends AppCompatActivity {
             Intent gridActivityIntent = new Intent(MainActivity.this, KakuroActivity.class);
             startActivity(gridActivityIntent);
         });
+        Button test = findViewById(R.id.main_button_test);
+        test.setOnClickListener(view -> {
+            new PopupDigitFragment(null,this).show(getSupportFragmentManager(), "");
+        });
+    }
+
+    @Override
+    public void callbackWithInteger(Bundle callbackBundle, int v) {
+        Log.d("Mat", ""+v);
     }
 
     /*@Override

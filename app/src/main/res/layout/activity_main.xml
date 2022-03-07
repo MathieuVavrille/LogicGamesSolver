@@ -36,4 +36,13 @@
         android:textSize="30sp"
         android:text="Kakuro" />
 
+    <Button
+        android:id="@+id/main_button_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="16dp"
+        android:textSize="30sp"
+        android:text="Test" />
+
 </LinearLayout>
