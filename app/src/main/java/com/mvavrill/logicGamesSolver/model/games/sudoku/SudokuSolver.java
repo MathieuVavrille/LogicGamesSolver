@@ -36,15 +36,12 @@ public class SudokuSolver {
             }
         }
         Solver solver = model.getSolver();
-        Log.d("Mat",""+vars[0][0]);
         try {
             solver.propagate();
         }
         catch (Exception e) {
             return null;
         }
-        Log.d("Mat",""+vars[0][0]);
-
         DigitCell[][] propagatedGrid = gridFromVars(vars);
         if (!solver.solve())
             return null;
@@ -69,7 +66,7 @@ public class SudokuSolver {
                 if (vars[i][j].isInstantiated())
                     res[i][j] = new DigitCell(false, vars[i][j].getValue());
                 else {
-                    boolean[] hints = new boolean[1];
+                    boolean[] hints = new boolean[10];
                     DisposableValueIterator iterator = vars[i][j].getValueIterator(true);
                     while(iterator.hasNext()){
                         hints[iterator.next()] = true;

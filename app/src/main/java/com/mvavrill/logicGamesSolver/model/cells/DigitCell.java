@@ -50,6 +50,15 @@ public class DigitCell implements Cell {
         return hints;
     }
 
+    public boolean[] allowedValues() {
+        if (hints == null) {
+            boolean[] possible = new boolean[10];
+            possible[value] = true;
+            return possible;
+        }
+        return hints;
+    }
+
     @Override
     public String toString() {
         if (hints == null)

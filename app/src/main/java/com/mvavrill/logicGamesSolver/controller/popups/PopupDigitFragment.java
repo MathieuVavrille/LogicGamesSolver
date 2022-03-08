@@ -34,14 +34,22 @@ public class PopupDigitFragment extends DialogFragment {
         this.callbackData = callbackData;
         this.callback = callback;
     }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Object nullHints = callbackData.get("hints");
+        boolean[] hints = new boolean[10];
+        for (int i = 0; i < 10; i++) {hints[i] = false;}
+        if (nullHints != null) {
+            hints = (boolean[]) nullHints;
+        }
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         AlertDialog dialog = new AlertDialog.Builder(getActivity()).create();
         View buttonsView =  inflater.inflate(R.layout.popup_digit1_9,null);
         for (int i = 0; i < 9; i++) {
             final int fi = i;
             Button button = buttonsView.findViewById(buttonsIds[i]);
+            button.setEnabled(hints[i+1]);
             button.setOnClickListener(view -> {
                 callback.callbackWithInteger(callbackData, fi+1);
                 dialog.dismiss();

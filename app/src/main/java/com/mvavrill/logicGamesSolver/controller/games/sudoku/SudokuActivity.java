@@ -1,6 +1,7 @@
 package com.mvavrill.logicGamesSolver.controller.games.sudoku;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,13 +10,12 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.CallbackWithInteger;
 import com.mvavrill.logicGamesSolver.controller.GridHistory;
-import com.mvavrill.logicGamesSolver.controller.popups.PopupCallback;
 import com.mvavrill.logicGamesSolver.controller.popups.PopupDigitFragment;
 import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
 import com.mvavrill.logicGamesSolver.model.games.sudoku.SudokuSolver;
 import com.mvavrill.logicGamesSolver.view.games.sudoku.SudokuView;
 
-public class SudokuActivity extends AppCompatActivity implements PopupCallback, CallbackWithInteger {
+public class SudokuActivity extends AppCompatActivity implements CallbackWithInteger {
 
     private GridHistory<DigitCell[][]> gridHistory;
     private ConstraintLayout gridConstraintLayout;
@@ -44,29 +44,17 @@ public class SudokuActivity extends AppCompatActivity implements PopupCallback, 
         exitButton.setOnClickListener(view -> finish());
     }
 
-    @Override
-    public void callback(int i, int j, int v) {
-        DigitCell[][] currentGrid = gridCopy(gridHistory.getCurrent());
-        currentGrid[i][j] = new DigitCell(true, v);
-        DigitCell[][] newSudokuGrid = new SudokuSolver(currentGrid).extractInformation();
-        if (newSudokuGrid != null) {
-            for (int li = 0; li < 9; li++) {
-                for (int lj = 0; lj < 9; lj++) {
-                    newSudokuGrid[li][lj].fix(currentGrid[li][lj].isFixed());
-                }
-            }
-            gridHistory.addElement(newSudokuGrid);
-        }
-    }
-
-    public void setGridValue(int i, int J, int v) {
+    public boolean[] singleValueHints(int v) {
+        boolean[] hints = new boolean[10];
+        hints[v] = true;
+        return hints;
     }
 
     public void popup(int i, int j) {
         Bundle b = new Bundle();
         b.putSerializable("i",i);
         b.putSerializable("j",j);
-        b.putSerializable("hints", gridHistory.getCurrent()[i][j].getHints());
+        b.putSerializable("hints", gridHistory.getCurrent()[i][j].allowedValues());
         new PopupDigitFragment(b,this).show(getSupportFragmentManager(), "");
     }
 
@@ -81,12 +69,20 @@ public class SudokuActivity extends AppCompatActivity implements PopupCallback, 
     }
 
     @Override
-    public ConstraintLayout getGridConstraintLayout() {
-        return gridConstraintLayout;
-    }
-
-    @Override
     public void callbackWithInteger(Bundle callbackBundle, int v) {
-        setGridValue((int) callbackBundle.get("i"), (int) callbackBundle.get("j"), v);
+        int i = (int) callbackBundle.get("i");
+        int j = (int) callbackBundle.get("j");
+        DigitCell[][] currentGrid = gridCopy(gridHistory.getCurrent());
+        currentGrid[i][j] = new DigitCell(true, v);
+        Log.d("Mat", v + "");
+        DigitCell[][] newSudokuGrid = new SudokuSolver(currentGrid).extractInformation();
+        if (newSudokuGrid != null) {
+            for (int li = 0; li < 9; li++) {
+                for (int lj = 0; lj < 9; lj++) {
+                    newSudokuGrid[li][lj].fix(currentGrid[li][lj].isFixed());
+                }
+            }
+            gridHistory.addElement(newSudokuGrid);
+        }
     }
 }

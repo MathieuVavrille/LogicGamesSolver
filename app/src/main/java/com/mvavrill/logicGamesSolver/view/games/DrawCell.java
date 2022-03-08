@@ -34,7 +34,7 @@ public class DrawCell {
             paint.setTextSize(cellWidth / 4f);
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
-                    if (hints[3 * i + j]) {
+                    if (hints[3 * i + j+1]) {
                         canvas.drawText("" + (3 * i + j + 1), x + (2 * j + 1) * cellWidth / 6f, y + (2 * i + 1) * cellWidth / 6f+cellWidth/12, paint);
                     }
                 }
@@ -46,7 +46,7 @@ public class DrawCell {
                 drawWhiteBackground(canvas,x,y,cellWidth);
             paint.setColor(Color.BLACK);
             paint.setTextSize(cellWidth * 0.7f);
-            canvas.drawText("" + (cell.getValue() + 1), x + cellWidth / 2f - cellWidth/30f, y + cellWidth * 0.75f, paint);
+            canvas.drawText("" + cell.getValue(), x + cellWidth / 2f - cellWidth/30f, y + cellWidth * 0.75f, paint);
         }
     }
 

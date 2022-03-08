@@ -37,4 +37,9 @@ public class DoubleIntCell implements Cell {
     public Cell addSecond(final int i) {
         return new DoubleIntCell(hint1, i);
     }
+
+    @Override
+    public String toString() {
+        return "("+(hint1 != null ? hint1 : "-") + "," + (hint2 != null ? hint2 : "-") + ")";
+    }
 }
