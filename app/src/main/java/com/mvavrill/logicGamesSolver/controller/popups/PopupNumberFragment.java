@@ -2,20 +2,15 @@ package com.mvavrill.logicGamesSolver.controller.popups;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.fragment.app.DialogFragment;
 
 import com.mvavrill.logicGamesSolver.R;
-import com.mvavrill.logicGamesSolver.controller.CallbackWithInteger;
 
 public class PopupNumberFragment extends DialogFragment {
 

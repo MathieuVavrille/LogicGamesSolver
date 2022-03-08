@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.mvavrill.logicGamesSolver.R;
-import com.mvavrill.logicGamesSolver.controller.CallbackWithInteger;
+import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
 import com.mvavrill.logicGamesSolver.controller.GridHistory;
 import com.mvavrill.logicGamesSolver.controller.popups.PopupDigitFragment;
 import com.mvavrill.logicGamesSolver.model.cells.DigitCell;

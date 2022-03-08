@@ -2,7 +2,6 @@ package com.mvavrill.logicGamesSolver.controller.popups;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.FragmentManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -13,7 +12,6 @@ import android.widget.Button;
 import androidx.fragment.app.DialogFragment;
 
 import com.mvavrill.logicGamesSolver.R;
-import com.mvavrill.logicGamesSolver.controller.CallbackWithInteger;
 
 public class PopupDigitFragment extends DialogFragment {
 

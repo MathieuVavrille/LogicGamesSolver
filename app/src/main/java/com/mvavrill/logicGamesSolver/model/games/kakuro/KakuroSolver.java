@@ -51,11 +51,11 @@ public class KakuroSolver {
                         if (cell.getHint1() == -1)
                             model.allDifferent(getHorizontalVars(vars, i, j + 1)).post();
                         else
-                            postAlldiffSumConstraint(model, getVerticalVars(vars, i, j+1), cell.getHint1());
+                            postAlldiffSumConstraint(model, getHorizontalVars(vars, i, j+1), cell.getHint1());
                     }
                     if (cell.getHint2() != null) {
                         if (cell.getHint2() == -1)
-                            model.allDifferent(getHorizontalVars(vars, i+1, j)).post();
+                            model.allDifferent(getVerticalVars(vars, i+1, j)).post();
                         else
                             postAlldiffSumConstraint(model, getVerticalVars(vars, i+1, j), cell.getHint2());
                     }
@@ -109,6 +109,7 @@ public class KakuroSolver {
             memoizedTuples.put(currentPair, allowedTuples);
         }
         model.table(vars, memoizedTuples.get(currentPair)).post();
+        Log.d("Mat", memoizedTuples.get(currentPair)+"");
     }
 
     private final static int[] ubs = new int[]{-1, 9, 17, 24, 30, 35, 39, 42, 44, 45};

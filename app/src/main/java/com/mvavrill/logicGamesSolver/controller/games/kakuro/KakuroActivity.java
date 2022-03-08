@@ -8,16 +8,14 @@ import android.util.Log;
 import android.widget.Button;
 
 import com.mvavrill.logicGamesSolver.R;
-import com.mvavrill.logicGamesSolver.controller.CallbackWithInteger;
+import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
 import com.mvavrill.logicGamesSolver.controller.GridHistory;
-import com.mvavrill.logicGamesSolver.controller.popups.PopupDigitFragment;
 import com.mvavrill.logicGamesSolver.controller.popups.PopupNumberFragment;
 import com.mvavrill.logicGamesSolver.model.cells.*;
 import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
 import com.mvavrill.logicGamesSolver.model.cells.DoubleIntCell;
 import com.mvavrill.logicGamesSolver.model.cells.EmptyCell;
 import com.mvavrill.logicGamesSolver.model.games.kakuro.KakuroSolver;
-import com.mvavrill.logicGamesSolver.model.games.sudoku.SudokuSolver;
 import com.mvavrill.logicGamesSolver.view.games.kakuro.KakuroView;
 
 public class KakuroActivity extends AppCompatActivity implements CallbackWithInteger {
@@ -88,6 +86,7 @@ public class KakuroActivity extends AppCompatActivity implements CallbackWithInt
             else
                 currentGrid[i][j] = new DigitCell();
             recomputeNeighbours(currentGrid, i, j);
+            Log.d("Mat", currentGrid[i][j].toString());
             gridHistory.addElement(currentGrid);
         } else {
             Cell[][] currentGrid = gridHistory.getCurrent();
@@ -148,9 +147,9 @@ public class KakuroActivity extends AppCompatActivity implements CallbackWithInt
             if (i + 1 < modifiedGrid.length && modifiedGrid[i + 1][j] instanceof DigitCell
                     && j + 1 < modifiedGrid.length && modifiedGrid[i][j + 1] instanceof DigitCell)
                 modifiedGrid[i][j] = new DoubleIntCell(-1, -1);
-            if (i + 1 < modifiedGrid.length && modifiedGrid[i + 1][j] instanceof DigitCell)
+            else if (i + 1 < modifiedGrid.length && modifiedGrid[i + 1][j] instanceof DigitCell)
                 modifiedGrid[i][j] = new DoubleIntCell(null, -1);
-            if (j + 1 < modifiedGrid.length && modifiedGrid[i][j + 1] instanceof DigitCell)
+            else if (j + 1 < modifiedGrid.length && modifiedGrid[i][j + 1] instanceof DigitCell)
                 modifiedGrid[i][j] = new DoubleIntCell(-1, null);
             // Modify upper and left ones
             if (modifiedGrid[i - 1][j] instanceof DoubleIntCell)
