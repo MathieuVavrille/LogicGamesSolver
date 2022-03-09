@@ -135,10 +135,10 @@ public class KakuroView extends View implements GestureDetector.OnGestureListene
         return false;
     }
 
-    public void setGrid(final DigitCell[][] grid) {
+    /*public void setGrid(final DigitCell[][] grid) {
         this.grid = grid;
         invalidate();
-    }
+    }*/
 
     public void setGridActivity(KakuroActivity kakuroActivity) {
         this.kakuroActivity = kakuroActivity;

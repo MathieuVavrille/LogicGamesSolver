@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.Button;
 
 import com.mvavrill.logicGamesSolver.R;
+import com.mvavrill.logicGamesSolver.controller.games.slitherlink.SlitherlinkActivity;
 import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
 import com.mvavrill.logicGamesSolver.controller.games.kakuro.KakuroActivity;
 import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuActivity;
@@ -18,21 +19,23 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
     private static final String[] CAMERA_PERMISSION = new String[]{Manifest.permission.CAMERA};
     private static final int CAMERA_REQUEST_CODE = 10;
 
-    private Button sudoku;
-    private Button kakuro;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        sudoku = findViewById(R.id.main_button_sudoku);
+        Button sudoku = findViewById(R.id.main_button_sudoku);
         sudoku.setOnClickListener(view -> {
             Intent gridActivityIntent = new Intent(MainActivity.this, SudokuActivity.class);
             startActivity(gridActivityIntent);
         });
-        kakuro = findViewById(R.id.main_button_kakuro);
+        Button kakuro = findViewById(R.id.main_button_kakuro);
         kakuro.setOnClickListener(view -> {
             Intent gridActivityIntent = new Intent(MainActivity.this, KakuroActivity.class);
+            startActivity(gridActivityIntent);
+        });
+        Button slitherlink = findViewById(R.id.main_button_slitherlink);
+        slitherlink.setOnClickListener(view -> {
+            Intent gridActivityIntent = new Intent(MainActivity.this, SlitherlinkActivity.class);
             startActivity(gridActivityIntent);
         });
         Button test = findViewById(R.id.main_button_test);

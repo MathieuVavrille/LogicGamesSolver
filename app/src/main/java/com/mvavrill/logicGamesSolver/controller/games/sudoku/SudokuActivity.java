@@ -18,14 +18,11 @@ import com.mvavrill.logicGamesSolver.view.games.sudoku.SudokuView;
 public class SudokuActivity extends AppCompatActivity implements CallbackWithInteger {
 
     private GridHistory<DigitCell[][]> gridHistory;
-    private ConstraintLayout gridConstraintLayout;
-    private SudokuView sudokuView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sudoku);
-        gridConstraintLayout = findViewById(R.id.sudoku_input_constraint_layout);
         // Initial grid
         DigitCell[][] initialGrid = new DigitCell[9][9];
         for (int i = 0; i < 9; i++) {
@@ -36,7 +33,7 @@ public class SudokuActivity extends AppCompatActivity implements CallbackWithInt
         // History
         Button undoButton = findViewById(R.id.sudoku_input_button_undo);
         Button redoButton = findViewById(R.id.sudoku_input_button_redo);
-        sudokuView = findViewById(R.id.sudoku_input_grid_view);
+        SudokuView sudokuView = findViewById(R.id.sudoku_input_grid_view);
         sudokuView.setGridActivity(this);
         gridHistory = new GridHistory<>(undoButton, redoButton, initialGrid, sudokuView);
         // Exit
@@ -55,7 +52,7 @@ public class SudokuActivity extends AppCompatActivity implements CallbackWithInt
         b.putSerializable("i",i);
         b.putSerializable("j",j);
         b.putSerializable("hints", gridHistory.getCurrent()[i][j].allowedValues());
-        new PopupDigitFragment(b,this).show(getSupportFragmentManager(), "");
+        new PopupDigitFragment(b,this, 9).show(getSupportFragmentManager(), "");
     }
 
     private DigitCell[][] gridCopy(final DigitCell[][] grid) {
