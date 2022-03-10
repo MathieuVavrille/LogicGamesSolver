@@ -43,7 +43,42 @@ public class SlitherlinkActivity extends AppCompatActivity implements CallbackWi
         slitherlinkView.setGridActivity(this);
         gridHistory = new GridHistory<>(undoButton, redoButton, new Quartet<>(initialNumbers, new int[initialSize+1][initialSize], new int[initialSize+1][initialSize], new boolean[initialSize][initialSize]), slitherlinkView);
         // Change size
-
+        Button plusLine = findViewById(R.id.slitherlink_button_addLine);
+        Button minusLine = findViewById(R.id.slitherlink_button_remLine);
+        plusLine.setOnClickListener(view -> {
+            int[][] newNumbers = numbersCopy(gridHistory.getCurrent().getValue0(), 1, 0);
+            minusLine.setEnabled(true);
+            solve(newNumbers);
+        });
+        minusLine.setOnClickListener(view -> {
+            int[][] currentNumbers = gridHistory.getCurrent().getValue0();
+            if (currentNumbers.length < 2)
+                minusLine.setEnabled(false);
+            else {
+                int[][] newNumbers = numbersCopy(currentNumbers, -1,0);
+                if (newNumbers.length < 3)
+                    minusLine.setEnabled(false);
+                solve(newNumbers);
+            }
+        });
+        Button plusCol = findViewById(R.id.slitherlink_button_addCol);
+        Button minusCol = findViewById(R.id.slitherlink_button_remCol);
+        plusCol.setOnClickListener(view -> {
+            int[][] newNumbers = numbersCopy(gridHistory.getCurrent().getValue0(), 0, 1);
+            minusCol.setEnabled(true);
+            solve(newNumbers);
+        });
+        minusCol.setOnClickListener(view -> {
+            int[][] currentNumbers = gridHistory.getCurrent().getValue0();
+            if (currentNumbers[0].length < 2)
+                minusCol.setEnabled(false);
+            else {
+                int[][] newNumbers = numbersCopy(currentNumbers, 0,-1);
+                if (newNumbers[0].length < 3)
+                    minusCol.setEnabled(false);
+                solve(newNumbers);
+            }
+        });
         // Exit
         Button exitButton = findViewById(R.id.slitherlink_button_back);
         exitButton.setOnClickListener(view -> finish());
@@ -56,11 +91,14 @@ public class SlitherlinkActivity extends AppCompatActivity implements CallbackWi
         new PopupDigitFragment(b, this, 4).show(getSupportFragmentManager(), "");
     }
 
-    private int[][] numbersCopy(final int[][] numbers) {
-        int[][] newGrid = new int[numbers.length][numbers[0].length];
-        for (int i = 0; i < numbers.length; i++) {
-            for (int j = 0; j < numbers[i].length; j++) {
-                newGrid[i][j] = numbers[i][j];
+    private int[][] numbersCopy(final int[][] numbers, final int increaseI, final int increaseJ) {
+        int[][] newGrid = new int[numbers.length+increaseI][numbers[0].length+increaseJ];
+        for (int i = 0; i < newGrid.length; i++) {
+            for (int j = 0; j < newGrid[i].length; j++) {
+                if (i < numbers.length && j < numbers[i].length)
+                    newGrid[i][j] = numbers[i][j];
+                else
+                    newGrid[i][j] = -1;
             }
         }
         return newGrid;
@@ -70,11 +108,15 @@ public class SlitherlinkActivity extends AppCompatActivity implements CallbackWi
     public void callbackWithInteger(Bundle callbackBundle, int v) {
         int i = (int) callbackBundle.get("i");
         int j = (int) callbackBundle.get("j");
-        int[][] currentNumbers = numbersCopy(gridHistory.getCurrent().getValue0());
+        int[][] currentNumbers = numbersCopy(gridHistory.getCurrent().getValue0(), 0, 0);
         currentNumbers[i][j] = v;
-        Triplet<int[][],int[][],boolean[][]> newSlitherlinkGrid = new SlitherlinkSolver(currentNumbers).extractInformation();
+        solve(currentNumbers);
+    }
+
+    public void solve(int[][] numbers) {
+        Triplet<int[][],int[][],boolean[][]> newSlitherlinkGrid = new SlitherlinkSolver(numbers).extractInformation();
         if (newSlitherlinkGrid != null) {
-            gridHistory.addElement(new Quartet<>(currentNumbers, newSlitherlinkGrid.getValue0(), newSlitherlinkGrid.getValue1(), newSlitherlinkGrid.getValue2()));
+            gridHistory.addElement(new Quartet<>(numbers, newSlitherlinkGrid.getValue0(), newSlitherlinkGrid.getValue1(), newSlitherlinkGrid.getValue2()));
         }
     }
 }

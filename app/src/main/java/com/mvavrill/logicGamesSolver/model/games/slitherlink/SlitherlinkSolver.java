@@ -88,9 +88,10 @@ public class SlitherlinkSolver {
         }
         for (int i = 0; i < numbers.length+1; i++) {
             for (int j = 0; j < numbers[0].length+1; j++) {
+                Log.d("Mat", ""+i+" "+j+" "+nodeOfPair(i,j));
                 if (i+1 < numbers.length+1)
                     gub.addEdge(nodeOfPair(i,j), nodeOfPair(i+1,j));
-                if (j+1 < numbers.length+1)
+                if (j+1 < numbers[0].length+1)
                     gub.addEdge(nodeOfPair(i,j), nodeOfPair(i,j+1));
             }
         }
