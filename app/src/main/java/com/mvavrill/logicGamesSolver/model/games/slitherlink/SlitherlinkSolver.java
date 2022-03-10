@@ -2,34 +2,32 @@ package com.mvavrill.logicGamesSolver.model.games.slitherlink;
 
 import android.util.Log;
 
-import com.mvavrill.logicGamesSolver.model.cells.Cell;
-
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
 import org.chocosolver.solver.constraints.extension.Tuples;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
+import org.chocosolver.solver.variables.UndirectedGraphVar;
+import org.chocosolver.util.objects.graphs.UndirectedGraph;
+import org.chocosolver.util.objects.setDataStructures.SetType;
 import org.javatuples.Triplet;
 
 public class SlitherlinkSolver {
 
     private int[][] numbers; // -1 for don't know, 0-3 for value
-    private int[][] verticalEdges; // -1 for no edge, 1 for edge, 0 for don't know
-    private int[][] horizontalEdges;
 
-    public SlitherlinkSolver(final int[][] numbers, final int[][] verticalEdges, final int[][] horizontalEdges) {
+    public SlitherlinkSolver(final int[][] numbers) {
         this.numbers = numbers;
-        this.verticalEdges = verticalEdges;
-        this.horizontalEdges = horizontalEdges;
     }
 
     public Triplet<int[][],int[][],int[][]> extractInformation() {
         Model model = new Model("Slitherlink");
-        BoolVar[][] vEdges = model.boolVarMatrix(verticalEdges.length, verticalEdges[0].length);
-        BoolVar[][] hEdges = model.boolVarMatrix(verticalEdges.length, verticalEdges[0].length);
+        UndirectedGraphVar graph = initializeGraph(model);
+        model.connected(graph).post();
+        BoolVar[][] vEdges = getVerticalEdges(model, graph);
+        BoolVar[][] hEdges = getHorizontalEdges(model, graph);
         // Vertex type = · | -- _| |_ |^ ^|
         IntVar[][] vertexType = model.intVarMatrix(numbers.length+1, numbers[0].length+1, 0, 6);
-        //postCellsSums(model, vEdges, hEdges);
         postAdjacentThrees(model, vEdges, hEdges);
         postCellsVerticesTypes(model, vertexType);
         postVertexTypes(model, vEdges, hEdges, vertexType);
@@ -39,6 +37,7 @@ public class SlitherlinkSolver {
         } catch (Exception e) {
             return null;
         }
+        Log.d("Mat",graph.toString());
         Triplet<int[][],int[][],int[][]>  propagatedGrid = gridFromVars(vEdges, hEdges);
         if (!solver.solve())
             return null;
@@ -49,14 +48,46 @@ public class SlitherlinkSolver {
             return solvedGrid;
     }
 
-    private void postCellsSums(final Model model, final BoolVar[][] vEdges, final BoolVar[][] hEdges) {
-        for (int i = 0; i < numbers.length; i++) {
-            for (int j = 0; j < numbers[i].length; j++) {
-                if (numbers[i][j] != -1) {
-                    model.sum(new IntVar[]{vEdges[j][i],vEdges[j+1][i],hEdges[i][j],hEdges[i+1][j]},"=",numbers[i][j]).post();
-                }
+    private int nodeOfPair(final int i, final int j) {
+        return i*(numbers[0].length+1)+j;
+    }
+
+    private UndirectedGraphVar initializeGraph(final Model model) {
+        UndirectedGraph gub = new UndirectedGraph(model, (numbers.length+1)*(numbers[0].length+1), SetType.BITSET, false);
+        for (int i = 0; i < numbers.length+1; i++) {
+            for (int j = 0; j < numbers[0].length+1; j++) {
+                gub.addNode(nodeOfPair(i,j));
             }
         }
+        for (int i = 0; i < numbers.length+1; i++) {
+            for (int j = 0; j < numbers[0].length+1; j++) {
+                if (i+1 < numbers.length+1)
+                    gub.addEdge(nodeOfPair(i,j), nodeOfPair(i+1,j));
+                if (j+1 < numbers.length+1)
+                    gub.addEdge(nodeOfPair(i,j), nodeOfPair(i,j+1));
+            }
+        }
+        return model.graphVar("mainGraph", new UndirectedGraph(model, (numbers.length+1)*(numbers[0].length+1), SetType.BITSET, false), gub);
+    }
+
+    private BoolVar[][] getVerticalEdges(final Model model, final UndirectedGraphVar graph) {
+        BoolVar[][] vEdges = model.boolVarMatrix(numbers[0].length+1, numbers.length);
+        for (int i = 0; i < numbers.length; i++) {
+            for (int j = 0; j < numbers[0].length+1; j++) {
+                model.edgeChanneling(graph, vEdges[j][i], nodeOfPair(i,j), nodeOfPair(i+1,j)).post();
+            }
+        }
+        return vEdges;
+    }
+
+    private BoolVar[][] getHorizontalEdges(final Model model, final UndirectedGraphVar graph) {
+        BoolVar[][] hEdges = model.boolVarMatrix(numbers.length+1, numbers[0].length);
+        for (int i = 0; i < numbers.length+1; i++) {
+            for (int j = 0; j < numbers[0].length; j++) {
+                model.edgeChanneling(graph, hEdges[i][j], nodeOfPair(i,j), nodeOfPair(i,j+1)).post();
+            }
+        }
+        return hEdges;
     }
 
     private void postCellsVerticesTypes(final Model model, final IntVar[][] vertexType) {

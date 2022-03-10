@@ -74,7 +74,7 @@ public class SlitherlinkActivity extends AppCompatActivity implements CallbackWi
         int[][] currentNumbers = numbersCopy(currentTriplet.getValue0());
         currentNumbers[i][j] = v;
         //gridHistory.addElement(new Triplet<>(currentNumbers, currentTriplet.getValue1(), currentTriplet.getValue2()));
-        Triplet<int[][],int[][],int[][]> newSlitherlinkGrid = new SlitherlinkSolver(currentNumbers, currentTriplet.getValue1(), currentTriplet.getValue2()).extractInformation();
+        Triplet<int[][],int[][],int[][]> newSlitherlinkGrid = new SlitherlinkSolver(currentNumbers).extractInformation();
         if (newSlitherlinkGrid != null) {
             gridHistory.addElement(newSlitherlinkGrid);
         }

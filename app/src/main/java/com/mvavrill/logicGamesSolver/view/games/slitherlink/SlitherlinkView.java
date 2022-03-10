@@ -144,10 +144,8 @@ public class SlitherlinkView extends View implements GestureDetector.OnGestureLi
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
         if (e.getY() < gridWidth) {
-            int j = (int) (e.getX() / cellWidth);
-            int i = (int) (e.getY() / cellWidth);
-            float cellX = j*cellWidth;
-            float cellY = i*cellWidth;
+            int j = (int) ((e.getX()-gridOffset) / cellWidth);
+            int i = (int) ((e.getY()-gridOffset) / cellWidth);
             slitherlinkActivity.isClicked(i, j);
         }
         return true;
@@ -166,13 +164,6 @@ public class SlitherlinkView extends View implements GestureDetector.OnGestureLi
     @Override
     public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
         return false;
-    }
-
-    public void setGrid(final int[][] numbers, final int[][] verticalEdges, final int[][] horizontalEdges) {
-        this.numbers = numbers;
-        this.verticalEdges = verticalEdges;
-        this.horizontalEdges = horizontalEdges;
-        invalidate();
     }
 
     public void setGridActivity(SlitherlinkActivity slitherlinkActivity) {
