@@ -17,11 +17,12 @@ import com.mvavrill.logicGamesSolver.model.games.sudoku.SudokuSolver;
 import com.mvavrill.logicGamesSolver.view.games.slitherlink.SlitherlinkView;
 import com.mvavrill.logicGamesSolver.view.games.sudoku.SudokuView;
 
+import org.javatuples.Quartet;
 import org.javatuples.Triplet;
 
 public class SlitherlinkActivity extends AppCompatActivity implements CallbackWithInteger {
 
-    private GridHistory<Triplet<int[][],int[][],int[][]>> gridHistory;
+    private GridHistory<Quartet<int[][],int[][],int[][],boolean[][]>> gridHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,8 +41,7 @@ public class SlitherlinkActivity extends AppCompatActivity implements CallbackWi
         Button redoButton = findViewById(R.id.slitherlink_button_redo);
         SlitherlinkView slitherlinkView = findViewById(R.id.slitherlink_grid_view);
         slitherlinkView.setGridActivity(this);
-        int[][] test = new int[initialSize+1][initialSize];
-        gridHistory = new GridHistory<>(undoButton, redoButton, new Triplet<>(initialNumbers, test, new int[initialSize+1][initialSize]), slitherlinkView);
+        gridHistory = new GridHistory<>(undoButton, redoButton, new Quartet<>(initialNumbers, new int[initialSize+1][initialSize], new int[initialSize+1][initialSize], new boolean[initialSize][initialSize]), slitherlinkView);
         // Change size
 
         // Exit
@@ -70,13 +70,11 @@ public class SlitherlinkActivity extends AppCompatActivity implements CallbackWi
     public void callbackWithInteger(Bundle callbackBundle, int v) {
         int i = (int) callbackBundle.get("i");
         int j = (int) callbackBundle.get("j");
-        Triplet<int[][],int[][],int[][]> currentTriplet = gridHistory.getCurrent();
-        int[][] currentNumbers = numbersCopy(currentTriplet.getValue0());
+        int[][] currentNumbers = numbersCopy(gridHistory.getCurrent().getValue0());
         currentNumbers[i][j] = v;
-        //gridHistory.addElement(new Triplet<>(currentNumbers, currentTriplet.getValue1(), currentTriplet.getValue2()));
-        Triplet<int[][],int[][],int[][]> newSlitherlinkGrid = new SlitherlinkSolver(currentNumbers).extractInformation();
+        Triplet<int[][],int[][],boolean[][]> newSlitherlinkGrid = new SlitherlinkSolver(currentNumbers).extractInformation();
         if (newSlitherlinkGrid != null) {
-            gridHistory.addElement(newSlitherlinkGrid);
+            gridHistory.addElement(new Quartet<>(currentNumbers, newSlitherlinkGrid.getValue0(), newSlitherlinkGrid.getValue1(), newSlitherlinkGrid.getValue2()));
         }
     }
 }

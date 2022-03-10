@@ -12,6 +12,8 @@ import org.chocosolver.util.objects.graphs.UndirectedGraph;
 import org.chocosolver.util.objects.setDataStructures.SetType;
 import org.javatuples.Triplet;
 
+import java.util.Arrays;
+
 public class SlitherlinkSolver {
 
     private int[][] numbers; // -1 for don't know, 0-3 for value
@@ -20,7 +22,7 @@ public class SlitherlinkSolver {
         this.numbers = numbers;
     }
 
-    public Triplet<int[][],int[][],int[][]> extractInformation() {
+    public Triplet<int[][],int[][],boolean[][]> extractInformation() {
         Model model = new Model("Slitherlink");
         UndirectedGraphVar graph = initializeGraph(model);
         model.connected(graph).post();
@@ -28,24 +30,49 @@ public class SlitherlinkSolver {
         BoolVar[][] hEdges = getHorizontalEdges(model, graph);
         // Vertex type = · | -- _| |_ |^ ^|
         IntVar[][] vertexType = model.intVarMatrix(numbers.length+1, numbers[0].length+1, 0, 6);
-        postAdjacentThrees(model, vEdges, hEdges);
+        postAdjacentThrees(vEdges, hEdges);
         postCellsVerticesTypes(model, vertexType);
         postVertexTypes(model, vEdges, hEdges, vertexType);
+        BoolVar[][] isInside = model.boolVarMatrix("isinside", numbers.length, numbers[0].length);
+        postInsideConstraints(model, isInside, vEdges, hEdges);
         Solver solver = model.getSolver();
         try {
             solver.propagate();
         } catch (Exception e) {
             return null;
         }
-        Log.d("Mat",graph.toString());
-        Triplet<int[][],int[][],int[][]>  propagatedGrid = gridFromVars(vEdges, hEdges);
+        for (int i = 0; i < isInside.length; i++) {
+            Log.d("Mat", Arrays.toString(isInside[i]));
+        }
+        for (int i = 0; i < hEdges.length; i++) {
+            Log.d("Mat", Arrays.toString(hEdges[i]));
+        }
+        Triplet<int[][],int[][],boolean[][]>  propagatedGrid = gridFromVars(vEdges, hEdges, isInside);
         if (!solver.solve())
             return null;
-        Triplet<int[][],int[][],int[][]>  solvedGrid = gridFromVars(vEdges, hEdges);
+        Triplet<int[][],int[][],boolean[][]>  solvedGrid = gridFromVars(vEdges, hEdges, isInside);
         if (solver.solve())
             return propagatedGrid;
         else
             return solvedGrid;
+    }
+
+    private void postInsideConstraints(final Model model, final BoolVar[][] isInside, final BoolVar[][] vEdges, final BoolVar[][] hEdges) {
+        for (int i = 0; i < numbers.length; i++) {
+            isInside[i][0].eq(vEdges[0][i]).post();
+            isInside[i][isInside[i].length-1].eq(vEdges[vEdges.length-1][i]).post();
+        }
+        for (int j = 0; j < numbers[0].length; j++) {
+            Log.d("Mat", "truc " + isInside[0][j] + " " + hEdges[0][j]);
+            isInside[0][j].eq(hEdges[0][j]).post();
+            isInside[isInside.length-1][j].eq(hEdges[hEdges.length-1][j]).post();
+        }
+        for (int i = 0; i < numbers.length-1; i++) {
+            for (int j = 0; j < numbers[0].length-1; j++) {
+                model.table(new IntVar[]{isInside[i][j], vEdges[j+1][i], isInside[i][j+1]}, xor3).post();
+                model.table(new IntVar[]{isInside[i][j], hEdges[i+1][j], isInside[i+1][j]}, xor3).post();
+            }
+        }
     }
 
     private int nodeOfPair(final int i, final int j) {
@@ -71,7 +98,7 @@ public class SlitherlinkSolver {
     }
 
     private BoolVar[][] getVerticalEdges(final Model model, final UndirectedGraphVar graph) {
-        BoolVar[][] vEdges = model.boolVarMatrix(numbers[0].length+1, numbers.length);
+        BoolVar[][] vEdges = model.boolVarMatrix("vEdges", numbers[0].length+1, numbers.length);
         for (int i = 0; i < numbers.length; i++) {
             for (int j = 0; j < numbers[0].length+1; j++) {
                 model.edgeChanneling(graph, vEdges[j][i], nodeOfPair(i,j), nodeOfPair(i+1,j)).post();
@@ -81,7 +108,7 @@ public class SlitherlinkSolver {
     }
 
     private BoolVar[][] getHorizontalEdges(final Model model, final UndirectedGraphVar graph) {
-        BoolVar[][] hEdges = model.boolVarMatrix(numbers.length+1, numbers[0].length);
+        BoolVar[][] hEdges = model.boolVarMatrix("hEdges", numbers.length+1, numbers[0].length);
         for (int i = 0; i < numbers.length+1; i++) {
             for (int j = 0; j < numbers[0].length; j++) {
                 model.edgeChanneling(graph, hEdges[i][j], nodeOfPair(i,j), nodeOfPair(i,j+1)).post();
@@ -100,7 +127,7 @@ public class SlitherlinkSolver {
         }
     }
 
-    private void postAdjacentThrees(final Model model, final BoolVar[][] vEdges, final BoolVar[][] hEdges) {
+    private void postAdjacentThrees(final BoolVar[][] vEdges, final BoolVar[][] hEdges) {
         for (int i = 0; i < numbers.length-1; i++) {
             for (int j = 0; j < numbers[i].length-1; j++) {
                 if (numbers[i][j] == 3 && numbers[i][j+1] == 3) {
@@ -147,7 +174,7 @@ public class SlitherlinkSolver {
         }
     }
 
-    private Triplet<int[][],int[][],int[][]> gridFromVars(final IntVar[][] vEdges, final IntVar[][] hEdges) {
+    private Triplet<int[][],int[][],boolean[][]> gridFromVars(final IntVar[][] vEdges, final IntVar[][] hEdges, final BoolVar[][] isInside) {
         int[][] vInt = new int[vEdges.length][vEdges[0].length];
         for (int i = 0; i < vEdges.length; i++) {
             for (int j = 0; j < vEdges[0].length; j++) {
@@ -170,7 +197,14 @@ public class SlitherlinkSolver {
                     hInt[i][j] = 1;
             }
         }
-        return new Triplet<int[][],int[][],int[][]>(numbers, vInt, hInt);
+        boolean[][] inside = new boolean[numbers.length][numbers[0].length];
+        for (int i = 0; i < inside.length; i++) {
+            for (int j = 0; j < inside[0].length; j++) {
+                if (isInside[i][j].isInstantiatedTo(1))
+                    inside[i][j] = true;
+            }
+        }
+        return new Triplet<int[][],int[][],boolean[][]>(vInt, hInt, inside);
     }
 
     // Tuples definition
@@ -296,4 +330,9 @@ public class SlitherlinkSolver {
             new int[]{4,6,3,2},
             new int[]{2,6,3,5},
             new int[]{4,6,3,5}},true);
+    private final static Tuples xor3 = new Tuples(new int[][]{
+            new int[]{0,0,0},
+            new int[]{0,1,1},
+            new int[]{1,0,1},
+            new int[]{1,1,0}},true);
 }

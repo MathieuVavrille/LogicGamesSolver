@@ -1,12 +1,10 @@
 package com.mvavrill.logicGamesSolver.view.games.slitherlink;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,9 +14,10 @@ import androidx.annotation.Nullable;
 import com.mvavrill.logicGamesSolver.controller.games.slitherlink.SlitherlinkActivity;
 import com.mvavrill.logicGamesSolver.view.games.UpdatableView;
 
+import org.javatuples.Quartet;
 import org.javatuples.Triplet;
 
-public class SlitherlinkView extends View implements GestureDetector.OnGestureListener, UpdatableView<Triplet<int[][],int[][],int[][]>> {
+public class SlitherlinkView extends View implements GestureDetector.OnGestureListener, UpdatableView<Quartet<int[][],int[][],int[][],boolean[][]>> {
 
     private SlitherlinkActivity slitherlinkActivity;
 
@@ -30,6 +29,7 @@ public class SlitherlinkView extends View implements GestureDetector.OnGestureLi
     private int[][] numbers; // -1 for don't know, 0-3 for value
     private int[][] verticalEdges; // -1 for no edge, 1 for edge, 0 for don't know
     private int[][] horizontalEdges;
+    private boolean[][] isInside;
 
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private GestureDetector gestureDetector;
@@ -62,11 +62,23 @@ public class SlitherlinkView extends View implements GestureDetector.OnGestureLi
             return;
         cellWidth = gridWidth / numbers.length;
         paint.setColor(Color.WHITE);
-        canvas.drawRect(0, 0, gridWidth + gridOffset*2, numbers.length * cellWidth + 2*gridOffset, paint);
+        drawBackground(canvas);
         drawNumbers(canvas);
         drawGridLines(canvas);
         drawVerticalEdges(canvas);
         drawHorizontalEdges(canvas);
+    }
+
+    private void drawBackground(final Canvas canvas) {
+        for (int i = 0; i < isInside.length; i++) {
+            for (int j = 0; j < isInside[i].length; j++) {
+                if (isInside[i][j])
+                    paint.setColor(0xD0D0D0D0);
+                else
+                    paint.setColor(Color.WHITE);
+                canvas.drawRect(gridOffset + j*cellWidth, gridOffset + i*cellWidth, gridOffset + (j+1)*cellWidth, gridOffset + (i+1)*cellWidth, paint);
+            }
+        }
     }
 
     private void drawNumbers(final Canvas canvas) {
@@ -91,7 +103,7 @@ public class SlitherlinkView extends View implements GestureDetector.OnGestureLi
     }
 
     private void drawVerticalEdges(final Canvas canvas) {
-        paint.setColor(Color.GRAY);
+        paint.setColor(Color.DKGRAY);
         paint.setStrokeWidth(cellWidth/20f);
         for (int i = 0; i < verticalEdges.length; i++) {
             for (int j = 0; j < verticalEdges[i].length; j++) {
@@ -108,7 +120,7 @@ public class SlitherlinkView extends View implements GestureDetector.OnGestureLi
         }
     }
     private void drawHorizontalEdges(final Canvas canvas) {
-        paint.setColor(Color.GRAY);
+        paint.setColor(Color.DKGRAY);
         paint.setStrokeWidth(cellWidth/20f);
         for (int i = 0; i < horizontalEdges.length; i++) {
             for (int j = 0; j < horizontalEdges[i].length; j++) {
@@ -171,10 +183,11 @@ public class SlitherlinkView extends View implements GestureDetector.OnGestureLi
     }
 
     @Override
-    public void update(final Triplet<int[][],int[][],int[][]> newData) {
+    public void update(final Quartet<int[][],int[][],int[][],boolean[][]> newData) {
         this.numbers = newData.getValue0();
         this.verticalEdges = newData.getValue1();
         this.horizontalEdges = newData.getValue2();
+        this.isInside = newData.getValue3();
         invalidate();
     }
 }
