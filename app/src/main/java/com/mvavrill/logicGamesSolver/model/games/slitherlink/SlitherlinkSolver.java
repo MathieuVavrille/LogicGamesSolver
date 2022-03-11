@@ -1,6 +1,5 @@
 package com.mvavrill.logicGamesSolver.model.games.slitherlink;
 
-import android.util.Log;
 
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
@@ -41,12 +40,6 @@ public class SlitherlinkSolver {
         } catch (Exception e) {
             return null;
         }
-        for (int i = 0; i < isInside.length; i++) {
-            Log.d("Mat", Arrays.toString(isInside[i]));
-        }
-        for (int i = 0; i < hEdges.length; i++) {
-            Log.d("Mat", Arrays.toString(hEdges[i]));
-        }
         Triplet<int[][],int[][],boolean[][]>  propagatedGrid = gridFromVars(vEdges, hEdges, isInside);
         if (!solver.solve())
             return null;
@@ -63,7 +56,6 @@ public class SlitherlinkSolver {
             isInside[i][isInside[i].length-1].eq(vEdges[vEdges.length-1][i]).post();
         }
         for (int j = 0; j < numbers[0].length; j++) {
-            Log.d("Mat", "truc " + isInside[0][j] + " " + hEdges[0][j]);
             isInside[0][j].eq(hEdges[0][j]).post();
             isInside[isInside.length-1][j].eq(hEdges[hEdges.length-1][j]).post();
         }
@@ -88,7 +80,6 @@ public class SlitherlinkSolver {
         }
         for (int i = 0; i < numbers.length+1; i++) {
             for (int j = 0; j < numbers[0].length+1; j++) {
-                Log.d("Mat", ""+i+" "+j+" "+nodeOfPair(i,j));
                 if (i+1 < numbers.length+1)
                     gub.addEdge(nodeOfPair(i,j), nodeOfPair(i+1,j));
                 if (j+1 < numbers[0].length+1)
@@ -132,7 +123,6 @@ public class SlitherlinkSolver {
         for (int i = 0; i < numbers.length-1; i++) {
             for (int j = 0; j < numbers[i].length-1; j++) {
                 if (numbers[i][j] == 3 && numbers[i][j+1] == 3) {
-                    Log.d("Mat",""+i+" " + j);
                     vEdges[j][i].eq(1).post();
                     vEdges[j+1][i].eq(1).post();
                     if (i > 0)

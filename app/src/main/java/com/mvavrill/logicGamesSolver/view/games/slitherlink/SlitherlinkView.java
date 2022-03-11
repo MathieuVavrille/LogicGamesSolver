@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,10 +22,12 @@ public class SlitherlinkView extends View implements GestureDetector.OnGestureLi
 
     private SlitherlinkActivity slitherlinkActivity;
 
-    private float gridWidth;
-    private float gridSeparatorSize;
-    private float cellWidth;
+    private float maxWidth;
+    private float maxHeight;
+    private float cellSize;
     private float gridOffset;
+    private static final float factorDotRadius = 0.1f;
+    private static final float factorLineSize = 0.05f;
 
     private int[][] numbers; // -1 for don't know, 0-3 for value
     private int[][] verticalEdges; // -1 for no edge, 1 for edge, 0 for don't know
@@ -51,22 +54,29 @@ public class SlitherlinkView extends View implements GestureDetector.OnGestureLi
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        gridWidth = w*0.94f; // TODO improve the grid offset, using the size of the dots
-        gridSeparatorSize = gridWidth / 180f;
-        gridOffset = w*0.03f;
+        maxWidth = w;
+        maxHeight = h;
+        Log.d("Mat",maxHeight+"");
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
+        initializeSizes();
         if (numbers == null)
             return;
-        cellWidth = gridWidth / numbers.length;
         paint.setColor(Color.WHITE);
         drawBackground(canvas);
         drawNumbers(canvas);
-        drawGridLines(canvas);
+        drawGridDots(canvas);
         drawVerticalEdges(canvas);
         drawHorizontalEdges(canvas);
+    }
+
+    private void initializeSizes() {
+        float cellWidth = maxWidth / (2*factorDotRadius+numbers[0].length);
+        float cellHeight = maxHeight / (2*factorDotRadius+numbers.length);
+        cellSize = Math.min(cellWidth,cellHeight);
+        gridOffset = cellSize*factorDotRadius;
     }
 
     private void drawBackground(final Canvas canvas) {
@@ -76,7 +86,7 @@ public class SlitherlinkView extends View implements GestureDetector.OnGestureLi
                     paint.setColor(0xD0D0D0D0);
                 else
                     paint.setColor(Color.WHITE);
-                canvas.drawRect(gridOffset + j*cellWidth, gridOffset + i*cellWidth, gridOffset + (j+1)*cellWidth, gridOffset + (i+1)*cellWidth, paint);
+                canvas.drawRect(gridOffset + j*cellSize, gridOffset + i*cellSize, gridOffset + (j+1)*cellSize, gridOffset + (i+1)*cellSize, paint);
             }
         }
     }
@@ -84,54 +94,54 @@ public class SlitherlinkView extends View implements GestureDetector.OnGestureLi
     private void drawNumbers(final Canvas canvas) {
         paint.setColor(Color.BLACK);
         paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(cellWidth*0.75f);
+        paint.setTextSize(cellSize*0.75f);
         for (int i = 0; i < numbers.length; i++) {
             for (int j = 0; j < numbers[i].length; j++) {
                 if (numbers[i][j] != -1)
-                    canvas.drawText("" + numbers[i][j], (2*j+1) * cellWidth / 2 + gridOffset, i * cellWidth + cellWidth*0.75f + gridOffset, paint);
+                    canvas.drawText("" + numbers[i][j], (2*j+1) * cellSize / 2 + gridOffset, i * cellSize + cellSize*0.75f + gridOffset, paint);
             }
         }
     }
 
-    private void drawGridLines(final Canvas canvas) {
+    private void drawGridDots(final Canvas canvas) {
         paint.setColor(Color.BLACK);
         for (int i = 0; i <= numbers.length; i++) {
             for (int j = 0; j <= numbers[0].length; j++) {
-                canvas.drawCircle(j*cellWidth + gridOffset, i*cellWidth + gridOffset, cellWidth/10, paint);
+                canvas.drawCircle(j*cellSize + gridOffset, i*cellSize + gridOffset, cellSize*factorDotRadius, paint);
             }
         }
     }
 
     private void drawVerticalEdges(final Canvas canvas) {
         paint.setColor(Color.DKGRAY);
-        paint.setStrokeWidth(cellWidth/20f);
+        paint.setStrokeWidth(cellSize*factorLineSize);
         for (int i = 0; i < verticalEdges.length; i++) {
             for (int j = 0; j < verticalEdges[i].length; j++) {
                 if (verticalEdges[i][j] == 1) {
-                    canvas.drawLine(i * cellWidth + gridOffset, j * cellWidth + gridOffset, i * cellWidth + gridOffset, (j + 1) * cellWidth + gridOffset, paint);
+                    canvas.drawLine(i * cellSize + gridOffset, j * cellSize + gridOffset, i * cellSize + gridOffset, (j + 1) * cellSize + gridOffset, paint);
                 }
                 else if (verticalEdges[i][j] == -1) {
-                    float x = i*cellWidth+gridOffset;
-                    float y = (j+0.5f)*cellWidth+gridOffset;
-                    canvas.drawLine(x-cellWidth/10, y-cellWidth/10, x+cellWidth/10, y+cellWidth/10, paint);
-                    canvas.drawLine(x+cellWidth/10, y-cellWidth/10, x-cellWidth/10, y+cellWidth/10, paint);
+                    float x = i*cellSize+gridOffset;
+                    float y = (j+0.5f)*cellSize+gridOffset;
+                    canvas.drawLine(x-cellSize/10, y-cellSize/10, x+cellSize/10, y+cellSize/10, paint);
+                    canvas.drawLine(x+cellSize/10, y-cellSize/10, x-cellSize/10, y+cellSize/10, paint);
                 }
             }
         }
     }
     private void drawHorizontalEdges(final Canvas canvas) {
         paint.setColor(Color.DKGRAY);
-        paint.setStrokeWidth(cellWidth/20f);
+        paint.setStrokeWidth(cellSize/20f);
         for (int i = 0; i < horizontalEdges.length; i++) {
             for (int j = 0; j < horizontalEdges[i].length; j++) {
                 if (horizontalEdges[i][j] == 1) {
-                    canvas.drawLine(j * cellWidth + gridOffset, i * cellWidth + gridOffset, (j+1) * cellWidth + gridOffset, i * cellWidth + gridOffset, paint);
+                    canvas.drawLine(j * cellSize + gridOffset, i * cellSize + gridOffset, (j+1) * cellSize + gridOffset, i * cellSize + gridOffset, paint);
                 }
                 else if (horizontalEdges[i][j] == -1) {
-                    float x = (j+0.5f)*cellWidth+gridOffset;
-                    float y = i*cellWidth+gridOffset;
-                    canvas.drawLine(x-cellWidth/10, y-cellWidth/10, x+cellWidth/10, y+cellWidth/10, paint);
-                    canvas.drawLine(x+cellWidth/10, y-cellWidth/10, x-cellWidth/10, y+cellWidth/10, paint);
+                    float x = (j+0.5f)*cellSize+gridOffset;
+                    float y = i*cellSize+gridOffset;
+                    canvas.drawLine(x-cellSize/10, y-cellSize/10, x+cellSize/10, y+cellSize/10, paint);
+                    canvas.drawLine(x+cellSize/10, y-cellSize/10, x-cellSize/10, y+cellSize/10, paint);
                 }
             }
         }
@@ -155,9 +165,9 @@ public class SlitherlinkView extends View implements GestureDetector.OnGestureLi
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        if (e.getY() < gridWidth) {
-            int j = (int) ((e.getX()-gridOffset) / cellWidth);
-            int i = (int) ((e.getY()-gridOffset) / cellWidth);
+        if (gridOffset <= e.getY() && e.getY() < maxHeight && gridOffset < e.getX() && e.getX() < maxWidth) {
+            int j = (int) ((e.getX()-gridOffset) / cellSize);
+            int i = (int) ((e.getY()-gridOffset) / cellSize);
             slitherlinkActivity.isClicked(i, j);
         }
         return true;
