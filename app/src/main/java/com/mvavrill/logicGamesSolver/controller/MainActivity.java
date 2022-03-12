@@ -38,10 +38,10 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
             Intent gridActivityIntent = new Intent(MainActivity.this, SlitherlinkActivity.class);
             startActivity(gridActivityIntent);
         });
-        Button test = findViewById(R.id.main_button_test);
+        /*Button test = findViewById(R.id.main_button_test);
         test.setOnClickListener(view -> {
             new PopupNumberFragment(null,this).show(getSupportFragmentManager(), "");
-        });
+        });*/
     }
 
     @Override
