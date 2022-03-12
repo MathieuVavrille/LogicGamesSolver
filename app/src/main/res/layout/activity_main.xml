@@ -12,12 +12,17 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:padding="8dp"
         android:textStyle="bold"
         android:textSize="50sp"
         android:text="Logic Games Solver" />
 
+    <Button
+        android:id="@+id/main_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -89,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_alignParentStart="true"
-                    android:layout_marginEnd="30dp"
+                    android:layout_marginStart="30dp"
                     android:textSize="30sp"
                     android:text="Slitherlink" />
             </RelativeLayout>
