@@ -1,13 +1,16 @@
 package com.mvavrill.logicGamesSolver.controller;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Button;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.games.slitherlink.SlitherlinkActivity;
 import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
@@ -23,6 +26,16 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        MaterialToolbar topAppBar = (MaterialToolbar) findViewById(R.id.main_topAppBar);
+        setSupportActionBar(topAppBar);
+        topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return false;
+            }
+        });
+
         Button sudoku = findViewById(R.id.main_button_sudoku);
         sudoku.setOnClickListener(view -> {
             Intent gridActivityIntent = new Intent(MainActivity.this, SudokuActivity.class);
@@ -46,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
 
     @Override
     public void callbackWithInteger(Bundle callbackBundle, int v) {
-        Log.d("Mat", ""+v);
+        Log.d("Mat", "" + v);
     }
 
     /*@Override

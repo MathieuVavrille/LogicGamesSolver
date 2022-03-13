@@ -19,6 +19,8 @@
         <entry key="app/src/main/res/layout/popup_digit2.xml" value="0.1" />
         <entry key="app/src/main/res/layout/popup_edittext.xml" value="0.3375" />
         <entry key="app/src/main/res/layout/popup_numbers.xml" value="0.1546417759838547" />
+        <entry key="app/src/main/res/menu/navigation.xml" value="0.25729166666666664" />
+        <entry key="app/src/main/res/menu/top_app_bar.xml" value="0.3375" />
       </map>
     </option>
   </component>
