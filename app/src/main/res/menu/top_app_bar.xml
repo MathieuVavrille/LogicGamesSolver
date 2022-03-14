@@ -9,4 +9,17 @@
         android:contentDescription="truc"
         app:showAsAction="ifRoom" />
 
+
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/ic_favorite_black"
+        android:title="favorite2"
+        android:contentDescription="test2"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/more"
+        android:title="more"
+        android:contentDescription="more_stuff"
+        app:showAsAction="never" />
 </menu>

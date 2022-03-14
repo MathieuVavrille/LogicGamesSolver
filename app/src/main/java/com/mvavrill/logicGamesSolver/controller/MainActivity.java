@@ -7,7 +7,9 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 
 import com.google.android.material.appbar.MaterialToolbar;
@@ -19,22 +21,31 @@ import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuActivity;
 import com.mvavrill.logicGamesSolver.controller.popups.PopupNumberFragment;
 
 public class MainActivity extends AppCompatActivity implements CallbackWithInteger {
-    private static final String[] CAMERA_PERMISSION = new String[]{Manifest.permission.CAMERA};
-    private static final int CAMERA_REQUEST_CODE = 10;
-
+    /*private static final String[] CAMERA_PERMISSION = new String[]{Manifest.permission.CAMERA};
+    private static final int CAMERA_REQUEST_CODE = 10;*/
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        getMenuInflater().inflate(R.menu.top_app_bar, menu);
+        return true;//super.onCreateOptionsMenu(menu);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MaterialToolbar topAppBar = (MaterialToolbar) findViewById(R.id.main_topAppBar);
+        Toolbar topAppBar = (Toolbar) findViewById(R.id.main_topAppBar);
         setSupportActionBar(topAppBar);
-        topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+        /*topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 return false;
             }
         });
+        topAppBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            }
+        });*/
 
         Button sudoku = findViewById(R.id.main_button_sudoku);
         sudoku.setOnClickListener(view -> {
