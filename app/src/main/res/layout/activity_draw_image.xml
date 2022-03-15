@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:padding="20dp"
     android:id="@+id/grid_constraint_layout"
-    tools:context=".controller.DrawImageActivity">
+    tools:context=".controller.oldTest.DrawImageActivity">
 
     <view
         class="com.mvavrill.logicGamesSolver.view.DrawDoubleImage"

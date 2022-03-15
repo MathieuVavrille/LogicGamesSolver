@@ -1,40 +1,30 @@
 package com.mvavrill.logicGamesSolver.controller;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
-import com.google.android.material.appbar.MaterialToolbar;
 import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.games.slitherlink.SlitherlinkActivity;
 import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
 import com.mvavrill.logicGamesSolver.controller.games.kakuro.KakuroActivity;
 import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuActivity;
-import com.mvavrill.logicGamesSolver.controller.popups.PopupNumberFragment;
 
 public class MainActivity extends AppCompatActivity implements CallbackWithInteger {
     /*private static final String[] CAMERA_PERMISSION = new String[]{Manifest.permission.CAMERA};
     private static final int CAMERA_REQUEST_CODE = 10;*/
-    @Override
+
+    /*@Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         getMenuInflater().inflate(R.menu.top_app_bar, menu);
         return true;//super.onCreateOptionsMenu(menu);
-    }
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        Toolbar topAppBar = (Toolbar) findViewById(R.id.main_topAppBar);
-        setSupportActionBar(topAppBar);
+    }*/
+    //Toolbar topAppBar = (Toolbar) findViewById(R.id.main_topAppBar);
+    //setSupportActionBar(topAppBar);
         /*topAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -46,26 +36,34 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
             public void onClick(View view) {
             }
         });*/
-
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
         Button sudoku = findViewById(R.id.main_button_sudoku);
         sudoku.setOnClickListener(view -> {
-            Intent gridActivityIntent = new Intent(MainActivity.this, SudokuActivity.class);
+            Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, SudokuActivity.class);
             startActivity(gridActivityIntent);
         });
         Button kakuro = findViewById(R.id.main_button_kakuro);
         kakuro.setOnClickListener(view -> {
-            Intent gridActivityIntent = new Intent(MainActivity.this, KakuroActivity.class);
+            Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, KakuroActivity.class);
             startActivity(gridActivityIntent);
         });
         Button slitherlink = findViewById(R.id.main_button_slitherlink);
         slitherlink.setOnClickListener(view -> {
-            Intent gridActivityIntent = new Intent(MainActivity.this, SlitherlinkActivity.class);
+            Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, SlitherlinkActivity.class);
             startActivity(gridActivityIntent);
         });
         /*Button test = findViewById(R.id.main_button_test);
         test.setOnClickListener(view -> {
             new PopupNumberFragment(null,this).show(getSupportFragmentManager(), "");
         });*/
+        ImageButton sudokuCamera = findViewById(R.id.main_button_sudoku_camera);
+        sudokuCamera.setOnClickListener(view -> {
+            Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, CameraTestActivity.class);
+            startActivity(gridActivityIntent);
+        });
     }
 
     @Override

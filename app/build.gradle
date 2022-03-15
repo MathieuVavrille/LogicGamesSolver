@@ -38,6 +38,10 @@ android {
             mavenCentral()
         }
     }
+    buildFeatures {
+        viewBinding true
+    }
+
 }
 
 dependencies {

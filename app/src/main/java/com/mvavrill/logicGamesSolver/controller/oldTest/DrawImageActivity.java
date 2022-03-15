@@ -1,4 +1,4 @@
-package com.mvavrill.logicGamesSolver.controller;
+package com.mvavrill.logicGamesSolver.controller.oldTest;
 
 import androidx.appcompat.app.AppCompatActivity;
 
