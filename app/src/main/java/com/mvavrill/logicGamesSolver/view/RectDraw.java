@@ -18,6 +18,8 @@ public class RectDraw extends View {
     private float gridSeparatorSize;
     private float cellWidth;
 
+    private boolean[][] grid;
+
     public RectDraw(Context context) {
         super(context);
         // create the Paint and set its color
@@ -37,8 +39,8 @@ public class RectDraw extends View {
     }
     @Override
     protected void onDraw(Canvas canvas) {
-        paint.setColor(Color.GRAY);
-        paint.setStrokeWidth( gridSeparatorSize );
+        paint.setColor(Color.BLACK);
+        /*paint.setStrokeWidth( gridSeparatorSize );
         float left = gridWidth*0.1f;
         float top = gridWidth*0.1f;
         float right = gridWidth*0.9f;
@@ -48,7 +50,21 @@ public class RectDraw extends View {
         for( int i=0; i<=3; i++ ) {
             canvas.drawLine( i*cellWidth+fullWidth*0.1f, fullWidth*0.1f, i*cellWidth+fullWidth*0.1f, gridWidth+fullWidth*0.1f, paint);
             canvas.drawLine( fullWidth*0.1f,i*cellWidth+fullWidth*0.1f, gridWidth+fullWidth*0.1f, i*cellWidth+fullWidth*0.1f, paint);
+        }*/
+        if (grid != null) {
+            paint.setStrokeWidth(2);
+            for (int i = 0; i < grid.length; i++) {
+                for (int j = 0; j < grid[i].length; j++) {
+                    if (grid[i][j])
+                        canvas.drawPoint(((float) j)/((float) grid[i].length)*fullWidth,((float) i)/((float) grid.length)*fullWidth,paint);
+                }
+            }
         }
+    }
+
+    public void drawBooleanGrid(final boolean[][] grid) {
+        this.grid = grid;
+        invalidate();
     }
 
 }

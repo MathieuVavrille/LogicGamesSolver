@@ -32,6 +32,7 @@ import android.widget.Button;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.model.image.ImageProcessing;
+import com.mvavrill.logicGamesSolver.view.RectDraw;
 
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
@@ -42,6 +43,7 @@ public class CameraActivity extends AppCompatActivity {
     private PreviewView previewView;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private Button takePicture;
+    private RectDraw rectDraw;
     private Bitmap lastImage;
     private int rotation;
 
@@ -51,6 +53,7 @@ public class CameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
         previewView = findViewById(R.id.camera_activity_previewView);
+        rectDraw = findViewById(R.id.camera_activity_rect_draw);
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         cameraProviderFuture.addListener(new Runnable() {
             @Override
@@ -68,14 +71,12 @@ public class CameraActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.Q)
             @Override
             public void onClick(View view) {
-                Log.d("Mat","clicked");
                 boolean[][] grid = processImage();
-                Log.d("Mat", "afterProcess");
-                Intent gridActivityIntent = new Intent(CameraActivity.this, DrawImageActivity.class);
+                rectDraw.drawBooleanGrid(grid);
+                //Intent gridActivityIntent = new Intent(CameraActivity.this, DrawImageActivity.class);
                 //gridActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                gridActivityIntent.putExtra("grid", grid);
-                Log.d("Mat", "beforeStartActivity");
-                startActivity(gridActivityIntent);
+                //gridActivityIntent.putExtra("grid", grid);
+                //startActivity(gridActivityIntent);
             }
         });
     }
@@ -146,7 +147,7 @@ public class CameraActivity extends AppCompatActivity {
                 break;
         }
         Log.d("Mat", "image processed");
-        boolean[][] grid = new ImageProcessing(processedImage).gaussianFilter(5,1.5).edgeFilter().binarizeBool(0.9);
+        boolean[][] grid = new ImageProcessing(processedImage).gaussianFilter(5,1).edgeFilter().binarizeBool(0.9);
         //SudokuGrid grid = ImageProcessing.weightedGridFromScratch(processedImage, getApplicationContext());
         Log.d("Mat", "grid done");
         return grid;

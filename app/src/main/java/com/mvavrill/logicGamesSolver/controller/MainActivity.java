@@ -1,8 +1,12 @@
 package com.mvavrill.logicGamesSolver.controller;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -16,21 +20,14 @@ import com.mvavrill.logicGamesSolver.controller.games.kakuro.KakuroActivity;
 import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuActivity;
 
 public class MainActivity extends AppCompatActivity implements CallbackWithInteger {
-    static{
-
-        /*if(OpenCVLoader.initDebug()){
-
+    /*static{
+        if(OpenCVLoader.initDebug())
             Log.d("Check","OpenCv configured successfully");
-
-        } else{
-
+        else
             Log.d("Check","OpenCv doesn't configured successfully");
-
-        }*/
-
-    }
-    /*private static final String[] CAMERA_PERMISSION = new String[]{Manifest.permission.CAMERA};
-    private static final int CAMERA_REQUEST_CODE = 10;*/
+    }*/
+    private static final String[] CAMERA_PERMISSION = new String[]{Manifest.permission.CAMERA};
+    private static final int CAMERA_REQUEST_CODE = 10;
 
     /*@Override
     public boolean onCreateOptionsMenu(final Menu menu) {
@@ -75,8 +72,12 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
         });*/
         ImageButton sudokuCamera = findViewById(R.id.main_button_sudoku_camera);
         sudokuCamera.setOnClickListener(view -> {
-            Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, CameraActivity.class);
-            startActivity(gridActivityIntent);
+            if (hasCameraPermission()) {
+                Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, CameraActivity.class);
+                startActivity(gridActivityIntent);
+            } else {
+                requestPermission();
+            }
         });
     }
 
@@ -85,16 +86,7 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
         Log.d("Mat", "" + v);
     }
 
-    /*@Override
-            public void onClick(View v) {
-                if (hasCameraPermission()) {
-                    enableCamera();
-                } else {
-                    requestPermission();
-                }
-            }*/
-
-    /*private boolean hasCameraPermission() {
+    private boolean hasCameraPermission() {
         return ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.CAMERA
@@ -112,5 +104,5 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
     private void enableCamera() {
         Intent intent = new Intent(this, CameraActivity.class);
         startActivity(intent);
-    }*/
+    }
 }
