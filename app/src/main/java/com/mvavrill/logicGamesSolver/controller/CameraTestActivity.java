@@ -75,9 +75,6 @@ public class CameraTestActivity extends AppCompatActivity {
 
         mPreviewView = findViewById(R.id.viewFinder);
         mTakePictureButton = findViewById(R.id.takePictureButton);
-        mZoomSlider = findViewById(R.id.zoomSliderSeekBar);
-        mSwitchCameraButton = findViewById(R.id.switchCameraButton);
-        mZoomTextView = findViewById(R.id.zoomTextView);
 
         if (allPermissionsGranted()) {
             startCamera(); //start camera if permission has been granted by user

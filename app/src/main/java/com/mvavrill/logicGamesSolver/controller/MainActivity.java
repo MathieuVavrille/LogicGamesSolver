@@ -10,11 +10,25 @@ import android.widget.ImageButton;
 
 import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.games.slitherlink.SlitherlinkActivity;
+import com.mvavrill.logicGamesSolver.controller.oldTest.CameraActivity;
 import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
 import com.mvavrill.logicGamesSolver.controller.games.kakuro.KakuroActivity;
 import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuActivity;
 
 public class MainActivity extends AppCompatActivity implements CallbackWithInteger {
+    static{
+
+        /*if(OpenCVLoader.initDebug()){
+
+            Log.d("Check","OpenCv configured successfully");
+
+        } else{
+
+            Log.d("Check","OpenCv doesn't configured successfully");
+
+        }*/
+
+    }
     /*private static final String[] CAMERA_PERMISSION = new String[]{Manifest.permission.CAMERA};
     private static final int CAMERA_REQUEST_CODE = 10;*/
 
@@ -61,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
         });*/
         ImageButton sudokuCamera = findViewById(R.id.main_button_sudoku_camera);
         sudokuCamera.setOnClickListener(view -> {
-            Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, CameraTestActivity.class);
+            Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, CameraActivity.class);
             startActivity(gridActivityIntent);
         });
     }
