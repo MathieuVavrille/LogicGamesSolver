@@ -16,7 +16,12 @@ import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
 import com.mvavrill.logicGamesSolver.view.games.DrawCell;
 import com.mvavrill.logicGamesSolver.view.games.UpdatableView;
 
-public class SudokuView extends View implements GestureDetector.OnGestureListener, UpdatableView<DigitCell[][]> {
+import org.javatuples.Triplet;
+
+/**
+ * Draws the Digit cells. The first boolean tells if it is satisfiable or not. The second tells if we should draw hints.
+ */
+public class SudokuView extends View implements GestureDetector.OnGestureListener, UpdatableView<Triplet<DigitCell[][],Boolean,Boolean>> {
 
     private SudokuActivity sudokuActivity;
 
@@ -25,6 +30,8 @@ public class SudokuView extends View implements GestureDetector.OnGestureListene
     private float cellWidth;
 
     private DigitCell[][] grid = new DigitCell[9][9];
+    private boolean satisfiable = true;
+    private boolean drawHints = false;
 
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private GestureDetector gestureDetector;
@@ -56,7 +63,7 @@ public class SudokuView extends View implements GestureDetector.OnGestureListene
         paint.setTextAlign(Paint.Align.CENTER);
         for (int y = 0; y < 9; y++) {
             for (int x = 0; x < 9; x++) {
-                DrawCell.draw(canvas, grid[y][x], x * cellWidth, y * cellWidth, cellWidth);
+                DrawCell.draw(canvas, grid[y][x], x * cellWidth, y * cellWidth, cellWidth, satisfiable, drawHints);
             }
         }
         drawGridLines(canvas);
@@ -128,8 +135,10 @@ public class SudokuView extends View implements GestureDetector.OnGestureListene
         this.sudokuActivity = sudokuInputActivity;
     }
 
-    public void update(DigitCell[][] grid) {
-        this.grid = grid;
+    public void update(Triplet<DigitCell[][],Boolean,Boolean> grid) {
+        this.grid = grid.getValue0();
+        this.satisfiable = grid.getValue1();
+        this.drawHints = grid.getValue2();
         invalidate();
     }
 }

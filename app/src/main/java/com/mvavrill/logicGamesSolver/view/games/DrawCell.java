@@ -3,6 +3,7 @@ package com.mvavrill.logicGamesSolver.view.games;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 
 import com.mvavrill.logicGamesSolver.model.cells.*;
 
@@ -25,28 +26,35 @@ public class DrawCell {
     }
 
     public static void draw(final Canvas canvas, final DigitCell cell, final float x, final float y, final float cellWidth) {
+        draw(canvas, cell, x, y, cellWidth, true, true);
+    }
+
+    public static void draw(final Canvas canvas, final DigitCell cell, final float x, final float y, final float cellWidth, final boolean satisfiable, final boolean drawHints) {
         if (cell == null)
             return;
         if (cell.getHints() != null) {
             drawWhiteBackground(canvas, x, y, cellWidth);
-            boolean[] hints = cell.getHints();
-            paint.setColor(0xFFC0C0C0);
-            paint.setTextSize(cellWidth / 4f);
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    if (hints[3 * i + j+1]) {
-                        canvas.drawText("" + (3 * i + j + 1), x + (2 * j + 1) * cellWidth / 6f, y + (2 * i + 1) * cellWidth / 6f+cellWidth/12, paint);
+            if (drawHints) {
+                boolean[] hints = cell.getHints();
+                paint.setColor(0xFFC0C0C0);
+                paint.setTextSize(cellWidth / 4f);
+                for (int i = 0; i < 3; i++) {
+                    for (int j = 0; j < 3; j++) {
+                        if (hints[3 * i + j + 1]) {
+                            canvas.drawText("" + (3 * i + j + 1), x + (2 * j + 1) * cellWidth / 6f, y + (2 * i + 1) * cellWidth / 6f + cellWidth / 12, paint);
+                        }
                     }
                 }
             }
         } else {
             if (cell.isFixed())
-                drawBackground(canvas,x,y,cellWidth,0xFFF0F0F0);
+                drawBackground(canvas,x,y,cellWidth,satisfiable? 0xFFF0F0F0 : 0xFFFFE0E0);
             else
                 drawWhiteBackground(canvas,x,y,cellWidth);
             paint.setColor(Color.BLACK);
             paint.setTextSize(cellWidth * 0.7f);
-            canvas.drawText("" + cell.getValue(), x + cellWidth / 2f - cellWidth/30f, y + cellWidth * 0.75f, paint);
+            if (cell.isFixed() || drawHints)
+                canvas.drawText("" + cell.getValue(), x + cellWidth / 2f - cellWidth/30f, y + cellWidth * 0.75f, paint);
         }
     }
 

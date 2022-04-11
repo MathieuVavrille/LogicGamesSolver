@@ -62,7 +62,7 @@ public class DigitCell implements Cell {
     @Override
     public String toString() {
         if (hints == null)
-            return ""+value;
+            return ""+value+(isFixed?"F":"-");
         return Arrays.toString(hints);
     }
 }

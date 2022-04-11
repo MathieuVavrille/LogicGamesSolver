@@ -10,9 +10,9 @@ import org.chocosolver.util.tools.ArrayUtils;
 
 public class SudokuSolver {
 
-    private final DigitCell[][] grid;
+    private final int[][] grid;
 
-    public SudokuSolver(final DigitCell[][] grid) {
+    public SudokuSolver(final int[][] grid) {
         this.grid = grid;
     }
 
@@ -21,7 +21,9 @@ public class SudokuSolver {
         IntVar[][] vars = model.intVarMatrix(9, 9 , 1, 9);
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                restrictVarFromCell(grid[i][j], vars[i][j]);
+                if (grid[i][j] != 0) {
+                    vars[i][j].eq(grid[i][j]).post();
+                }
             }
         }
         for (int line = 0; line < 9; line++)
@@ -50,18 +52,12 @@ public class SudokuSolver {
             return solvedGrid;
     }
 
-    private void restrictVarFromCell(final DigitCell cell, final IntVar var) {
-        if (cell.getHints() == null) {
-            var.eq(cell.getValue()).post();
-        }
-    }
-
     private DigitCell[][] gridFromVars(final IntVar[][] vars) {
         DigitCell[][] res = new DigitCell[9][9];
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 if (vars[i][j].isInstantiated())
-                    res[i][j] = new DigitCell(false, vars[i][j].getValue());
+                    res[i][j] = new DigitCell(grid[i][j] != 0, vars[i][j].getValue());
                 else {
                     boolean[] hints = new boolean[10];
                     DisposableValueIterator iterator = vars[i][j].getValueIterator(true);

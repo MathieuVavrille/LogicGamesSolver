@@ -21,7 +21,7 @@
         app:layout_constraintRight_toRightOf="parent"/>
 
     <android.widget.Switch
-        android:id="@+id/switch1"
+        android:id="@+id/sudoku_hint_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Auto Solve"
