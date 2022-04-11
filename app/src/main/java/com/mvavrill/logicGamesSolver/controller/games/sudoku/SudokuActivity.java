@@ -23,11 +23,17 @@ public class SudokuActivity extends AppCompatActivity implements CallbackWithInt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sudoku);
+        int[][] bundledGrid = (int[][]) getIntent().getSerializableExtra("grid");
+        if (bundledGrid == null)
+            bundledGrid = new int[9][9];
         // Initial grid
         DigitCell[][] initialGrid = new DigitCell[9][9];
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                initialGrid[i][j] = new DigitCell();
+                if (bundledGrid[i][j] == 0)
+                    initialGrid[i][j] = new DigitCell();
+                else
+                    initialGrid[i][j] = new DigitCell(true, bundledGrid[i][j]);
             }
         }
         // History
@@ -65,13 +71,14 @@ public class SudokuActivity extends AppCompatActivity implements CallbackWithInt
         return newGrid;
     }
 
+
+
     @Override
     public void callbackWithInteger(Bundle callbackBundle, int v) {
         int i = (int) callbackBundle.get("i");
         int j = (int) callbackBundle.get("j");
         DigitCell[][] currentGrid = gridCopy(gridHistory.getCurrent());
         currentGrid[i][j] = new DigitCell(true, v);
-        Log.d("Mat", v + "");
         DigitCell[][] newSudokuGrid = new SudokuSolver(currentGrid).extractInformation();
         if (newSudokuGrid != null) {
             for (int li = 0; li < 9; li++) {

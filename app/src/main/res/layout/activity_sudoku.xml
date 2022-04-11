@@ -20,6 +20,19 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>
 
+    <android.widget.Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Auto Solve"
+        android:textOff="OFF"
+        android:textOn="ON"
+        app:layout_constraintBottom_toTopOf="@id/sudoku_input_button_back"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textSize="20sp"
+        android:layout_marginBottom="10dp"/>
+
     <Button
         android:id="@+id/sudoku_input_button_undo"
         android:layout_width="wrap_content"

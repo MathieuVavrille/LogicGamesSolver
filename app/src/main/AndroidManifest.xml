@@ -4,6 +4,7 @@
     package="com.mvavrill.logicGamesSolver">
 
     <uses-feature android:name="android.hardware.camera.any" />
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -19,19 +20,13 @@
         android:theme="@style/Theme.LogicGamesSolver"
         tools:targetApi="31">
         <activity
+            android:name=".controller.SudokuCameraActivity"
+            android:exported="false" />
+        <activity
             android:name=".controller.games.slitherlink.SlitherlinkActivity"
             android:exported="false" />
         <activity
             android:name=".controller.games.kakuro.KakuroActivity"
-            android:exported="false" />
-        <activity
-            android:name=".controller.oldTest.DrawImageActivity"
-            android:exported="false" />
-        <activity
-            android:name=".controller.oldTest.CameraActivity"
-            android:exported="false" />
-        <activity
-            android:name=".controller.CameraTestActivity"
             android:exported="false" />
         <activity
             android:name=".controller.games.sudoku.SudokuActivity"

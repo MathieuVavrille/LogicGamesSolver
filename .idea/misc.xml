@@ -12,7 +12,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.5" />
         <entry key="app/src/main/res/layout/activity_main_old.xml" value="0.14479166666666668" />
         <entry key="app/src/main/res/layout/activity_slitherlink.xml" value="0.33" />
-        <entry key="app/src/main/res/layout/activity_sudoku.xml" value="0.2391304347826087" />
+        <entry key="app/src/main/res/layout/activity_sudoku.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_sudoku_input.xml" value="0.33" />
         <entry key="app/src/main/res/layout/popup_4digits.xml" value="0.25" />
         <entry key="app/src/main/res/layout/popup_9digits.xml" value="0.27355072463768115" />

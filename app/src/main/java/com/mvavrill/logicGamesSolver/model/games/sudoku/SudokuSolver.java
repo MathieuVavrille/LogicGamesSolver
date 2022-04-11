@@ -1,7 +1,5 @@
 package com.mvavrill.logicGamesSolver.model.games.sudoku;
 
-import android.util.Log;
-
 import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
 
 import org.chocosolver.solver.Model;
@@ -19,7 +17,7 @@ public class SudokuSolver {
     }
 
     public DigitCell[][] extractInformation() {
-        Model model = new Model("sudoku");
+        Model model = new Model("Sudoku");
         IntVar[][] vars = model.intVarMatrix(9, 9 , 1, 9);
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
@@ -54,7 +52,6 @@ public class SudokuSolver {
 
     private void restrictVarFromCell(final DigitCell cell, final IntVar var) {
         if (cell.getHints() == null) {
-            Log.d("Mat","restrict");
             var.eq(cell.getValue()).post();
         }
     }
