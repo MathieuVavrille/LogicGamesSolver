@@ -23,6 +23,7 @@ public class SudokuActivity extends AppCompatActivity implements CallbackWithInt
     //TODO OnUndo
     private GridHistory<Triplet<DigitCell[][],Boolean,Integer>> gridHistory;
     private Switch hintSwitch;
+    private boolean doNotToggle = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,10 @@ public class SudokuActivity extends AppCompatActivity implements CallbackWithInt
         sudokuView.setGridActivity(this);
         gridHistory = new GridHistory<>(undoButton, redoButton, solve(initialGrid), sudokuView, this);
         hintSwitch.setOnCheckedChangeListener((button, isChecked) -> {
-            gridHistory.addElement(new Triplet<>(gridHistory.getCurrent().getValue0(), isChecked, gridHistory.getCurrent().getValue2()));
+            if (doNotToggle)
+                doNotToggle = false;
+            else
+                gridHistory.addElement(new Triplet<>(gridHistory.getCurrent().getValue0(), isChecked, gridHistory.getCurrent().getValue2()));
         });
         // Exit
         Button exitButton = findViewById(R.id.sudoku_input_button_back);
@@ -134,7 +138,9 @@ public class SudokuActivity extends AppCompatActivity implements CallbackWithInt
 
     @Override
     public void onUndoOrRedo(boolean isUndo) {
-        if (hintSwitch.isChecked() != gridHistory.getCurrent().getValue1())
-            hintSwitch.toggle(); //TODO calls onToggle, and adds a new element in history, NOT WANTED
+        if (hintSwitch.isChecked() != gridHistory.getCurrent().getValue1()) {
+            doNotToggle = true;
+            hintSwitch.toggle();
+        }
     }
 }
