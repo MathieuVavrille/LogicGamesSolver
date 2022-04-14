@@ -1,5 +1,6 @@
 package com.mvavrill.logicGamesSolver.controller;
 
+import android.util.Log;
 import android.widget.Button;
 
 import com.mvavrill.logicGamesSolver.view.games.UpdatableView;
@@ -12,14 +13,16 @@ public class GridHistory<T> {
     private final Button undo;
     private final Button redo;
     private final UpdatableView<T> updatableView;
+    private final UndoRedoWatcher watcher;
 
     private final List<T> history = new ArrayList<T>();
     private int currentElement = 0;
 
-    public GridHistory(final Button undo, final Button redo, final T initialElement, final UpdatableView<T> updatableView) {
+    public GridHistory(final Button undo, final Button redo, final T initialElement, final UpdatableView<T> updatableView, final UndoRedoWatcher watcher) {
         this.undo = undo;
         this.redo = redo;
         this.updatableView = updatableView;
+        this.watcher = watcher;
         history.add(initialElement);
         undo.setEnabled(false);
         redo.setEnabled(false);
@@ -28,10 +31,14 @@ public class GridHistory<T> {
             if (currentElement == 0)
                 throw new IllegalStateException("cannot undo");
             currentElement--;
-            redo.setEnabled(true);
+            Log.d("Mat","redo " + redo.isEnabled());
             if (currentElement == 0)
                 undo.setEnabled(false);
             updatableView.update(history.get(currentElement));
+            Log.d("Mat","redo2 " + redo.isEnabled());
+            watcher.onUndoOrRedo(true);
+            Log.d("Mat","redo3 " + redo.isEnabled());
+            redo.setEnabled(true);
         });
         redo.setOnClickListener(view -> {
             if (currentElement == history.size()-1)
@@ -41,6 +48,7 @@ public class GridHistory<T> {
             if (currentElement == history.size()-1)
                 redo.setEnabled(false);
             updateView();
+            watcher.onUndoOrRedo(false);
         });
         updateView();
     }

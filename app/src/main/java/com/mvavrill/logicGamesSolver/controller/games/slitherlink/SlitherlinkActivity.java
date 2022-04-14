@@ -9,6 +9,7 @@ import android.widget.Button;
 
 import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.GridHistory;
+import com.mvavrill.logicGamesSolver.controller.UndoRedoWatcher;
 import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
 import com.mvavrill.logicGamesSolver.controller.popups.PopupDigitFragment;
 import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
@@ -20,9 +21,11 @@ import com.mvavrill.logicGamesSolver.view.games.sudoku.SudokuView;
 import org.javatuples.Quartet;
 import org.javatuples.Triplet;
 
-public class SlitherlinkActivity extends AppCompatActivity implements CallbackWithInteger {
+public class SlitherlinkActivity extends AppCompatActivity implements CallbackWithInteger, UndoRedoWatcher {
 
     private GridHistory<Quartet<int[][],int[][],int[][],boolean[][]>> gridHistory;
+    private Button minusLine;
+    private Button minusCol;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +44,10 @@ public class SlitherlinkActivity extends AppCompatActivity implements CallbackWi
         Button redoButton = findViewById(R.id.slitherlink_button_redo);
         SlitherlinkView slitherlinkView = findViewById(R.id.slitherlink_grid_view);
         slitherlinkView.setGridActivity(this);
-        gridHistory = new GridHistory<>(undoButton, redoButton, new Quartet<>(initialNumbers, new int[initialSize+1][initialSize], new int[initialSize+1][initialSize], new boolean[initialSize][initialSize]), slitherlinkView);
+        gridHistory = new GridHistory<>(undoButton, redoButton, new Quartet<>(initialNumbers, new int[initialSize+1][initialSize], new int[initialSize+1][initialSize], new boolean[initialSize][initialSize]), slitherlinkView, this);
         // Change size
         Button plusLine = findViewById(R.id.slitherlink_button_addLine);
-        Button minusLine = findViewById(R.id.slitherlink_button_remLine);
+        minusLine = findViewById(R.id.slitherlink_button_remLine);
         plusLine.setOnClickListener(view -> {
             int[][] newNumbers = numbersCopy(gridHistory.getCurrent().getValue0(), 1, 0);
             minusLine.setEnabled(true);
@@ -62,7 +65,7 @@ public class SlitherlinkActivity extends AppCompatActivity implements CallbackWi
             }
         });
         Button plusCol = findViewById(R.id.slitherlink_button_addCol);
-        Button minusCol = findViewById(R.id.slitherlink_button_remCol);
+        minusCol = findViewById(R.id.slitherlink_button_remCol);
         plusCol.setOnClickListener(view -> {
             int[][] newNumbers = numbersCopy(gridHistory.getCurrent().getValue0(), 0, 1);
             minusCol.setEnabled(true);
@@ -118,5 +121,12 @@ public class SlitherlinkActivity extends AppCompatActivity implements CallbackWi
         if (newSlitherlinkGrid != null) {
             gridHistory.addElement(new Quartet<>(numbers, newSlitherlinkGrid.getValue0(), newSlitherlinkGrid.getValue1(), newSlitherlinkGrid.getValue2()));
         }
+    }
+
+    @Override
+    public void onUndoOrRedo(boolean isUndo) {
+        int[][] grid = gridHistory.getCurrent().getValue0();
+        minusLine.setEnabled(grid.length > 2);
+        minusCol.setEnabled(grid[0].length > 2);
     }
 }

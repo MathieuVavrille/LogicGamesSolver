@@ -26,10 +26,10 @@ public class DrawCell {
     }
 
     public static void draw(final Canvas canvas, final DigitCell cell, final float x, final float y, final float cellWidth) {
-        draw(canvas, cell, x, y, cellWidth, true, true);
+        draw(canvas, cell, x, y, cellWidth, true, 0);
     }
 
-    public static void draw(final Canvas canvas, final DigitCell cell, final float x, final float y, final float cellWidth, final boolean satisfiable, final boolean drawHints) {
+    public static void draw(final Canvas canvas, final DigitCell cell, final float x, final float y, final float cellWidth, final boolean drawHints, final int satisfiable) {
         if (cell == null)
             return;
         if (cell.getHints() != null) {
@@ -48,7 +48,7 @@ public class DrawCell {
             }
         } else {
             if (cell.isFixed())
-                drawBackground(canvas,x,y,cellWidth,satisfiable? 0xFFF0F0F0 : 0xFFFFE0E0);
+                drawBackground(canvas,x,y,cellWidth,new int[]{0xFFF0F0F0, 0xFFE0FFE0, 0xFFFFE0E0}[satisfiable]);
             else
                 drawWhiteBackground(canvas,x,y,cellWidth);
             paint.setColor(Color.BLACK);

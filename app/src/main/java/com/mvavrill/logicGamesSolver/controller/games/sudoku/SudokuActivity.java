@@ -9,6 +9,7 @@ import android.widget.Switch;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.mvavrill.logicGamesSolver.R;
+import com.mvavrill.logicGamesSolver.controller.UndoRedoWatcher;
 import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
 import com.mvavrill.logicGamesSolver.controller.GridHistory;
 import com.mvavrill.logicGamesSolver.controller.popups.PopupDigitFragment;
@@ -18,9 +19,9 @@ import com.mvavrill.logicGamesSolver.view.games.sudoku.SudokuView;
 
 import org.javatuples.Triplet;
 
-public class SudokuActivity extends AppCompatActivity implements CallbackWithInteger {
+public class SudokuActivity extends AppCompatActivity implements CallbackWithInteger, UndoRedoWatcher {
     //TODO OnUndo
-    private GridHistory<Triplet<DigitCell[][],Boolean,Boolean>> gridHistory;
+    private GridHistory<Triplet<DigitCell[][],Boolean,Integer>> gridHistory;
     private Switch hintSwitch;
 
     @Override
@@ -30,42 +31,15 @@ public class SudokuActivity extends AppCompatActivity implements CallbackWithInt
         int[][] initialGrid = (int[][]) getIntent().getSerializableExtra("grid");
         if (initialGrid == null)
             initialGrid = new int[9][9];
-        /*initialGrid[0][0] = 1;
-        initialGrid[0][2] = 2;
-        initialGrid[0][4] = 4;
-        initialGrid[1][1] = 4;
-        initialGrid[1][3] = 5;
-        initialGrid[2][0] = 5;
-        initialGrid[2][3] = 8;
-        initialGrid[2][5] = 1;
-        initialGrid[2][6] = 6;
-        initialGrid[2][8] = 3;
-        initialGrid[3][1] = 2;
-        initialGrid[4][4] = 5;
-        initialGrid[4][6] = 9;
-        initialGrid[4][8] = 6;
-        initialGrid[5][0] = 4;
-        initialGrid[5][2] = 5;
-        initialGrid[5][3] = 7;
-        initialGrid[5][6] = 8;
-        initialGrid[6][2] = 4;
-        initialGrid[6][5] = 3;
-        initialGrid[7][1] = 3;
-        initialGrid[7][3] = 9;
-        initialGrid[7][4] = 8;
-        initialGrid[7][7] = 6;
-        initialGrid[8][0] = 8;
-        initialGrid[8][2] = 6;
-        initialGrid[8][5] = 5;*/
         // History
         Button undoButton = findViewById(R.id.sudoku_input_button_undo);
         Button redoButton = findViewById(R.id.sudoku_input_button_redo);
         SudokuView sudokuView = findViewById(R.id.sudoku_input_grid_view);
         hintSwitch = findViewById(R.id.sudoku_hint_switch);
         sudokuView.setGridActivity(this);
-        gridHistory = new GridHistory<>(undoButton, redoButton, solve(initialGrid), sudokuView);
+        gridHistory = new GridHistory<>(undoButton, redoButton, solve(initialGrid), sudokuView, this);
         hintSwitch.setOnCheckedChangeListener((button, isChecked) -> {
-            gridHistory.addElement(new Triplet<>(gridHistory.getCurrent().getValue0(), gridHistory.getCurrent().getValue1(), isChecked));
+            gridHistory.addElement(new Triplet<>(gridHistory.getCurrent().getValue0(), isChecked, gridHistory.getCurrent().getValue2()));
         });
         // Exit
         Button exitButton = findViewById(R.id.sudoku_input_button_back);
@@ -80,8 +54,10 @@ public class SudokuActivity extends AppCompatActivity implements CallbackWithInt
             newFixed(i, j, 0);
             return;
         }
-        if (!gridHistory.getCurrent().getValue1())
+        if (gridHistory.getCurrent().getValue2() == 2) {
+            Log.d("Mat","here");
             return;
+        }
         boolean[] hints = gridHistory.getCurrent().getValue0()[i][j].allowedValues();
         int possibleVal = 0;
         boolean moreThanTwo = false;
@@ -116,10 +92,18 @@ public class SudokuActivity extends AppCompatActivity implements CallbackWithInt
         gridHistory.addElement(solve(grid));
     }
 
-    private Triplet<DigitCell[][],Boolean,Boolean> solve(final int[][] grid) {
+    private Triplet<DigitCell[][],Boolean,Integer> solve(final int[][] grid) {
         DigitCell[][] newSudokuGrid = new SudokuSolver(grid).extractInformation();
         if (newSudokuGrid != null) {
-            return new Triplet<>(newSudokuGrid, true, hintSwitch.isChecked());
+            boolean isFilled = true;
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    if (newSudokuGrid[i][j].getHints() != null) {
+                        isFilled = false;
+                    }
+                }
+            }
+            return new Triplet<>(newSudokuGrid, hintSwitch.isChecked(), isFilled? 1 : 0);
         }
         else {
             newSudokuGrid = new DigitCell[9][9];
@@ -131,7 +115,7 @@ public class SudokuActivity extends AppCompatActivity implements CallbackWithInt
                         newSudokuGrid[i][j] = new DigitCell(true, grid[i][j]);
                 }
             }
-            return new Triplet<>(newSudokuGrid, false, hintSwitch.isChecked());
+            return new Triplet<>(newSudokuGrid, hintSwitch.isChecked(), 2);
         }
     }
 
@@ -146,5 +130,11 @@ public class SudokuActivity extends AppCompatActivity implements CallbackWithInt
         int i = (int) callbackBundle.get("i");
         int j = (int) callbackBundle.get("j");
         newFixed(i,j,v);
+    }
+
+    @Override
+    public void onUndoOrRedo(boolean isUndo) {
+        if (hintSwitch.isChecked() != gridHistory.getCurrent().getValue1())
+            hintSwitch.toggle(); //TODO calls onToggle, and adds a new element in history, NOT WANTED
     }
 }

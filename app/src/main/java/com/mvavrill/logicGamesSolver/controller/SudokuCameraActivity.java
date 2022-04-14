@@ -1,6 +1,5 @@
 package com.mvavrill.logicGamesSolver.controller;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,16 +13,10 @@ import org.opencv.android.OpenCVLoader;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvException;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfFloat;
-import org.opencv.core.MatOfInt;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.Point;
-import org.opencv.core.Range;
-import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
@@ -35,9 +28,6 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.WindowManager;
 
 import com.google.android.gms.tasks.Task;
 import com.google.mlkit.vision.common.InputImage;
@@ -46,10 +36,15 @@ import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
 import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuActivity;
+import com.mvavrill.logicGamesSolver.model.ProbabilisticDigit;
 
 public class SudokuCameraActivity extends CameraActivity implements CvCameraViewListener2 {
     private final TextRecognizer textRecognizer = TextRecognition.getClient();
     private static final String TAG = "OpenCV";
+
+    private final ProbabilisticDigit[][] probabilisticGrid = new ProbabilisticDigit[9][9];
+    private int nbGridsTested = 0;
+    private static final int nbDetectionToGood = 10;
 
     private CameraBridgeViewBase mOpenCvCameraView;
 
@@ -67,57 +62,28 @@ public class SudokuCameraActivity extends CameraActivity implements CvCameraView
 
     private boolean isComputing = false;
 
-    public SudokuCameraActivity() {}
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        setContentView(R.layout.activity_sudoku_camera);
-        mOpenCvCameraView = findViewById(R.id.sudoku_camera_surface_view);
-        mOpenCvCameraView.setVisibility(CameraBridgeViewBase.VISIBLE);
-        mOpenCvCameraView.setCvCameraViewListener(this);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (mOpenCvCameraView != null)
-            mOpenCvCameraView.disableView();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (!OpenCVLoader.initDebug()) {
-            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
-            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
-        } else {
-            Log.d(TAG, "OpenCV library found inside package. Using it!");
-            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+    public SudokuCameraActivity() {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                probabilisticGrid[i][j] = new ProbabilisticDigit();
+            }
         }
     }
 
-    @Override
-    protected List<? extends CameraBridgeViewBase> getCameraViewList() {
-        return Collections.singletonList(mOpenCvCameraView);
-    }
-
-    public void onDestroy() {
-        super.onDestroy();
-        if (mOpenCvCameraView != null)
-            mOpenCvCameraView.disableView();
-    }
-
-    public void onCameraViewStarted(int width, int height) {}
-
-    public void onCameraViewStopped() {}
-
-    public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
-        return withContour(inputFrame);
-    }
-
     private Mat withContour(final CvCameraViewFrame inputFrame) {
+        if (nbGridsTested == nbDetectionToGood) {
+            int[][] grid = new int[9][9];
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                    int v = probabilisticGrid[i][j].extractDigit(nbDetectionToGood);
+                    if (v != -1)
+                        grid[i][j] = v;
+                }
+            }
+            Intent drawImageIntent = new Intent(com.mvavrill.logicGamesSolver.controller.SudokuCameraActivity.this, SudokuActivity.class);
+            drawImageIntent.putExtra("grid",grid);
+            startActivity(drawImageIntent);
+        }
         Mat gray = inputFrame.gray();
         MatOfPoint contour = getGridContour(gray);
         if (!isComputing && contour != null) {
@@ -172,18 +138,15 @@ public class SudokuCameraActivity extends CameraActivity implements CvCameraView
         isComputing = true;
         Task<Text> task = textRecognizer.process(InputImage.fromBitmap(image,0));
         task.addOnSuccessListener(text -> {
-            int[][] grid = new int[9][9];
-            processText(text, grid);
-            printGrid(grid);
-            Intent drawImageIntent = new Intent(com.mvavrill.logicGamesSolver.controller.SudokuCameraActivity.this, SudokuActivity.class);
-            drawImageIntent.putExtra("grid",grid);
-            startActivity(drawImageIntent);
+            //int[][] grid = new int[9][9];
+            processText(text);
             isComputing = false;
         })
                 .addOnFailureListener(exception -> {isComputing = false;});
     }
 
-    private void processText(final Text text, final int[][] grid) {
+    private void processText(final Text text) {
+        int[][] grid = new int[9][9];
         List<Text.TextBlock> blocks = text.getTextBlocks();
         for (Text.TextBlock block : blocks) {
             for (Text.Line line : block.getLines()) {
@@ -196,6 +159,15 @@ public class SudokuCameraActivity extends CameraActivity implements CvCameraView
                 }
             }
         }
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (grid[i][j] != 0) {
+                    probabilisticGrid[i][j].addDigit(grid[i][j]);
+                }
+            }
+        }
+        nbGridsTested++;
+        Log.d("Mat",""+nbGridsTested);
     }
 
     private Pair<Integer,Integer> positionFromCorners(final android.graphics.Point[] corners) {
@@ -297,4 +269,54 @@ public class SudokuCameraActivity extends CameraActivity implements CvCameraView
     private double norm(final Point v) {
         return Math.sqrt(v.x*v.x + v.y*v.y);
     }
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        setContentView(R.layout.activity_sudoku_camera);
+        mOpenCvCameraView = findViewById(R.id.sudoku_camera_surface_view);
+        mOpenCvCameraView.setVisibility(CameraBridgeViewBase.VISIBLE);
+        mOpenCvCameraView.setCvCameraViewListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mOpenCvCameraView != null)
+            mOpenCvCameraView.disableView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!OpenCVLoader.initDebug()) {
+            Log.d(TAG, "Internal OpenCV library not found. Using OpenCV Manager for initialization");
+            OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_0_0, this, mLoaderCallback);
+        } else {
+            Log.d(TAG, "OpenCV library found inside package. Using it!");
+            mLoaderCallback.onManagerConnected(LoaderCallbackInterface.SUCCESS);
+        }
+    }
+
+    @Override
+    protected List<? extends CameraBridgeViewBase> getCameraViewList() {
+        return Collections.singletonList(mOpenCvCameraView);
+    }
+
+    public void onDestroy() {
+        super.onDestroy();
+        if (mOpenCvCameraView != null)
+            mOpenCvCameraView.disableView();
+    }
+
+    public void onCameraViewStarted(int width, int height) {}
+
+    public void onCameraViewStopped() {}
+
+    public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
+        return withContour(inputFrame);
+    }
+
 }

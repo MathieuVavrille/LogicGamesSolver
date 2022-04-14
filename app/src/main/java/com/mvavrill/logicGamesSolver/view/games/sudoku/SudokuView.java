@@ -19,9 +19,9 @@ import com.mvavrill.logicGamesSolver.view.games.UpdatableView;
 import org.javatuples.Triplet;
 
 /**
- * Draws the Digit cells. The first boolean tells if it is satisfiable or not. The second tells if we should draw hints.
+ * Draws the Digit cells. The boolean tells if it should draw hint or not. The integer is 1 if it is solved, 2 if failed, and 0 otherwise
  */
-public class SudokuView extends View implements GestureDetector.OnGestureListener, UpdatableView<Triplet<DigitCell[][],Boolean,Boolean>> {
+public class SudokuView extends View implements GestureDetector.OnGestureListener, UpdatableView<Triplet<DigitCell[][],Boolean,Integer>> {
 
     private SudokuActivity sudokuActivity;
 
@@ -30,8 +30,8 @@ public class SudokuView extends View implements GestureDetector.OnGestureListene
     private float cellWidth;
 
     private DigitCell[][] grid = new DigitCell[9][9];
-    private boolean satisfiable = true;
     private boolean drawHints = false;
+    private int satisfiable = 0;
 
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private GestureDetector gestureDetector;
@@ -63,7 +63,7 @@ public class SudokuView extends View implements GestureDetector.OnGestureListene
         paint.setTextAlign(Paint.Align.CENTER);
         for (int y = 0; y < 9; y++) {
             for (int x = 0; x < 9; x++) {
-                DrawCell.draw(canvas, grid[y][x], x * cellWidth, y * cellWidth, cellWidth, satisfiable, drawHints);
+                DrawCell.draw(canvas, grid[y][x], x * cellWidth, y * cellWidth, cellWidth, drawHints, satisfiable);
             }
         }
         drawGridLines(canvas);
@@ -135,10 +135,10 @@ public class SudokuView extends View implements GestureDetector.OnGestureListene
         this.sudokuActivity = sudokuInputActivity;
     }
 
-    public void update(Triplet<DigitCell[][],Boolean,Boolean> grid) {
+    public void update(Triplet<DigitCell[][],Boolean,Integer> grid) {
         this.grid = grid.getValue0();
-        this.satisfiable = grid.getValue1();
-        this.drawHints = grid.getValue2();
+        this.drawHints = grid.getValue1();
+        this.satisfiable = grid.getValue2();
         invalidate();
     }
 }

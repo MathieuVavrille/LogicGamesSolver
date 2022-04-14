@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Button;
 
 import com.mvavrill.logicGamesSolver.R;
+import com.mvavrill.logicGamesSolver.controller.UndoRedoWatcher;
 import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
 import com.mvavrill.logicGamesSolver.controller.GridHistory;
 import com.mvavrill.logicGamesSolver.controller.popups.PopupNumberFragment;
@@ -18,13 +19,15 @@ import com.mvavrill.logicGamesSolver.model.cells.EmptyCell;
 import com.mvavrill.logicGamesSolver.model.games.kakuro.KakuroSolver;
 import com.mvavrill.logicGamesSolver.view.games.kakuro.KakuroView;
 
-public class KakuroActivity extends AppCompatActivity implements CallbackWithInteger {
+public class KakuroActivity extends AppCompatActivity implements CallbackWithInteger, UndoRedoWatcher {
 
     private KakuroView kakuroView;
     private ConstraintLayout gridConstraintLayout;
 
     private GridHistory<Cell[][]> gridHistory;
     private Button outlineButton;
+    private Button decreaseButton;
+    private Button increaseButton;
     private boolean isOutline = true;
 
 
@@ -33,7 +36,7 @@ public class KakuroActivity extends AppCompatActivity implements CallbackWithInt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kakuro);
         gridConstraintLayout = findViewById(R.id.kakuro_constraint_layout);
-        Button decreaseButton = findViewById(R.id.kakuro_button_decrease);
+        decreaseButton = findViewById(R.id.kakuro_button_decrease);
         decreaseButton.setOnClickListener(view -> {
             if (gridHistory.getCurrent().length <= 3) {
                 decreaseButton.setEnabled(false);
@@ -43,7 +46,7 @@ public class KakuroActivity extends AppCompatActivity implements CallbackWithInt
             if (gridHistory.getCurrent().length <= 3)
                 decreaseButton.setEnabled(false);
         });
-        Button increaseButton = findViewById(R.id.kakuro_button_increase);
+        increaseButton = findViewById(R.id.kakuro_button_increase);
         increaseButton.setOnClickListener(view -> {
             gridHistory.addElement(gridCopy(gridHistory.getCurrent(), 1));
             if (gridHistory.getCurrent().length > 3)
@@ -71,7 +74,7 @@ public class KakuroActivity extends AppCompatActivity implements CallbackWithInt
         Button redoButton = findViewById(R.id.kakuro_button_redo);
         kakuroView = findViewById(R.id.kakuro_grid_view);
         kakuroView.setGridActivity(this);
-        gridHistory = new GridHistory<>(undoButton, redoButton, initialGrid, kakuroView);
+        gridHistory = new GridHistory<>(undoButton, redoButton, initialGrid, kakuroView, this);
         Button exitButton = findViewById(R.id.kakuro_button_back);
         exitButton.setOnClickListener(view -> finish());
     }
@@ -176,5 +179,10 @@ public class KakuroActivity extends AppCompatActivity implements CallbackWithInt
             }
         }
         return newGrid;
+    }
+
+    @Override
+    public void onUndoOrRedo(boolean isUndo) {
+        decreaseButton.setEnabled(gridHistory.getCurrent().length > 3);
     }
 }
