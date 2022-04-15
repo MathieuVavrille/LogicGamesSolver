@@ -1,7 +1,6 @@
 package com.mvavrill.logicGamesSolver.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,9 +24,11 @@ import org.opencv.imgproc.Moments;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.tasks.Task;
 import com.google.mlkit.vision.common.InputImage;
@@ -46,7 +47,21 @@ public class SudokuCameraActivity extends CameraActivity implements CvCameraView
     private int nbGridsTested = 0;
     private static final int nbDetectionToGood = 10;
 
+    private ProgressBar progressBar;
+
     private CameraBridgeViewBase mOpenCvCameraView;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        setContentView(R.layout.activity_sudoku_camera);
+        mOpenCvCameraView = findViewById(R.id.sudoku_camera_surface_view);
+        mOpenCvCameraView.setVisibility(CameraBridgeViewBase.VISIBLE);
+        mOpenCvCameraView.setCvCameraViewListener(this);
+        progressBar = findViewById(R.id.sudoku_camera_progress_bar);
+        progressBar.setMax(nbDetectionToGood);
+    }
 
     private final BaseLoaderCallback mLoaderCallback = new BaseLoaderCallback(this) {
         @Override
@@ -83,6 +98,7 @@ public class SudokuCameraActivity extends CameraActivity implements CvCameraView
             Intent drawImageIntent = new Intent(com.mvavrill.logicGamesSolver.controller.SudokuCameraActivity.this, SudokuActivity.class);
             drawImageIntent.putExtra("grid",grid);
             startActivity(drawImageIntent);
+            finish();
         }
         Mat gray = inputFrame.gray();
         MatOfPoint contour = getGridContour(gray);
@@ -91,6 +107,7 @@ public class SudokuCameraActivity extends CameraActivity implements CvCameraView
             Log.d("Mat","got res");
             Bitmap bmp = convertToBitmap(res);
             Bitmap resizedBmp = Bitmap.createBitmap(bmp, 0, 0, 360, 360);
+            Bitmap rotatedBmp = rotateBitmap(resizedBmp, 90f);
             /*Log.d("Mat","converted");
             Intent drawImageIntent = new Intent(com.mvavrill.ctvest.ImageManipulationsActivity.this, DrawImage.class);
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -98,10 +115,18 @@ public class SudokuCameraActivity extends CameraActivity implements CvCameraView
             byte[] byteArray = stream.toByteArray();
             drawImageIntent.putExtra("image",byteArray);
             startActivity(drawImageIntent);*/
-            extractDigits(resizedBmp);
+            extractDigits(rotatedBmp);
             return gray;
         }
         return gray;
+    }
+
+    public Bitmap rotateBitmap(Bitmap original, float degrees) {
+        Matrix matrix = new Matrix();
+        matrix.preRotate(degrees);
+        Bitmap rotatedBitmap = Bitmap.createBitmap(original, 0, 0, original.getWidth(), original.getHeight(), matrix, true);
+        original.recycle();
+        return rotatedBitmap;
     }
 
     private MatOfPoint getGridContour(final Mat grayImage) {
@@ -141,6 +166,7 @@ public class SudokuCameraActivity extends CameraActivity implements CvCameraView
             //int[][] grid = new int[9][9];
             processText(text);
             isComputing = false;
+            progressBar.incrementProgressBy(1);
         })
                 .addOnFailureListener(exception -> {isComputing = false;});
     }
@@ -270,16 +296,6 @@ public class SudokuCameraActivity extends CameraActivity implements CvCameraView
         return Math.sqrt(v.x*v.x + v.y*v.y);
     }
 
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-        setContentView(R.layout.activity_sudoku_camera);
-        mOpenCvCameraView = findViewById(R.id.sudoku_camera_surface_view);
-        mOpenCvCameraView.setVisibility(CameraBridgeViewBase.VISIBLE);
-        mOpenCvCameraView.setCvCameraViewListener(this);
-    }
 
     @Override
     public void onPause() {

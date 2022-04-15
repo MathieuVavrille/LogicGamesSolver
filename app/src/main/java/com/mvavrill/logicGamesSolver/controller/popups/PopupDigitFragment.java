@@ -67,7 +67,7 @@ public class PopupDigitFragment extends DialogFragment {
             final int fi = i;
             Button button = buttonsView.findViewById(buttonsIds[fi]);
             button.setText(""+buttonsValues[fi]);
-            button.setEnabled(hints[fi+1]); // TODO maybe improve this
+            button.setEnabled(hints[fi+1]);
             button.setOnClickListener(view -> {
                 callback.callbackWithInteger(callbackData, buttonsValues[fi]);
                 dialog.dismiss();

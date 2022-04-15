@@ -65,10 +65,11 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
             Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, SlitherlinkActivity.class);
             startActivity(gridActivityIntent);
         });
-        /*Button test = findViewById(R.id.main_button_test);
+        Button test = findViewById(R.id.main_test);
         test.setOnClickListener(view -> {
-            new PopupNumberFragment(null,this).show(getSupportFragmentManager(), "");
-        });*/
+            Intent sudokuCameraIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, Progress_Test.class);
+            startActivity(sudokuCameraIntent);
+        });
         ImageButton sudokuCamera = findViewById(R.id.main_button_sudoku_camera);
         sudokuCamera.setOnClickListener(view -> {
             if (hasCameraPermission()) {

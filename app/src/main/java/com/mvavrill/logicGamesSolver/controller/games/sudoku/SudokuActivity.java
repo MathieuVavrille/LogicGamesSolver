@@ -20,7 +20,7 @@ import com.mvavrill.logicGamesSolver.view.games.sudoku.SudokuView;
 import org.javatuples.Triplet;
 
 public class SudokuActivity extends AppCompatActivity implements CallbackWithInteger, UndoRedoWatcher {
-    //TODO OnUndo
+
     private GridHistory<Triplet<DigitCell[][],Boolean,Integer>> gridHistory;
     private Switch hintSwitch;
     private boolean doNotToggle = false;
