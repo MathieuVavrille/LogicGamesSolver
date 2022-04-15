@@ -50,10 +50,7 @@ public class SudokuActivity extends AppCompatActivity implements CallbackWithInt
         exitButton.setOnClickListener(view -> finish());
     }
 
-    public void popup(int i, int j) {
-        Bundle b = new Bundle();
-        b.putSerializable("i",i);
-        b.putSerializable("j",j);
+    public void isClicked(int i, int j) {
         if (gridHistory.getCurrent().getValue0()[i][j].isFixed()) {
             newFixed(i, j, 0);
             return;
@@ -77,6 +74,9 @@ public class SudokuActivity extends AppCompatActivity implements CallbackWithInt
             newFixed(i,j,possibleVal);
             return;
         }
+        Bundle b = new Bundle();
+        b.putSerializable("i",i);
+        b.putSerializable("j",j);
         b.putSerializable("hints", hints);
         new PopupDigitFragment(b,this, 9).show(getSupportFragmentManager(), "");
     }

@@ -3,6 +3,7 @@ package com.mvavrill.logicGamesSolver.model.games.sudoku;
 import org.javatuples.Pair;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DigitProbabilities implements Serializable {
@@ -14,7 +15,9 @@ public class DigitProbabilities implements Serializable {
     }
 
     public static DigitProbabilities constant(final int v) {
-        return new DigitProbabilities(List.of(new Pair<Double,Integer>(1., v)));
+        List<Pair<Double,Integer>> l = new ArrayList<Pair<Double,Integer>>();
+        l.add(new Pair<Double,Integer>(1., v));
+        return new DigitProbabilities(l);
     }
 
     public boolean isConstant() {

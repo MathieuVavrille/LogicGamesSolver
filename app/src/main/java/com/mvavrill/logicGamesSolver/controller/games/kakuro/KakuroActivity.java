@@ -21,13 +21,9 @@ import com.mvavrill.logicGamesSolver.view.games.kakuro.KakuroView;
 
 public class KakuroActivity extends AppCompatActivity implements CallbackWithInteger, UndoRedoWatcher {
 
-    private KakuroView kakuroView;
-    private ConstraintLayout gridConstraintLayout;
-
     private GridHistory<Cell[][]> gridHistory;
     private Button outlineButton;
     private Button decreaseButton;
-    private Button increaseButton;
     private boolean isOutline = true;
 
 
@@ -35,7 +31,6 @@ public class KakuroActivity extends AppCompatActivity implements CallbackWithInt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kakuro);
-        gridConstraintLayout = findViewById(R.id.kakuro_constraint_layout);
         decreaseButton = findViewById(R.id.kakuro_button_decrease);
         decreaseButton.setOnClickListener(view -> {
             if (gridHistory.getCurrent().length <= 3) {
@@ -46,7 +41,7 @@ public class KakuroActivity extends AppCompatActivity implements CallbackWithInt
             if (gridHistory.getCurrent().length <= 3)
                 decreaseButton.setEnabled(false);
         });
-        increaseButton = findViewById(R.id.kakuro_button_increase);
+        Button increaseButton = findViewById(R.id.kakuro_button_increase);
         increaseButton.setOnClickListener(view -> {
             gridHistory.addElement(gridCopy(gridHistory.getCurrent(), 1));
             if (gridHistory.getCurrent().length > 3)
@@ -72,7 +67,7 @@ public class KakuroActivity extends AppCompatActivity implements CallbackWithInt
         }
         Button undoButton = findViewById(R.id.kakuro_button_undo);
         Button redoButton = findViewById(R.id.kakuro_button_redo);
-        kakuroView = findViewById(R.id.kakuro_grid_view);
+        KakuroView kakuroView = findViewById(R.id.kakuro_grid_view);
         kakuroView.setGridActivity(this);
         gridHistory = new GridHistory<>(undoButton, redoButton, initialGrid, kakuroView, this);
         Button exitButton = findViewById(R.id.kakuro_button_back);

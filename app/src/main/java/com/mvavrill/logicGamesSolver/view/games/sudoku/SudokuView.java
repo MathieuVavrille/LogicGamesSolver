@@ -106,7 +106,7 @@ public class SudokuView extends View implements GestureDetector.OnGestureListene
         if (e.getY() < gridWidth) {
             int cellX = (int) (e.getX() / cellWidth);
             int cellY = (int) (e.getY() / cellWidth);
-            sudokuActivity.popup(cellY, cellX);
+            sudokuActivity.isClicked(cellY, cellX);
         }
         return true;
     }

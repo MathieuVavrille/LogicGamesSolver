@@ -133,12 +133,33 @@
                     android:src="@drawable/background_preview_bridges_tochange" />
 
                 <Button
-                    android:id="@+id/main_button_slitherlink4"
+                    android:id="@+id/main_button_bridges"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="30dp"
+                    android:text="Bridges"
+                    android:textSize="30sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="130dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/background_preview_battleships_tochange" />
+
+                <Button
+                    android:id="@+id/main_button_battleships"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="30dp"
                     android:text="Coming Soon"
                     android:textSize="30sp" />
             </RelativeLayout>

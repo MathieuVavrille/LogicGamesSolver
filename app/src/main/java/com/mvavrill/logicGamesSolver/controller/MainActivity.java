@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.mvavrill.logicGamesSolver.R;
+import com.mvavrill.logicGamesSolver.controller.games.bridges.BridgesActivity;
 import com.mvavrill.logicGamesSolver.controller.games.slitherlink.SlitherlinkActivity;
 import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
 import com.mvavrill.logicGamesSolver.controller.games.kakuro.KakuroActivity;
@@ -55,6 +56,15 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
             Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, SudokuActivity.class);
             startActivity(gridActivityIntent);
         });
+        ImageButton sudokuCamera = findViewById(R.id.main_button_sudoku_camera);
+        sudokuCamera.setOnClickListener(view -> {
+            if (hasCameraPermission()) {
+                Intent sudokuCameraIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, SudokuCameraActivity.class);
+                startActivity(sudokuCameraIntent);
+            } else {
+                requestPermission();
+            }
+        });
         Button kakuro = findViewById(R.id.main_button_kakuro);
         kakuro.setOnClickListener(view -> {
             Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, KakuroActivity.class);
@@ -65,20 +75,16 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
             Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, SlitherlinkActivity.class);
             startActivity(gridActivityIntent);
         });
+        Button bridges = findViewById(R.id.main_button_bridges);
+        bridges.setOnClickListener(view -> {
+            Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, BridgesActivity.class);
+            startActivity(gridActivityIntent);
+        });
         Button test = findViewById(R.id.main_test);
-        test.setOnClickListener(view -> {
+        /*test.setOnClickListener(view -> {
             Intent sudokuCameraIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, Progress_Test.class);
             startActivity(sudokuCameraIntent);
-        });
-        ImageButton sudokuCamera = findViewById(R.id.main_button_sudoku_camera);
-        sudokuCamera.setOnClickListener(view -> {
-            if (hasCameraPermission()) {
-                Intent sudokuCameraIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, SudokuCameraActivity.class);
-                startActivity(sudokuCameraIntent);
-            } else {
-                requestPermission();
-            }
-        });
+        });*/
     }
 
     @Override
