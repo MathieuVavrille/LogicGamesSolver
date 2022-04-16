@@ -13,13 +13,17 @@ import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
 import com.mvavrill.logicGamesSolver.controller.popups.PopupDigitFragment;
 import com.mvavrill.logicGamesSolver.model.cells.Cell;
 import com.mvavrill.logicGamesSolver.model.cells.EmptyCell;
+import com.mvavrill.logicGamesSolver.model.games.bridges.BridgesSolver;
 import com.mvavrill.logicGamesSolver.view.games.bridges.BridgesView;
+
+import org.javatuples.Pair;
+import org.javatuples.Triplet;
 
 import java.util.Arrays;
 
 public class BridgesActivity extends AppCompatActivity implements CallbackWithInteger, UndoRedoWatcher {
 
-    private GridHistory<int[][]> gridHistory;
+    private GridHistory<Triplet<int[][],int[][],int[][]>> gridHistory;
     private Button decreaseButton;
 
     private static final int minimumSize = 4;
@@ -30,18 +34,20 @@ public class BridgesActivity extends AppCompatActivity implements CallbackWithIn
         setContentView(R.layout.activity_bridges);
         decreaseButton = findViewById(R.id.bridges_button_decrease);
         decreaseButton.setOnClickListener(view -> {
-            if (gridHistory.getCurrent().length <= minimumSize) {
+            if (gridHistory.getCurrent().getValue0().length <= minimumSize) {
                 decreaseButton.setEnabled(false);
                 return;
             }
-            gridHistory.addElement(gridCopy(gridHistory.getCurrent(), -1));
-            if (gridHistory.getCurrent().length <= minimumSize)
+            Triplet<int[][],int[][],int[][]> current = gridHistory.getCurrent();
+            gridHistory.addElement(new Triplet<int[][],int[][],int[][]>(gridCopy(current.getValue0(), -1),current.getValue1(), current.getValue2()));
+            if (gridHistory.getCurrent().getValue0().length <= minimumSize)
                 decreaseButton.setEnabled(false);
         });
         Button increaseButton = findViewById(R.id.bridges_button_increase);
         increaseButton.setOnClickListener(view -> {
-            gridHistory.addElement(gridCopy(gridHistory.getCurrent(), 1));
-            if (gridHistory.getCurrent().length > 3)
+            Triplet<int[][],int[][],int[][]> current = gridHistory.getCurrent();
+            gridHistory.addElement(new Triplet<int[][],int[][],int[][]>(gridCopy(current.getValue0(), 1),current.getValue1(), current.getValue2()));
+            if (gridHistory.getCurrent().getValue0().length > 3)
                 decreaseButton.setEnabled(true);
         });
         int[][] initialGrid = new int[7][7];
@@ -49,33 +55,33 @@ public class BridgesActivity extends AppCompatActivity implements CallbackWithIn
         Button redoButton = findViewById(R.id.bridges_button_redo);
         BridgesView bridgesView = findViewById(R.id.bridges_grid_view);
         bridgesView.setGridActivity(this);
-        gridHistory = new GridHistory<>(undoButton, redoButton, initialGrid, bridgesView, this);
+        gridHistory = new GridHistory<>(undoButton, redoButton, new Triplet<int[][],int[][],int[][]>(initialGrid,new int[7][7],new int[7][7]), bridgesView, this);
         Button exitButton = findViewById(R.id.bridges_button_back);
         exitButton.setOnClickListener(view -> finish());
     }
 
     public void isClicked(int i, int j) {
-        Bundle b = new Bundle();
-        b.putSerializable("i",i);
-        b.putSerializable("j",j);
-        if (gridHistory.getCurrent()[i][j] != 0) {
-            int[][] newGrid = gridCopy(gridHistory.getCurrent(),0);
+        int[][] grid = gridHistory.getCurrent().getValue0();
+        if (grid[i][j] != 0) {
+            int[][] newGrid = gridCopy(grid,0);
             newGrid[i][j] = 0;
             solveAndAdd(newGrid);
-            return;
         }
         else {
-
+            boolean[] hints = new boolean[10];
+            Arrays.fill(hints,true);
+            hints[9] = false;
+            Bundle b = new Bundle();
+            b.putSerializable("i",i);
+            b.putSerializable("j",j);
+            b.putSerializable("hints", hints);
+            new PopupDigitFragment(b,this, 9).show(getSupportFragmentManager(), "");
         }
-        boolean[] hints = new boolean[10];
-        Arrays.fill(hints,true);
-        hints[9] = false;
-        b.putSerializable("hints", hints);
-        new PopupDigitFragment(b,this, 9).show(getSupportFragmentManager(), "");
     }
 
     private void solveAndAdd(final int[][] grid) {
-        gridHistory.addElement(grid);// TODO actually solve
+        Pair<int[][],int[][]> edges = new BridgesSolver(grid).extractInformation();
+        gridHistory.addElement(new Triplet<int[][],int[][],int[][]>(grid, edges==null? new int[grid.length][grid.length]:edges.getValue0(), edges==null? new int[grid.length][grid.length]:edges.getValue1()));
     }
 
     private int[][] gridCopy(final int[][] grid, final int increase) {
@@ -89,14 +95,14 @@ public class BridgesActivity extends AppCompatActivity implements CallbackWithIn
     }
 
     private void newFixed(final int i, final int j, final int v) {
-        int[][] currentGrid = gridCopy(gridHistory.getCurrent(),0);
+        int[][] currentGrid = gridCopy(gridHistory.getCurrent().getValue0(),0);
         currentGrid[i][j] = v;
         solveAndAdd(currentGrid);
     }
 
     @Override
     public void onUndoOrRedo(boolean isUndo) {
-        decreaseButton.setEnabled(gridHistory.getCurrent().length > minimumSize);
+        decreaseButton.setEnabled(gridHistory.getCurrent().getValue0().length > minimumSize);
     }
 
     @Override

@@ -16,14 +16,19 @@ import com.mvavrill.logicGamesSolver.model.cells.Cell;
 import com.mvavrill.logicGamesSolver.view.games.DrawCell;
 import com.mvavrill.logicGamesSolver.view.games.UpdatableView;
 
-public class BridgesView extends View implements GestureDetector.OnGestureListener, UpdatableView<int[][]> {
+import org.chocosolver.solver.variables.BoolVar;
+import org.chocosolver.solver.variables.IntVar;
+import org.javatuples.Triplet;
+
+public class BridgesView extends View implements GestureDetector.OnGestureListener, UpdatableView<Triplet<int[][],int[][],int[][]>> {
 
     private BridgesActivity bridgesActivity;
     private int[][] islands;
+    private int[][] horizontalEdges;
+    private int[][] verticalEdges;
 
     private float gridWidth;
     private float gridSeparatorSize;
-    private float gridOffset;
     private float cellSize;
 
     private static final float islandSizeRatio = 0.46f;
@@ -58,7 +63,8 @@ public class BridgesView extends View implements GestureDetector.OnGestureListen
         gridSeparatorSize = cellSize / 20f;
         paint.setTextAlign(Paint.Align.CENTER);
         drawGridLines(canvas);
-        // TODO draw bridges
+        // Draw bridges
+        drawBridges(canvas);
         // Draw islands
         for (int i = 0; i < islands.length; i++) {
             for (int j = 0; j < islands[i].length; j++) {
@@ -88,6 +94,43 @@ public class BridgesView extends View implements GestureDetector.OnGestureListen
                 canvas.drawCircle((j + 0.5f) * cellSize, (i + 0.5f) * cellSize, cellSize * islandSizeRatio/5 + gridSeparatorSize, paint);
                 paint.setColor(Color.WHITE);
                 canvas.drawCircle((j + 0.5f) * cellSize, (i + 0.5f) * cellSize, cellSize * islandSizeRatio/5, paint);
+            }
+        }
+    }
+
+    private void drawBridges(final Canvas canvas) {
+        paint.setColor(Color.BLACK);
+        paint.setStrokeWidth(gridSeparatorSize);
+        for (int i = 0; i < islands.length; i++) {
+            for (int j = 0; j < islands[i].length; j++) {
+                if (islands[i][j] != 0) {
+                    //Horizontal
+                    if (horizontalEdges[i][j] != 0) {
+                        for (int k = j + 1; k < islands[i].length; k++) {
+                            if (islands[i][k] != 0) {
+                                float offset = 0;
+                                if (horizontalEdges[i][j] == 2)
+                                    offset = gridSeparatorSize;
+                                canvas.drawLine((j + 0.5f) * cellSize, (i + 0.5f) * cellSize-offset, (k + 0.5f) * cellSize, (i + 0.5f) * cellSize-offset, paint);
+                                canvas.drawLine((j + 0.5f) * cellSize, (i + 0.5f) * cellSize+offset, (k + 0.5f) * cellSize, (i + 0.5f) * cellSize+offset, paint);
+                                break;
+                            }
+                        }
+                    }
+                    //Vertical
+                    if (verticalEdges[i][j] != 0) {
+                        for (int k = i + 1; k < islands.length; k++) {
+                            if (islands[k][j] != 0) {
+                                float offset = 0;
+                                if (verticalEdges[i][j] == 2)
+                                    offset = gridSeparatorSize;
+                                canvas.drawLine((j + 0.5f) * cellSize-offset, (i + 0.5f) * cellSize, (j + 0.5f) * cellSize-offset, (k + 0.5f) * cellSize, paint);
+                                canvas.drawLine((j + 0.5f) * cellSize+offset, (i + 0.5f) * cellSize, (j + 0.5f) * cellSize+offset, (k + 0.5f) * cellSize, paint);
+                                break;
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -138,8 +181,10 @@ public class BridgesView extends View implements GestureDetector.OnGestureListen
     }
 
     @Override
-    public void update(int[][] islands) {
-        this.islands = islands;
+    public void update(Triplet<int[][],int[][],int[][]> islands) {
+        this.islands = islands.getValue0();
+        this.horizontalEdges = islands.getValue1();
+        this.verticalEdges = islands.getValue2();
         invalidate();
     }
 }
