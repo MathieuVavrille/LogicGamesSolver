@@ -30,12 +30,6 @@
     android:textSize="50sp"
     android:text="Logic Games Solver" />
 
-<Button
-    android:id="@+id/main_test"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Test"/>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">

@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
             Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, BridgesActivity.class);
             startActivity(gridActivityIntent);
         });
-        Button test = findViewById(R.id.main_test);
+        //Button test = findViewById(R.id.main_test);
         /*test.setOnClickListener(view -> {
             Intent sudokuCameraIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, Progress_Test.class);
             startActivity(sudokuCameraIntent);

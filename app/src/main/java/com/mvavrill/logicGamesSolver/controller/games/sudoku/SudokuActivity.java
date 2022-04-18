@@ -56,7 +56,6 @@ public class SudokuActivity extends AppCompatActivity implements CallbackWithInt
             return;
         }
         if (gridHistory.getCurrent().getValue2() == 2) {
-            Log.d("Mat","here");
             return;
         }
         boolean[] hints = gridHistory.getCurrent().getValue0()[i][j].allowedValues();

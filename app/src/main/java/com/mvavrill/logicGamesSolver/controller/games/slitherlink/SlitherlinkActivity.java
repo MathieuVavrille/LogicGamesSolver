@@ -109,6 +109,7 @@ public class SlitherlinkActivity extends AppCompatActivity implements CallbackWi
 
     @Override
     public void callbackWithInteger(Bundle callbackBundle, int v) {
+        Log.d("Mat","callback");
         int i = (int) callbackBundle.get("i");// TODO si ce n'est pas possible, mettre un petit message, et griser
         int j = (int) callbackBundle.get("j");
         int[][] currentNumbers = numbersCopy(gridHistory.getCurrent().getValue0(), 0, 0);
