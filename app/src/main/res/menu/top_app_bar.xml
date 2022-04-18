@@ -1,25 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/favorite"
-        android:icon="@drawable/ic_favorite_black"
-        android:title="favorite"
-        android:contentDescription="truc"
-        app:showAsAction="ifRoom" />
-
 
     <item
-        android:id="@+id/search"
-        android:icon="@drawable/ic_favorite_black"
-        android:title="favorite2"
-        android:contentDescription="test2"
-        app:showAsAction="ifRoom" />
+        android:id="@+id/top_bar_donate"
+        android:icon="@drawable/donate"
+        android:title="Donate"
+        app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/more"
-        android:title="more"
-        android:contentDescription="more_stuff"
+        android:id="@+id/top_bar_about"
+        android:icon="@drawable/info"
+        android:title="About Me"
+        app:showAsAction="ifRoom"/>
+
+    <!-- Settings, should always be in the overflow -->
+    <item
+        android:id="@+id/top_bar_settings"
+        android:icon="@drawable/settings"
+        android:title="Settings"
         app:showAsAction="never" />
+
 </menu>

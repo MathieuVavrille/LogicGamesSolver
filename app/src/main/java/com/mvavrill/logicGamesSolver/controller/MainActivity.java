@@ -1,6 +1,7 @@
 package com.mvavrill.logicGamesSolver.controller;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -9,6 +10,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
 
@@ -47,10 +51,46 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
             public void onClick(View view) {
             }
         });*/
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.top_app_bar, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.top_bar_donate:
+                // User chose the "Settings" item, show the app settings UI...
+                return true;
+
+            case R.id.top_bar_about:
+                // User chose the "Favorite" action, mark the current item
+                // as a favorite...
+                return true;
+
+            case R.id.top_bar_settings:
+                // User chose the "Favorite" action, mark the current item
+                // as a favorite...
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Toolbar
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.main_top_app_bar);
+        setSupportActionBar(myToolbar);
+
+        // Buttons
         Button sudoku = findViewById(R.id.main_button_sudoku);
         sudoku.setOnClickListener(view -> {
             Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, SudokuActivity.class);

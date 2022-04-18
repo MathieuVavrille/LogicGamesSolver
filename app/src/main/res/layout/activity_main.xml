@@ -7,28 +7,28 @@
     android:orientation="vertical"
     tools:context=".controller.MainActivity">
 
-    <!--<androidx.appcompat.widget.Toolbar
-        android:id="@+id/main_topAppBar"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/main_top_app_bar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
+        app:titleTextColor="@color/white"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:menu="@menu/top_app_bar"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>-->
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
 
-
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
-    android:gravity="center"
-    android:layout_marginTop="20dp"
-    android:padding="8dp"
-    android:textStyle="bold"
-    android:textSize="50sp"
-    android:text="Logic Games Solver" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:padding="8dp"
+        android:text="Logic Games Solver"
+        android:textSize="50sp"
+        android:textStyle="bold" />
 
     <ScrollView
         android:layout_width="match_parent"
