@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".controller.menu.InformationActivity">
+
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/information_top_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:navigationIcon="@drawable/white_arrow"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="About"
+        app:menu="@menu/donate"
+        app:titleTextColor="@color/white" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="About me"
+                android:textSize="48sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I am currently a PhD student in the LS2N laboratory in Nantes. I am working on Constraint Programming (CP). If you enjoyed this app, and want to support me you can donate with the $ button."
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="About the app"
+                android:textSize="48sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I am making this app as a way to learn android development, and as a nice way to use CP in a project. In practice, the whole point of logic games is to solve them by yourself, but is is a nice way to show the power CP. On top of that, an app competition took place in the CP community."
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Constraint Programming"
+                android:textSize="48sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Constraint Programming is a powerfull way to solve many real life problem. A user states constraints (what solutions are allowed) and a solver finds the solution. Logic games are often used as a way to show CP, because the rules are made of constraints. In practice CP can solve a wide range of real-life applications: scheduling, routing, optimisation,..."
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Games"
+                android:textSize="48sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I intend on implementing other games. It depends on the time I have, and if it is not too hard to input."
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sudoku"
+                android:textSize="34sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="The most known logic games. Every row, column and 3x3 cell must contain every number from 1 to 9 exactly once. In CP we just have all_different constraints and the solver does the magic."
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kakuro"
+                android:textSize="34sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="A kind of crosswords with numbers. The hints give the sum of the column/line, and every value (from 1 to 9) must be different. Again an all_different constraint, associated to a sum constraint does the job. To help the solver, we can enumerate all the possibilities, there are not many of them."
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Slitherlink"
+                android:textSize="34sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This one is a real treasure in my opinion. The goal is to draw a single loop by putting edges between the dots. The hints tells how many edges are around it. A square with no hint may have any number of edges around it. In CP we can easily fix the number of edges around every hint. To deal with the single loop requirement, a graph constraint is added, to enforce that all the dots passed by edges are connected. On top of that I added a lot of knowledge, i.e. patterns to speed up the solving. There are some patterns that are easy to discover, but I also added the parity of vertices."
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bridges"
+                android:textSize="34sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="One of the easiest logic game I know of. The hints represent islands, and bridges (one or two) must be added between islands (vertically or horizontally) to form a fully connected archipel. The hints give the number of bridges connected to each island."
+                android:textSize="16sp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

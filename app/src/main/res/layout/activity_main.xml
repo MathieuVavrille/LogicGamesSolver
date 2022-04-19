@@ -5,9 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/main_linear_layout"
     tools:context=".controller.MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/main_top_app_bar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
@@ -15,7 +16,7 @@
         android:elevation="4dp"
         app:titleTextColor="@color/white"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:menu="@menu/top_app_bar"
+        app:menu="@menu/donate_about_settings"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
 
@@ -35,6 +36,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/main_scroll_view_linear"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">

@@ -18,6 +18,12 @@
         android:theme="@style/Theme.LogicGamesSolver"
         tools:targetApi="31">
         <activity
+            android:name=".controller.menu.InformationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controller.menu.SettingsActivity"
+            android:exported="false" />
+        <activity
             android:name=".controller.games.bridges.BridgesActivity"
             android:exported="false" />
         <activity
