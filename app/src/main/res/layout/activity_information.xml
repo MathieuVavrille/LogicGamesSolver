@@ -18,7 +18,7 @@
         app:navigationIcon="@drawable/white_arrow"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="About"
-        app:menu="@menu/donate"
+        app:menu="@menu/donate_github"
         app:titleTextColor="@color/white" />
 
     <ScrollView
@@ -52,7 +52,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="I am making this app as a way to learn android development, and as a nice way to use CP in a project. In practice, the whole point of logic games is to solve them by yourself, but is is a nice way to show the power CP. On top of that, an app competition took place in the CP community."
+                android:text="I am making this app as a way to learn android development, and as a nice way to use CP in a project. In practice, the whole point of logic games is to solve them by yourself, but is is a nice way to show the power CP. On top of that, an app competition took place in the CP community. All the code is available in github (the octocat icon). Feel free to look at the code. All the CP solving is done in the `model` package if you want to learn how to use choco-solver."
                 android:textSize="16sp" />
 
             <TextView

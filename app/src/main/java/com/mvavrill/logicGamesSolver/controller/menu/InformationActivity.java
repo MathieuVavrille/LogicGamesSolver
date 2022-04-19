@@ -1,7 +1,6 @@
 package com.mvavrill.logicGamesSolver.controller.menu;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -17,17 +16,23 @@ public class InformationActivity extends AppCompatActivity {
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.donate, menu);
+        inflater.inflate(R.menu.donate_github, menu);
         return true;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.single_donate) {
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.buymeacoffee.com/tiouz"));
-            startActivity(browserIntent);
-            return true;
+        switch (item.getItemId()) {
+            case R.id.information_donate:
+                Intent donationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.buymeacoffee.com/tiouz"));
+                startActivity(donationIntent);
+                return true;
+            case R.id.information_github:
+                Intent githubIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/MathieuVavrille/LogicGamesSolver"));
+                startActivity(githubIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
