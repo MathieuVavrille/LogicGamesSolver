@@ -136,7 +136,7 @@ public class SudokuCameraActivity extends CameraActivity implements CvCameraView
         Mat thresh = new Mat();
         Imgproc.adaptiveThreshold(blurred, thresh, 255, Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY,11,2);
         Core.bitwise_not(thresh, thresh);
-        List<MatOfPoint> contours = new ArrayList<MatOfPoint>();
+        List<MatOfPoint> contours = new ArrayList<>();
         Imgproc.findContours(thresh, contours, new Mat(), Imgproc.RETR_EXTERNAL, Imgproc.CHAIN_APPROX_SIMPLE);
         double bestArea = 0;
         MatOfPoint bestContour = null;
@@ -202,7 +202,7 @@ public class SudokuCameraActivity extends CameraActivity implements CvCameraView
             x += p.x;
             y += p.y;
         }
-        return new Pair<Integer,Integer>(x/160, y/160);
+        return new Pair<>(x / 160, y / 160);
     }
 
     private int parseText(final String text) {
@@ -215,24 +215,9 @@ public class SudokuCameraActivity extends CameraActivity implements CvCameraView
         }
     }
 
-    private void printGrid(final int[][] grid) {
-        Log.d("Mat","printGrid");
-        for (int[] line : grid) {
-            String s = "";
-            for (int v : line) {
-                if (v == 0) {
-                    s = s+"·";
-                }
-                else
-                    s = s+v;
-            }
-            Log.d("Mat",s);
-        }
-    }
-
     private boolean isSquareContour(final MatOfPoint contour) {
         List<Point> points = contour.toList();
-        List<Double> distances = new ArrayList<Double>();
+        List<Double> distances = new ArrayList<>();
         double perimeter = 0;
         for (int i = 0; i < 4; i++) {
             double l = norm(getVector(points.get(i), points.get((i+1)%4)));

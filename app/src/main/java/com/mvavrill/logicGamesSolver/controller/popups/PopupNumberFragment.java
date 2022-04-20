@@ -12,6 +12,9 @@ import androidx.fragment.app.DialogFragment;
 
 import com.mvavrill.logicGamesSolver.R;
 
+/**
+ * An implementation of a DialogFragment to input a number.
+ */
 public class PopupNumberFragment extends DialogFragment {
 
     private final Bundle callbackData;
@@ -40,8 +43,8 @@ public class PopupNumberFragment extends DialogFragment {
                         int value = Integer.parseInt(editedText);
                         callback.callbackWithInteger(callbackData, value);
                     }
-                    catch (Exception e) {}
-                    dialog1.dismiss();
+                    catch (Exception ignored) {}
+                        dialog1.dismiss();
                 })
                 .create();
         dialog.setView(editText);

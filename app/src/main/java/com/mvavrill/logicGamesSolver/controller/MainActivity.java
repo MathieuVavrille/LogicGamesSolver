@@ -1,10 +1,5 @@
 package com.mvavrill.logicGamesSolver.controller;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -16,15 +11,19 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.games.bridges.BridgesActivity;
+import com.mvavrill.logicGamesSolver.controller.games.kakuro.KakuroActivity;
 import com.mvavrill.logicGamesSolver.controller.games.slitherlink.SlitherlinkActivity;
+import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuActivity;
 import com.mvavrill.logicGamesSolver.controller.menu.InformationActivity;
 import com.mvavrill.logicGamesSolver.controller.menu.SettingsActivity;
-import com.mvavrill.logicGamesSolver.controller.games.kakuro.KakuroActivity;
-import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuActivity;
 import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
-import com.mvavrill.logicGamesSolver.controller.popups.PopupDigits;
 
 public class MainActivity extends AppCompatActivity implements CallbackWithInteger {
 

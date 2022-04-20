@@ -1,6 +1,5 @@
 package com.mvavrill.logicGamesSolver.view.games.bridges;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,12 +12,8 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 import com.mvavrill.logicGamesSolver.controller.games.bridges.BridgesActivity;
-import com.mvavrill.logicGamesSolver.model.cells.Cell;
-import com.mvavrill.logicGamesSolver.view.games.DrawCell;
 import com.mvavrill.logicGamesSolver.view.games.UpdatableView;
 
-import org.chocosolver.solver.variables.BoolVar;
-import org.chocosolver.solver.variables.IntVar;
 import org.javatuples.Triplet;
 
 public class BridgesView extends View implements GestureDetector.OnGestureListener, UpdatableView<Triplet<int[][],int[][],int[][]>> {

@@ -9,10 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 
 import com.mvavrill.logicGamesSolver.R;
 
+/**
+ * Popup to enter digits. The grid contains 12 buttons in a 4x3 grid.
+ * When there are an even number of buttons one column is removed.
+ * Otherwise the three columns are used.
+ */
 public class PopupDigits extends DialogFragment {
 
     private final Bundle callbackData;
@@ -31,6 +37,11 @@ public class PopupDigits extends DialogFragment {
             R.id.layout_popup_4x3_digits_12};
     private final int[] buttonsValues;
 
+    /**
+     * @param callbackData, data returned to the caller
+     * @param callback, caller
+     * @param nbButtons, is the number of buttons. This number defines the values of the buttons. When there are 4 buttons 0-3 is used, otherwise 1-nbButtons is used.
+     */
     public PopupDigits(final Bundle callbackData, final CallbackWithInteger callback, final int nbButtons) {
         super();
         this.callbackData = callbackData;

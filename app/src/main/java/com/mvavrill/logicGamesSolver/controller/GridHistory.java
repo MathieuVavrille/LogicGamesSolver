@@ -13,16 +13,14 @@ public class GridHistory<T> {
     private final Button undo;
     private final Button redo;
     private final UpdatableView<T> updatableView;
-    private final UndoRedoWatcher watcher;
 
-    private final List<T> history = new ArrayList<T>();
+    private final List<T> history = new ArrayList<>();
     private int currentElement = 0;
 
     public GridHistory(final Button undo, final Button redo, final T initialElement, final UpdatableView<T> updatableView, final UndoRedoWatcher watcher) {
         this.undo = undo;
         this.redo = redo;
         this.updatableView = updatableView;
-        this.watcher = watcher;
         history.add(initialElement);
         undo.setEnabled(false);
         redo.setEnabled(false);

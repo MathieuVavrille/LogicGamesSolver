@@ -17,6 +17,10 @@ import com.mvavrill.logicGamesSolver.view.games.slitherlink.SlitherlinkView;
 import org.javatuples.Quartet;
 import org.javatuples.Triplet;
 
+/**
+ * Controller for the slitherlink game.
+ * The data passed to the view contains the digits, the vertical edges, the horizontal edges and a boolean matrix to color the inside.
+ */
 public class SlitherlinkActivity extends AppCompatActivity implements CallbackWithInteger, UndoRedoWatcher {
 
     private GridHistory<Quartet<int[][],int[][],int[][],boolean[][]>> gridHistory;

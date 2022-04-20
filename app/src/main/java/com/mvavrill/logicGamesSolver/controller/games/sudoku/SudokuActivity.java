@@ -17,6 +17,10 @@ import com.mvavrill.logicGamesSolver.view.games.sudoku.SudokuView;
 
 import org.javatuples.Triplet;
 
+/**
+ * Controller for the sudoku game.
+ * The data passed contains the cells, a boolean telling if the hints should be printed, and an integer equal to 1 if the grid is solved, 2 if failed, and 0 otherwise
+ */
 public class SudokuActivity extends AppCompatActivity implements CallbackWithInteger, UndoRedoWatcher {
 
     private GridHistory<Triplet<DigitCell[][],Boolean,Integer>> gridHistory;

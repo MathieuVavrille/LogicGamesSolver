@@ -12,6 +12,9 @@ import android.view.MenuItem;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.mvavrill.logicGamesSolver.R;
 
+/**
+ * Mainly deals with the information menu to open urls.
+ */
 public class InformationActivity extends AppCompatActivity {
 
     public boolean onCreateOptionsMenu(Menu menu) {

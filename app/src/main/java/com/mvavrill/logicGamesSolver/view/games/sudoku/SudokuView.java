@@ -19,7 +19,7 @@ import com.mvavrill.logicGamesSolver.view.games.UpdatableView;
 import org.javatuples.Triplet;
 
 /**
- * Draws the Digit cells. The boolean tells if it should draw hint or not. The integer is 1 if it is solved, 2 if failed, and 0 otherwise
+ * Draws the Digit cells. The boolean tells if it should draw hint or not. The integer is 1 if it is solved, 2 if failed, and 0 otherwise.
  */
 public class SudokuView extends View implements GestureDetector.OnGestureListener, UpdatableView<Triplet<DigitCell[][],Boolean,Integer>> {
 

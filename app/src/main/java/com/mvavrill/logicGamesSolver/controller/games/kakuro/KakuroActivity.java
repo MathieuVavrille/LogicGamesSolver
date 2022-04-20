@@ -1,24 +1,28 @@
 package com.mvavrill.logicGamesSolver.controller.games.kakuro;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.mvavrill.logicGamesSolver.R;
+import com.mvavrill.logicGamesSolver.controller.GridHistory;
 import com.mvavrill.logicGamesSolver.controller.UndoRedoWatcher;
 import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
-import com.mvavrill.logicGamesSolver.controller.GridHistory;
 import com.mvavrill.logicGamesSolver.controller.popups.PopupNumberFragment;
-import com.mvavrill.logicGamesSolver.model.cells.*;
+import com.mvavrill.logicGamesSolver.model.cells.Cell;
 import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
 import com.mvavrill.logicGamesSolver.model.cells.DoubleIntCell;
 import com.mvavrill.logicGamesSolver.model.cells.EmptyCell;
 import com.mvavrill.logicGamesSolver.model.games.kakuro.KakuroSolver;
 import com.mvavrill.logicGamesSolver.view.games.kakuro.KakuroView;
 
+/**
+ * Controller for the kakuro game.
+ * The input of the grid is a two step process. First the outline is inputted. The cells are updated to show the possible hints.
+ * Then it is possible to input the numbers.
+ */
 public class KakuroActivity extends AppCompatActivity implements CallbackWithInteger, UndoRedoWatcher {
 
     private GridHistory<Cell[][]> gridHistory;

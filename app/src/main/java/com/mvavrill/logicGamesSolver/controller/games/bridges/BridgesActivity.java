@@ -18,6 +18,12 @@ import org.javatuples.Triplet;
 
 import java.util.Arrays;
 
+/**
+ * Controller for the bridges game.
+ * The data transmitted to the view consist in three integer matrices.
+ * - The first one contains the island values.
+ * - The two other ones contain the bridges values. The first one contains the horizontal bridges, and the second one the vertical bridges.
+ */
 public class BridgesActivity extends AppCompatActivity implements CallbackWithInteger, UndoRedoWatcher {
 
     private GridHistory<Triplet<int[][], int[][], int[][]>> gridHistory;
@@ -36,14 +42,14 @@ public class BridgesActivity extends AppCompatActivity implements CallbackWithIn
                 return;
             }
             Triplet<int[][], int[][], int[][]> current = gridHistory.getCurrent();
-            gridHistory.addElement(new Triplet<int[][], int[][], int[][]>(gridCopy(current.getValue0(), -1), current.getValue1(), current.getValue2()));
+            gridHistory.addElement(new Triplet<>(gridCopy(current.getValue0(), -1), current.getValue1(), current.getValue2()));
             if (gridHistory.getCurrent().getValue0().length <= minimumSize)
                 decreaseButton.setEnabled(false);
         });
         Button increaseButton = findViewById(R.id.bridges_button_increase);
         increaseButton.setOnClickListener(view -> {
             Triplet<int[][], int[][], int[][]> current = gridHistory.getCurrent();
-            gridHistory.addElement(new Triplet<int[][], int[][], int[][]>(gridCopy(current.getValue0(), 1), current.getValue1(), current.getValue2()));
+            gridHistory.addElement(new Triplet<>(gridCopy(current.getValue0(), 1), current.getValue1(), current.getValue2()));
             if (gridHistory.getCurrent().getValue0().length > 3)
                 decreaseButton.setEnabled(true);
         });
@@ -52,7 +58,7 @@ public class BridgesActivity extends AppCompatActivity implements CallbackWithIn
         Button redoButton = findViewById(R.id.bridges_button_redo);
         BridgesView bridgesView = findViewById(R.id.bridges_grid_view);
         bridgesView.setGridActivity(this);
-        gridHistory = new GridHistory<>(undoButton, redoButton, new Triplet<int[][], int[][], int[][]>(initialGrid, new int[7][7], new int[7][7]), bridgesView, this);
+        gridHistory = new GridHistory<>(undoButton, redoButton, new Triplet<>(initialGrid, new int[7][7], new int[7][7]), bridgesView, this);
         Button exitButton = findViewById(R.id.bridges_button_back);
         exitButton.setOnClickListener(view -> finish());
     }
@@ -87,7 +93,7 @@ public class BridgesActivity extends AppCompatActivity implements CallbackWithIn
 
     private void solveAndAdd(final int[][] grid) {
         Pair<int[][], int[][]> edges = new BridgesSolver(grid).extractInformation();
-        gridHistory.addElement(new Triplet<int[][], int[][], int[][]>(grid, edges == null ? new int[grid.length][grid.length] : edges.getValue0(), edges == null ? new int[grid.length][grid.length] : edges.getValue1()));
+        gridHistory.addElement(new Triplet<>(grid, edges == null ? new int[grid.length][grid.length] : edges.getValue0(), edges == null ? new int[grid.length][grid.length] : edges.getValue1()));
     }
 
     private int[][] gridCopy(final int[][] grid, final int increase) {

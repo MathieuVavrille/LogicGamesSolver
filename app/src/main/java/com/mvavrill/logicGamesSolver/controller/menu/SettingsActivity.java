@@ -1,19 +1,20 @@
 package com.mvavrill.logicGamesSolver.controller.menu;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
-import androidx.preference.SwitchPreferenceCompat;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.fragments.SettingsFragment;
 
+/**
+ * Deals with the settings, but there are none currently, so basically nothing here.
+ */
 public class SettingsActivity extends AppCompatActivity {
 
     @Override
