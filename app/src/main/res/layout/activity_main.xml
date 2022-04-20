@@ -31,6 +31,12 @@
         android:textSize="50sp"
         android:textStyle="bold" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/main_test"
+        android:text="test"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">

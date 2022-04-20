@@ -1,7 +1,6 @@
 package com.mvavrill.logicGamesSolver.controller.games.slitherlink;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -11,12 +10,9 @@ import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.GridHistory;
 import com.mvavrill.logicGamesSolver.controller.UndoRedoWatcher;
 import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
-import com.mvavrill.logicGamesSolver.controller.popups.PopupDigitFragment;
-import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
+import com.mvavrill.logicGamesSolver.controller.popups.PopupDigits;
 import com.mvavrill.logicGamesSolver.model.games.slitherlink.SlitherlinkSolver;
-import com.mvavrill.logicGamesSolver.model.games.sudoku.SudokuSolver;
 import com.mvavrill.logicGamesSolver.view.games.slitherlink.SlitherlinkView;
-import com.mvavrill.logicGamesSolver.view.games.sudoku.SudokuView;
 
 import org.javatuples.Quartet;
 import org.javatuples.Triplet;
@@ -91,7 +87,7 @@ public class SlitherlinkActivity extends AppCompatActivity implements CallbackWi
         Bundle b = new Bundle();
         b.putSerializable("i", i);
         b.putSerializable("j", j);
-        new PopupDigitFragment(b, this, 4).show(getSupportFragmentManager(), "");
+        new PopupDigits(b, this, 4).show(getSupportFragmentManager(), "");
     }
 
     private int[][] numbersCopy(final int[][] numbers, final int increaseI, final int increaseJ) {

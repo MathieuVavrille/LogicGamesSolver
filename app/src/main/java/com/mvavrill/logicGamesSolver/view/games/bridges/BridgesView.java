@@ -82,6 +82,13 @@ public class BridgesView extends View implements GestureDetector.OnGestureListen
         }
     }
 
+    public boolean isTooClose(final int i, final int j, final int[][] currentGrid) {
+        return i > 0 && currentGrid[i - 1][j] != 0
+                || i < currentGrid.length - 1 && currentGrid[i + 1][j] != 0
+                || j > 0 && currentGrid[i][j - 1] != 0
+                || j < currentGrid[i].length - 1 && currentGrid[i][j + 1] != 0;
+    }
+
     private void drawGridLines(final Canvas canvas) {
         paint.setColor(0xFFE0E0E0);
         paint.setStrokeWidth(gridSeparatorSize);
@@ -91,10 +98,12 @@ public class BridgesView extends View implements GestureDetector.OnGestureListen
         }
         for (int i = 0; i < islands.length; i++) {
             for (int j = 0; j < islands[i].length; j++) {
-                paint.setColor(0xFFE0E0E0);
-                canvas.drawCircle((j + 0.5f) * cellSize, (i + 0.5f) * cellSize, cellSize * islandSizeRatio/5 + gridSeparatorSize, paint);
-                paint.setColor(Color.WHITE);
-                canvas.drawCircle((j + 0.5f) * cellSize, (i + 0.5f) * cellSize, cellSize * islandSizeRatio/5, paint);
+                if (!isTooClose(i,j,islands)) {
+                    paint.setColor(0xFFE0E0E0);
+                    canvas.drawCircle((j + 0.5f) * cellSize, (i + 0.5f) * cellSize, cellSize * islandSizeRatio / 5 + gridSeparatorSize, paint);
+                    paint.setColor(Color.WHITE);
+                    canvas.drawCircle((j + 0.5f) * cellSize, (i + 0.5f) * cellSize, cellSize * islandSizeRatio / 5, paint);
+                }
             }
         }
     }

@@ -1,8 +1,6 @@
 package com.mvavrill.logicGamesSolver.controller.games.sudoku;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.Switch;
 
@@ -12,7 +10,7 @@ import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.UndoRedoWatcher;
 import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
 import com.mvavrill.logicGamesSolver.controller.GridHistory;
-import com.mvavrill.logicGamesSolver.controller.popups.PopupDigitFragment;
+import com.mvavrill.logicGamesSolver.controller.popups.PopupDigits;
 import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
 import com.mvavrill.logicGamesSolver.model.games.sudoku.SudokuSolver;
 import com.mvavrill.logicGamesSolver.view.games.sudoku.SudokuView;
@@ -77,7 +75,7 @@ public class SudokuActivity extends AppCompatActivity implements CallbackWithInt
         b.putSerializable("i",i);
         b.putSerializable("j",j);
         b.putSerializable("hints", hints);
-        new PopupDigitFragment(b,this, 9).show(getSupportFragmentManager(), "");
+        new PopupDigits(b,this, 9).show(getSupportFragmentManager(), "");
     }
 
     private int[][] extractFixed(final DigitCell[][] grid) {

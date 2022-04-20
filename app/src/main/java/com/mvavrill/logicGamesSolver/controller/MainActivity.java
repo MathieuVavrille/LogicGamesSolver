@@ -23,38 +23,13 @@ import com.mvavrill.logicGamesSolver.controller.menu.InformationActivity;
 import com.mvavrill.logicGamesSolver.controller.menu.SettingsActivity;
 import com.mvavrill.logicGamesSolver.controller.games.kakuro.KakuroActivity;
 import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuActivity;
+import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
+import com.mvavrill.logicGamesSolver.controller.popups.PopupDigits;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CallbackWithInteger {
 
     private static final String[] CAMERA_PERMISSION = new String[]{Manifest.permission.CAMERA};
     private static final int CAMERA_REQUEST_CODE = 10;
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.donate_about_settings, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.top_bar_donate:
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.buymeacoffee.com/tiouz"));
-                startActivity(browserIntent);
-                return true;
-            case R.id.top_bar_about:
-                Intent aboutIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, InformationActivity.class);
-                startActivity(aboutIntent);
-                return true;
-            case R.id.top_bar_settings:
-                Intent settingsIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, SettingsActivity.class);
-                startActivity(settingsIntent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,11 +70,10 @@ public class MainActivity extends AppCompatActivity {
             Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, BridgesActivity.class);
             startActivity(gridActivityIntent);
         });
-        //Button test = findViewById(R.id.main_test);
-        /*test.setOnClickListener(view -> {
-            Intent sudokuCameraIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, Progress_Test.class);
-            startActivity(sudokuCameraIntent);
-        });*/
+        Button test = findViewById(R.id.main_test);
+        test.setOnClickListener(view -> {
+            //new PopupDigits(new Bundle(),com.mvavrill.logicGamesSolver.controller.MainActivity.this).show(getSupportFragmentManager(), "");
+        });
     }
 
     private boolean hasCameraPermission() {
@@ -117,8 +91,35 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    private void enableCamera() {
-        //Intent intent = new Intent(this, CameraActivity.class);
-        //startActivity(intent);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.donate_about_settings, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.top_bar_donate:
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.buymeacoffee.com/tiouz"));
+                startActivity(browserIntent);
+                return true;
+            case R.id.top_bar_about:
+                Intent aboutIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, InformationActivity.class);
+                startActivity(aboutIntent);
+                return true;
+            case R.id.top_bar_settings:
+                Intent settingsIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
+    }
+
+    @Override
+    public void callbackWithInteger(Bundle callbackBundle, int v) {
+
     }
 }

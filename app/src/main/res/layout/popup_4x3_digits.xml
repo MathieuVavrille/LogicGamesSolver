@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Button
+        android:text="1"
+        android:id="@+id/layout_popup_4x3_digits_1"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:textSize="40sp"
+        android:layout_marginHorizontal="5dp"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/layout_popup_4x3_digits_2"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/layout_popup_4x3_digits_4"/>
+
+    <Button
+        android:text="2"
+        android:id="@+id/layout_popup_4x3_digits_2"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:textSize="40sp"
+        android:layout_marginHorizontal="5dp"
+        app:layout_constraintLeft_toRightOf="@id/layout_popup_4x3_digits_1"
+        app:layout_constraintRight_toLeftOf="@id/layout_popup_4x3_digits_3"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/layout_popup_4x3_digits_5"/>
+
+    <Button
+        android:text="3"
+        android:id="@+id/layout_popup_4x3_digits_3"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:textSize="40sp"
+        android:layout_marginHorizontal="5dp"
+        app:layout_constraintLeft_toRightOf="@id/layout_popup_4x3_digits_2"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/layout_popup_4x3_digits_6"/>
+
+    <Button
+        android:text="4"
+        android:id="@+id/layout_popup_4x3_digits_4"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:textSize="40sp"
+        android:layout_marginHorizontal="5dp"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/layout_popup_4x3_digits_5"
+        app:layout_constraintTop_toBottomOf="@id/layout_popup_4x3_digits_1"
+        app:layout_constraintBottom_toTopOf="@id/layout_popup_4x3_digits_7"/>
+
+    <Button
+        android:text="5"
+        android:id="@+id/layout_popup_4x3_digits_5"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:textSize="40sp"
+        android:layout_marginHorizontal="5dp"
+        app:layout_constraintLeft_toRightOf="@id/layout_popup_4x3_digits_4"
+        app:layout_constraintRight_toLeftOf="@id/layout_popup_4x3_digits_6"
+        app:layout_constraintTop_toBottomOf="@id/layout_popup_4x3_digits_2"
+        app:layout_constraintBottom_toTopOf="@id/layout_popup_4x3_digits_8"/>
+
+    <Button
+        android:text="6"
+        android:id="@+id/layout_popup_4x3_digits_6"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:textSize="40sp"
+        android:layout_marginHorizontal="5dp"
+        app:layout_constraintLeft_toRightOf="@id/layout_popup_4x3_digits_5"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_popup_4x3_digits_3"
+        app:layout_constraintBottom_toTopOf="@id/layout_popup_4x3_digits_9"/>
+
+    <Button
+        android:text="7"
+        android:id="@+id/layout_popup_4x3_digits_7"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:textSize="40sp"
+        android:layout_marginHorizontal="5dp"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/layout_popup_4x3_digits_8"
+        app:layout_constraintTop_toBottomOf="@id/layout_popup_4x3_digits_4"
+        app:layout_constraintBottom_toTopOf="@id/layout_popup_4x3_digits_10"/>
+
+    <Button
+        android:text="8"
+        android:id="@+id/layout_popup_4x3_digits_8"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:textSize="40sp"
+        android:layout_marginHorizontal="5dp"
+        app:layout_constraintLeft_toRightOf="@id/layout_popup_4x3_digits_7"
+        app:layout_constraintRight_toLeftOf="@id/layout_popup_4x3_digits_9"
+        app:layout_constraintTop_toBottomOf="@id/layout_popup_4x3_digits_5"
+        app:layout_constraintBottom_toTopOf="@id/layout_popup_4x3_digits_11"/>
+
+    <Button
+        android:text="9"
+        android:id="@+id/layout_popup_4x3_digits_9"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:textSize="40sp"
+        android:layout_marginHorizontal="5dp"
+        app:layout_constraintLeft_toRightOf="@id/layout_popup_4x3_digits_8"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_popup_4x3_digits_6"
+        app:layout_constraintBottom_toTopOf="@id/layout_popup_4x3_digits_12"/>
+
+    <Button
+        android:text="10"
+        android:id="@+id/layout_popup_4x3_digits_10"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:textSize="40sp"
+        android:layout_marginHorizontal="5dp"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/layout_popup_4x3_digits_11"
+        app:layout_constraintTop_toBottomOf="@id/layout_popup_4x3_digits_7"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+        android:text="11"
+        android:id="@+id/layout_popup_4x3_digits_11"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:textSize="40sp"
+        android:layout_marginHorizontal="5dp"
+        app:layout_constraintLeft_toRightOf="@id/layout_popup_4x3_digits_10"
+        app:layout_constraintRight_toLeftOf="@id/layout_popup_4x3_digits_12"
+        app:layout_constraintTop_toBottomOf="@id/layout_popup_4x3_digits_8"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <Button
+        android:text="12"
+        android:id="@+id/layout_popup_4x3_digits_12"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        android:textSize="40sp"
+        android:layout_marginHorizontal="5dp"
+        app:layout_constraintLeft_toRightOf="@id/layout_popup_4x3_digits_11"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_popup_4x3_digits_9"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
