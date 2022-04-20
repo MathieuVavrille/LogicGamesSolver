@@ -37,7 +37,15 @@ public class KakuroActivity extends AppCompatActivity implements CallbackWithInt
                 decreaseButton.setEnabled(false);
                 return;
             }
-            gridHistory.addElement(gridCopy(gridHistory.getCurrent(), -1));
+            Cell[][] newGrid = gridCopy(gridHistory.getCurrent(), -1);
+            for (int i = 0; i < newGrid.length; i++) {
+                int gridEnd = newGrid.length-1;
+                if (newGrid[i][gridEnd] instanceof DoubleIntCell)
+                    newGrid[i][gridEnd] = ((DoubleIntCell) newGrid[i][gridEnd]).removeFirst();
+                if (newGrid[gridEnd][i] instanceof DoubleIntCell)
+                    newGrid[gridEnd][i] = ((DoubleIntCell) newGrid[gridEnd][i]).removeSecond();
+            }
+            gridHistory.addElement(newGrid);
             if (gridHistory.getCurrent().length <= 3)
                 decreaseButton.setEnabled(false);
         });
@@ -128,13 +136,6 @@ public class KakuroActivity extends AppCompatActivity implements CallbackWithInt
         //gridHistory.addElement(currentGrid);
         Cell[][] newKakuroGrid = new KakuroSolver(currentGrid).extractInformation();
         if (newKakuroGrid != null) {
-            /*for (int li = 0; li < newKakuroGrid.length; li++) {
-                for (int lj = 0; lj < newKakuroGrid[li].length; lj++) {
-                    if (newKakuroGrid[li][lj] instanceof DigitCell) {
-                        ((DigitCell) newKakuroGrid[li][lj]).fix(((DigitCell) currentGrid[li][lj]).isFixed());
-                    }
-                }
-            }*/
             gridHistory.addElement(newKakuroGrid);
         }
     }
