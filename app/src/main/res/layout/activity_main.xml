@@ -31,12 +31,6 @@
         android:textSize="50sp"
         android:textStyle="bold" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/main_test"
-        android:text="test"/>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -78,7 +72,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="16dp"
                     android:layout_marginEnd="30dp"
-                    android:src="@drawable/camera_white" />
+                    android:src="@drawable/camera_black" />
             </RelativeLayout>
 
             <RelativeLayout

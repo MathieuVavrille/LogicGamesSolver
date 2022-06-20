@@ -69,10 +69,10 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
             Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, BridgesActivity.class);
             startActivity(gridActivityIntent);
         });
-        Button test = findViewById(R.id.main_test);
+        /*Button test = findViewById(R.id.main_test);
         test.setOnClickListener(view -> {
             //new PopupDigits(new Bundle(),com.mvavrill.logicGamesSolver.controller.MainActivity.this).show(getSupportFragmentManager(), "");
-        });
+        });*/
     }
 
     private boolean hasCameraPermission() {
