@@ -31,7 +31,7 @@
             android:orientation="vertical"
             android:layout_marginHorizontal="16dp">
 
-            <TextView
+            <!--<TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="About me"
@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="I am currently a PhD student in the LS2N laboratory in Nantes. I am working on Constraint Programming (CP). If you enjoyed this app, and want to support me you can donate with the $ button."
-                android:textSize="16sp" />
+                android:textSize="16sp" />-->
 
             <TextView
                 android:layout_width="wrap_content"
@@ -52,7 +52,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="I am making this app as a way to learn android development, and as a nice way to use CP in a project. In practice, the whole point of logic games is to solve them by yourself, but is is a nice way to show the power CP. On top of that, an app competition took place in the CP community. All the code is available in github (the octocat icon). Feel free to look at the code. All the CP solving is done in the `model` package if you want to learn how to use choco-solver."
+                android:text="I am making this app as a way to learn android development, and as a nice way to use CP in a project. In practice, the whole point of logic games is to solve them by yourself, but is is a nice way to show the power CP. On top of that, an app competition took place in the CP community. All the code will be available in github (the octocat icon, only after the competition, for blind review purpose). Feel free to look at the code. All the CP solving is done in the `model` package if you want to learn how to use choco-solver."
                 android:textSize="16sp" />
 
             <TextView

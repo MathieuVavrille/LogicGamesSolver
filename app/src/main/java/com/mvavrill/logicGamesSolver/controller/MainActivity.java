@@ -1,6 +1,7 @@
 package com.mvavrill.logicGamesSolver.controller;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -100,8 +102,13 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.top_bar_donate:
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.buymeacoffee.com/tiouz"));
-                startActivity(browserIntent);
+                /*Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.buymeacoffee.com/tiouz"));
+                startActivity(browserIntent);*/
+                Context context = getApplicationContext();
+                CharSequence text = "Link available after the competition for blind review reasons.";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
                 return true;
             case R.id.top_bar_about:
                 Intent aboutIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, InformationActivity.class);

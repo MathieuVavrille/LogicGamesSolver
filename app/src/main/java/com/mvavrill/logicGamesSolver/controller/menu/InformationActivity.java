@@ -2,12 +2,14 @@ package com.mvavrill.logicGamesSolver.controller.menu;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.MaterialToolbar;
 import com.mvavrill.logicGamesSolver.R;
@@ -24,14 +26,28 @@ public class InformationActivity extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Context context;
+        CharSequence text;
+        int duration;
+        Toast toast;
         switch (item.getItemId()) {
             case R.id.information_donate:
-                Intent donationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.buymeacoffee.com/tiouz"));
-                startActivity(donationIntent);
+                /*Intent donationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.buymeacoffee.com/tiouz"));
+                startActivity(donationIntent);*/
+                context = getApplicationContext();
+                text = "Link available after the competition for blind review reasons.";
+                duration = Toast.LENGTH_SHORT;
+                toast = Toast.makeText(context, text, duration);
+                toast.show();
                 return true;
             case R.id.information_github:
-                Intent githubIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/MathieuVavrille/LogicGamesSolver"));
-                startActivity(githubIntent);
+                /*Intent githubIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/MathieuVavrille/LogicGamesSolver"));
+                startActivity(githubIntent);*/
+                context = getApplicationContext();
+                text = "Link available after the competition for blind review reasons.";
+                duration = Toast.LENGTH_SHORT;
+                toast = Toast.makeText(context, text, duration);
+                toast.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
