@@ -26,28 +26,14 @@ public class InformationActivity extends AppCompatActivity {
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Context context;
-        CharSequence text;
-        int duration;
-        Toast toast;
         switch (item.getItemId()) {
             case R.id.information_donate:
-                /*Intent donationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.buymeacoffee.com/tiouz"));
-                startActivity(donationIntent);*/
-                context = getApplicationContext();
-                text = "Link available after the competition for blind review reasons.";
-                duration = Toast.LENGTH_SHORT;
-                toast = Toast.makeText(context, text, duration);
-                toast.show();
+                Intent donationIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.buymeacoffee.com/tiouz"));
+                startActivity(donationIntent);
                 return true;
             case R.id.information_github:
-                /*Intent githubIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/MathieuVavrille/LogicGamesSolver"));
-                startActivity(githubIntent);*/
-                context = getApplicationContext();
-                text = "Link available after the competition for blind review reasons.";
-                duration = Toast.LENGTH_SHORT;
-                toast = Toast.makeText(context, text, duration);
-                toast.show();
+                Intent githubIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/MathieuVavrille/LogicGamesSolver"));
+                startActivity(githubIntent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
