@@ -1,7 +1,6 @@
 package com.mvavrill.logicGamesSolver.controller;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -11,7 +10,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -21,6 +19,7 @@ import androidx.core.content.ContextCompat;
 import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.games.bridges.BridgesActivity;
 import com.mvavrill.logicGamesSolver.controller.games.kakuro.KakuroActivity;
+import com.mvavrill.logicGamesSolver.controller.games.rikudo.RikudoActivity;
 import com.mvavrill.logicGamesSolver.controller.games.slitherlink.SlitherlinkActivity;
 import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuActivity;
 import com.mvavrill.logicGamesSolver.controller.menu.InformationActivity;
@@ -39,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
         // Toolbar
         Toolbar topAppBar = (Toolbar) findViewById(R.id.main_top_app_bar);
         setSupportActionBar(topAppBar);
-        //Settings
 
         // Buttons
         Button sudoku = findViewById(R.id.main_button_sudoku);
@@ -47,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
             Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, SudokuActivity.class);
             startActivity(gridActivityIntent);
         });
-        ImageButton sudokuCamera = findViewById(R.id.main_button_sudoku_camera);
+        ImageButton sudokuCamera = (ImageButton) findViewById(R.id.main_button_sudoku_camera);
         sudokuCamera.setOnClickListener(view -> {
             if (hasCameraPermission()) {
                 Intent sudokuCameraIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, SudokuCameraActivity.class);
@@ -69,6 +67,11 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
         Button bridges = findViewById(R.id.main_button_bridges);
         bridges.setOnClickListener(view -> {
             Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, BridgesActivity.class);
+            startActivity(gridActivityIntent);
+        });
+        Button rikudo = findViewById(R.id.main_button_rikudo);
+        bridges.setOnClickListener(view -> {
+            Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, RikudoActivity.class);
             startActivity(gridActivityIntent);
         });
         /*Button test = findViewById(R.id.main_test);
