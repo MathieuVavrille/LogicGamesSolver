@@ -14,25 +14,26 @@ import androidx.annotation.Nullable;
 import com.mvavrill.logicGamesSolver.controller.games.rikudo.RikudoActivity;
 import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuActivity;
 import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
+import com.mvavrill.logicGamesSolver.model.games.rikudo.RikudoGrid;
 import com.mvavrill.logicGamesSolver.view.games.DrawCell;
 import com.mvavrill.logicGamesSolver.view.games.UpdatableView;
 
 import org.javatuples.Triplet;
 
+import java.util.List;
+
 /**
  * Draws the Digit cells. The boolean tells if it should draw hint or not. The integer is 1 if it is solved, 2 if failed, and 0 otherwise.
  */
-public class RikudoView extends View implements GestureDetector.OnGestureListener, UpdatableView<Triplet<DigitCell[][],Boolean,Integer>> {
+public class RikudoView extends View implements GestureDetector.OnGestureListener, UpdatableView<RikudoGrid<DigitCell>> {
 
     private RikudoActivity rikudoActivity;
 
-    private float gridWidth;
+    private int gridWidth;
     private float gridSeparatorSize;
     private float cellWidth;
 
-    private DigitCell[][] grid = new DigitCell[9][9];
-    private boolean drawHints = false;
-    private int satisfiable = 0;
+    private RikudoGrid<DigitCell> grid = RikudoGrid.generateInitialGrid();
 
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private GestureDetector gestureDetector;
@@ -54,36 +55,21 @@ public class RikudoView extends View implements GestureDetector.OnGestureListene
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        gridSeparatorSize = w / 180f;
-        gridWidth = w;                                  // Size of the grid (it's a square)
-        cellWidth = gridWidth / 9f;
+        gridWidth = w;
+        cellWidth = gridWidth / (float) grid.getGrid().size();
+        gridSeparatorSize = cellWidth / 20f;
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
+        float cellRadius = (float) Math.sqrt(cellWidth*cellWidth/3);
         paint.setTextAlign(Paint.Align.CENTER);
-        for (int y = 0; y < 9; y++) {
-            for (int x = 0; x < 9; x++) {
-                DrawCell.draw(canvas, grid[y][x], x * cellWidth, y * cellWidth, cellWidth, drawHints, satisfiable);
+        List<List<DigitCell>> gridCells = grid.getGrid();
+        for (int i = 0; i < gridCells.size(); i++) {
+            for (int j = 0; j < gridCells.get(i).size(); j++) {
+                DrawCell.drawHexagon(canvas, gridCells.get(i).get(j), j * cellWidth + cellWidth*(Math.abs(gridCells.size()/2-i)+1)/2f, 3 * i * cellRadius / 2 + cellRadius, cellWidth, gridSeparatorSize, i==gridCells.size()/2 && j == gridCells.size()/2);
             }
         }
-        drawGridLines(canvas);
-    }
-
-    private void drawGridLines(final Canvas canvas) {
-        paint.setColor(Color.GRAY);
-        paint.setStrokeWidth(gridSeparatorSize / 2);
-        for (int i = 0; i <= 9; i++) {
-            canvas.drawLine(i * cellWidth, 0, i * cellWidth, gridWidth, paint);
-            canvas.drawLine(0, i * cellWidth, gridWidth, i * cellWidth, paint);
-        }
-        paint.setColor(Color.BLACK);
-        paint.setStrokeWidth(gridSeparatorSize);
-        for (int i = 0; i <= 3; i++) {
-            canvas.drawLine(i * (cellWidth * 3), 0, i * (cellWidth * 3), gridWidth, paint);
-            canvas.drawLine(0, i * (cellWidth * 3), gridWidth, i * (cellWidth * 3), paint);
-        }
-
     }
 
     @Override
@@ -104,10 +90,23 @@ public class RikudoView extends View implements GestureDetector.OnGestureListene
 
     @Override
     public boolean onSingleTapUp(MotionEvent e) {
-        if (e.getY() < gridWidth) {
-            int cellX = (int) (e.getX() / cellWidth);
-            int cellY = (int) (e.getY() / cellWidth);
-            rikudoActivity.isClicked(cellY, cellX);
+        float cellRadius = (float) Math.sqrt(cellWidth*cellWidth/3);
+        double minDistance = Double.POSITIVE_INFINITY;
+        int bestI = 0;
+        int bestJ = 0;
+        List<List<DigitCell>> gridCells = grid.getGrid();
+        for (int i = 0; i < gridCells.size(); i++) {
+            for (int j = 0; j < gridCells.get(i).size(); j++) {
+                double distance = Math.pow(j * cellWidth + cellWidth * (Math.abs(gridCells.size() / 2 - i) + 1) / 2f - e.getX(), 2) + Math.pow(3 * i * cellRadius / 2 + cellRadius - e.getY(), 2);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    bestI = i;
+                    bestJ = j;
+                }
+            }
+        }
+        if (bestI != gridCells.size()/2 || bestJ != gridCells.size()/2) {
+            rikudoActivity.isClicked(bestI, bestJ);
         }
         return true;
     }
@@ -127,19 +126,18 @@ public class RikudoView extends View implements GestureDetector.OnGestureListene
         return false;
     }
 
-    public void setGrid(final DigitCell[][] grid) {
+    /*public void setGrid(final RikudoGrid<DigitCell> grid) {
         this.grid = grid;
         invalidate();
-    }
+    }*/
 
     public void setGridActivity(RikudoActivity rikudoInputActivity) {
         this.rikudoActivity = rikudoInputActivity;
     }
 
-    public void update(Triplet<DigitCell[][],Boolean,Integer> grid) {
-        this.grid = grid.getValue0();
-        this.drawHints = grid.getValue1();
-        this.satisfiable = grid.getValue2();
+    public void update(final RikudoGrid<DigitCell> grid) {
+        this.grid = grid;
+        onSizeChanged(gridWidth, gridWidth, gridWidth, gridWidth);
         invalidate();
     }
 }

@@ -3,6 +3,7 @@ package com.mvavrill.logicGamesSolver.view.games;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.Log;
 
 import com.mvavrill.logicGamesSolver.model.cells.*;
@@ -87,5 +88,25 @@ public class DrawCell {
             draw(canvas, (DoubleIntCell) cell, x, y, cellWidth);
         else if (cell instanceof EmptyCell)
             draw(canvas, (EmptyCell) cell, x, y, cellWidth);
+    }
+
+    public static void drawHexagon(final Canvas canvas, final DigitCell cell, final float x, final float y, final float cellWidth, final float lineWidth, final boolean blackFill) {
+        Path hexagonPath = new Path();
+        float radius = (float) Math.sqrt(cellWidth*cellWidth/3f);
+        hexagonPath.moveTo(x+cellWidth/2, y+radius/2);
+        hexagonPath.lineTo(x, y+radius);
+        hexagonPath.lineTo(x-cellWidth/2, y+radius/2);
+        hexagonPath.lineTo(x-cellWidth/2, y-radius/2);
+        hexagonPath.lineTo(x, y-radius);
+        hexagonPath.lineTo(x+cellWidth/2, y-radius/2);
+        hexagonPath.lineTo(x+cellWidth/2, y+radius/2);
+        hexagonPath.close();
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(blackFill ? Color.BLACK : Color.WHITE);
+        canvas.drawPath(hexagonPath, paint);
+        paint.setColor(Color.BLACK);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(lineWidth);
+        canvas.drawPath(hexagonPath, paint);
     }
 }

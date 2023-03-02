@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
             startActivity(gridActivityIntent);
         });
         Button rikudo = findViewById(R.id.main_button_rikudo);
-        bridges.setOnClickListener(view -> {
+        rikudo.setOnClickListener(view -> {
             Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, RikudoActivity.class);
             startActivity(gridActivityIntent);
         });

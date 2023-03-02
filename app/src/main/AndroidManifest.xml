@@ -17,31 +17,6 @@
         android:theme="@style/Theme.LogicGamesSolver"
         tools:targetApi="31">
         <activity
-            android:name=".controller.menu.InformationActivity"
-            android:exported="false" />
-        <activity
-            android:name=".controller.menu.SettingsActivity"
-            android:exported="false" />
-        <activity
-            android:name=".controller.games.bridges.BridgesActivity"
-            android:exported="false" />
-        <activity
-            android:name=".controller.SudokuCameraActivity"
-            android:exported="false"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".controller.games.slitherlink.SlitherlinkActivity"
-            android:exported="false"
-            android:screenOrientation="fullSensor" />
-        <activity
-            android:name=".controller.games.kakuro.KakuroActivity"
-            android:exported="false"
-            android:screenOrientation="fullSensor" />
-        <activity
-            android:name=".controller.games.sudoku.SudokuActivity"
-            android:exported="false"
-            android:screenOrientation="fullSensor" />
-        <activity
             android:name=".controller.MainActivity"
             android:exported="true"
             android:label="Logic Games Solver"
@@ -51,6 +26,36 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".controller.menu.InformationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controller.menu.SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".controller.SudokuCameraActivity"
+            android:exported="false"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".controller.games.sudoku.SudokuActivity"
+            android:exported="false"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".controller.games.kakuro.KakuroActivity"
+            android:exported="false"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".controller.games.slitherlink.SlitherlinkActivity"
+            android:exported="false"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".controller.games.bridges.BridgesActivity"
+            android:exported="false"
+            android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".controller.games.rikudo.RikudoActivity"
+            android:exported="false"
+            android:screenOrientation="fullSensor" />
     </application>
 
 </manifest>

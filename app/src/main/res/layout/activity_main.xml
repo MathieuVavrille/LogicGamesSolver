@@ -93,7 +93,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="30dp"
+                    android:layout_marginEnd="30dp"
                     android:text="Kakuro"
                     android:textSize="30sp" />
             </RelativeLayout>
@@ -113,10 +113,10 @@
                     android:id="@+id/main_button_rikudo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="30dp"
-                    android:text="Kakuro"
+                    android:layout_marginStart="30dp"
+                    android:text="Rikudo"
                     android:textSize="30sp" />
             </RelativeLayout>
 

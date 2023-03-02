@@ -4,69 +4,152 @@ import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
 
 import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
+import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
-import org.chocosolver.util.iterators.DisposableValueIterator;
-import org.chocosolver.util.tools.ArrayUtils;
+import org.javatuples.Pair;
+import org.javatuples.Quartet;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class RikudoSolver {
 
-    private final int[][] grid;
+    private final RikudoGrid<Integer> rikudoGrid;
 
-    public RikudoSolver(final int[][] grid) {
-        this.grid = grid;
+    public RikudoSolver(final RikudoGrid<Integer> rikudoGrid) {
+        this.rikudoGrid = rikudoGrid;
     }
 
-    public DigitCell[][] extractInformation() {
-        Model model = new Model("Sudoku");
-        IntVar[][] vars = model.intVarMatrix(9, 9 , 1, 9);
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                if (grid[i][j] != 0) {
-                    vars[i][j].eq(grid[i][j]).post();
-                }
-            }
-        }
-        for (int line = 0; line < 9; line++)
-            model.allDifferent(vars[line]).post();
-        for (int column = 0; column < 9; column++)
-            model.allDifferent(ArrayUtils.getColumn(vars, column)).post();
-        for (int I = 0; I < 3; I++) {
-            for (int J = 0; J < 3; J++) {
-                model.allDifferent(vars[3 * I][3 * J], vars[3 * I + 1][3 * J], vars[3 * I + 2][3 * J], vars[3 * I][3 * J + 1], vars[3 * I + 1][3 * J + 1], vars[3 * I + 2][3 * J + 1], vars[3 * I][3 * J + 2], vars[3 * I + 1][3 * J + 2], vars[3 * I + 2][3 * J + 2]).post();
-            }
-        }
-        Solver solver = model.getSolver();
+    public List<List<DigitCell>> extractInformation() {
+        Pair<Model,IntVar[][]> modelAndVars = makeModel();
+        Solver solver = modelAndVars.getValue0().getSolver();
+        IntVar[][] vars = modelAndVars.getValue1();
         try {
             solver.propagate();
         }
         catch (Exception e) {
             return null;
         }
-        DigitCell[][] propagatedGrid = gridFromVars(vars);
+        List<List<DigitCell>> propagatedGrid = gridFromVars(vars);
         if (!solver.solve())
             return null;
-        DigitCell[][] solvedGrid = gridFromVars(vars);
+        List<List<DigitCell>> solvedGrid = gridFromVars(vars);
         if (solver.solve())
             return propagatedGrid;
         else
             return solvedGrid;
     }
 
-    private DigitCell[][] gridFromVars(final IntVar[][] vars) {
-        DigitCell[][] res = new DigitCell[9][9];
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                if (vars[i][j].isInstantiated())
-                    res[i][j] = new DigitCell(grid[i][j] != 0, vars[i][j].getValue());
-                else {
-                    boolean[] hints = new boolean[10];
-                    DisposableValueIterator iterator = vars[i][j].getValueIterator(true);
-                    while(iterator.hasNext()){
-                        hints[iterator.next()] = true;
+    private Pair<Model, IntVar[][]> makeModel() {
+        List<List<Integer>> initialValues = rikudoGrid.getGrid();
+        List<Quartet<Integer,Integer,Integer,Integer>> fixedEdges = rikudoGrid.getFixedEdges();
+        int n = initialValues.get(0).size();
+        Model model = new Model("Test");
+        int nbVars = 3*n*(n-1);
+        // Variables
+        IntVar[][] vars = new IntVar[2*n-1][];
+        for (int i = 0; i < 2*n-1; i++) {
+            vars[i] = model.intVarArray("X-"+i, 2*n-1-Math.abs(i-n+1), 1, nbVars);
+        }
+        vars[n-1][n-1].eq(1); // Necessary to have a single solution, preferably it would be null
+        // Creation of edges
+        List<List<List<BoolVar>> > inEdges = Arrays.stream(vars).map(line -> Arrays.stream(vars).map(v -> (List<BoolVar>) new ArrayList<BoolVar>()).collect(Collectors.toList())).collect(Collectors.toList());
+        List<List<List<BoolVar>> > outEdges = Arrays.stream(vars).map(line -> Arrays.stream(vars).map(v -> (List<BoolVar>) new ArrayList<BoolVar>()).collect(Collectors.toList())).collect(Collectors.toList());
+        for (int i = 0; i < 2*n-1; i++) {
+            int lowerOffset = i >= n-1 ? -1 : 0;
+            for (int j = 0; j < vars[i].length; j++) {
+                if (isNotCenter(i,j,n)) {
+                    if (j < vars[i].length-1 && isNotCenter(i, j+1,n)) {
+                        createAddEdge(i, j, i, j+1, fixedEdges.contains(new Quartet<>(i,j,i,j+1)), vars, inEdges, outEdges, model, "O-", "E-");
                     }
-                    res[i][j] = new DigitCell(hints);
+                    //System.out.println(Arrays.toString(vars[i+1]));
+                    if (i+1 < vars.length && j+lowerOffset+1 < vars[i+1].length && isNotCenter(i+1, j+lowerOffset+1,n)) {
+                        createAddEdge(i, j, i+1, j+lowerOffset+1, fixedEdges.contains(new Quartet<>(i,j,i+1,j+lowerOffset+1)), vars, inEdges, outEdges, model, "SE-", "NO-");
+                    }
+                    if (i+1 < vars.length && 0 <= j+lowerOffset && isNotCenter(i+1, j+lowerOffset,n)) {
+                        createAddEdge(i, j, i+1, j+lowerOffset, fixedEdges.contains(new Quartet<>(i,j,i+1,j+lowerOffset)), vars, inEdges, outEdges, model, "SO-", "NE-");
+                    }
                 }
             }
+        }
+        // Constraints on edges
+        boolean has1 = false;
+        boolean hasMax = false;
+        for (int i = 0; i < 2*n-1; i++) {
+            for (int j = 0; j < vars[i].length; j++) {
+                if (isNotCenter(i,j,n)) {
+                    model.sum(listToArray(inEdges.get(i).get(j)), "=", initialValues.get(i).get(j) == 1 ? 0 : 1).post();
+                    model.sum(listToArray(outEdges.get(i).get(j)), "=", initialValues.get(i).get(j) == nbVars ? 0 : 1).post();
+                    if (initialValues.get(i).get(j) != 0) {
+                        has1 = has1 || initialValues.get(i).get(j) == 1;
+                        hasMax = hasMax || initialValues.get(i).get(j) == nbVars;
+                    }
+                }
+            }
+        }
+        if (!hasMax || !has1)
+            throw new IllegalStateException("You should input 1 and " + nbVars);
+        // Add AllDifferent constraint
+        int varCpt = 0;
+        IntVar[] flattendVars = new IntVar[nbVars];
+        for (int i = 0; i < vars.length; i++) {
+            for (int j = 0; j < vars[i].length; j++) {
+                if (isNotCenter(i,j,n)) {
+                    flattendVars[varCpt++] = vars[i][j];
+                }
+            }
+        }
+        model.allDifferent(flattendVars).post();
+        //System.out.println(model);
+
+        for (int i = 0; i < 2*n-1; i++) {
+            for (int j = 0; j < vars[i].length; j++) {
+                if (isNotCenter(i,j,n)) {
+                    System.out.println(i + " " + j);
+                    System.out.println(inEdges.get(i).get(j));
+                    System.out.println(outEdges.get(i).get(j));
+                }
+            }
+        }
+        return new Pair<>(model, vars);
+    }
+
+    private BoolVar[] listToArray(final List<BoolVar> list) {
+        return list.toArray(new BoolVar[0]);
+    }
+
+    private boolean isNotCenter(final int i, final int j, final int n) {
+        return i != n-1 || j != n-1;
+    }
+
+    private void createAddEdge(final int startI, final int startJ, final int endI, final int endJ, final boolean isFixed, final IntVar[][] vars, final List<List<List<BoolVar>> > inEdges, final List<List<List<BoolVar>> > outEdges, final Model model, final String outName, final String inName) {
+        System.out.println(startI + " " + startJ + " " + endI + " " + endJ);
+        BoolVar leftOut = model.boolVar(outName+startI+"-"+startJ);
+        outEdges.get(startI).get(startJ).add(leftOut);
+        inEdges.get(endI).get(endJ).add(leftOut);
+        model.reifyXeqYC(vars[startI][startJ], vars[endI][endJ], -1, leftOut); // leftOut <==> X+1 = Y
+        BoolVar leftIn = model.boolVar(inName+endI+"-"+endJ);
+        inEdges.get(startI).get(startJ).add(leftIn);
+        outEdges.get(endI).get(endJ).add(leftIn);
+        model.reifyXeqYC(vars[startI][startJ], vars[endI][endJ], 1, leftIn); // leftIn <==> X = Y+1
+        model.sum(new IntVar[]{leftOut,leftIn}, isFixed ? "=" : "<=", 1).post(); // Optional, to ensure that there is not the edge on both ways for faster propagation
+    }
+
+    private List<List<DigitCell>> gridFromVars(final IntVar[][] vars) {
+        List<List<DigitCell>> res = new ArrayList<List<DigitCell>>();
+        for (int i = 0; i < vars.length; i++) {
+            List<DigitCell> resLine = new ArrayList<DigitCell>();
+            for (int j = 0; j < vars[i].length; j++) {
+                if (vars[i][j].isInstantiated())
+                    resLine.add(new DigitCell(rikudoGrid.getGrid().get(i).get(j) != 0,  vars[i][j].getValue()));
+                else {
+                    boolean[] hints = null;
+                    resLine.add(new DigitCell(hints));
+                }
+            }
+            res.add(resLine);
         }
         return res;
     }
