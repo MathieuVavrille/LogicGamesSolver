@@ -13,3 +13,6 @@
 .externalNativeBuild
 .cxx
 local.properties
+app/release/**
+sdk/java/javadoc/**
+sdk/build/**
