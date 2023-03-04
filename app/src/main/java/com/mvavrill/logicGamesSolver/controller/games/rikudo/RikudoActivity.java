@@ -1,7 +1,7 @@
 package com.mvavrill.logicGamesSolver.controller.games.rikudo;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +15,8 @@ import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
 import com.mvavrill.logicGamesSolver.model.games.rikudo.RikudoGrid;
 import com.mvavrill.logicGamesSolver.model.games.rikudo.RikudoSolver;
 import com.mvavrill.logicGamesSolver.view.games.rikudo.RikudoView;
+
+import org.javatuples.Quartet;
 
 import java.util.List;
 
@@ -31,16 +33,13 @@ public class RikudoActivity extends AppCompatActivity implements CallbackWithInt
 
     private static final int minimumSize = 2;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rikudo);
         decreaseButton = findViewById(R.id.rikudo_button_decrease);
         decreaseButton.setOnClickListener(view -> {
-            /*if (gridHistory.getCurrent().getGrid().get(0).size() <= minimumSize + 1) {
-                decreaseButton.setEnabled(false);
-                return;
-            }*/
             RikudoGrid<DigitCell> current = gridHistory.getCurrent();
             gridHistory.addElement(current.decreaseSize());
             if (gridHistory.getCurrent().getGrid().get(0).size() <= minimumSize)
@@ -61,33 +60,60 @@ public class RikudoActivity extends AppCompatActivity implements CallbackWithInt
         gridHistory = new GridHistory<>(undoButton, redoButton, initialGrid, rikudoView, this);
         Button exitButton = findViewById(R.id.rikudo_button_back);
         exitButton.setOnClickListener(view -> finish());
+        rikudoView.setOnTouchListener(rikudoView);
     }
 
     public void isClicked(int i, int j) {
-        Log.d("Mat", "Clicked " + i + " " + j);
-        /*RikudoGrid<DigitCell> current = gridHistory.getCurrent();
-        RikudoGrid<Integer> integerGrid = RikudoGrid.extractCells(current);
+        System.out.println("Clicked " + i + " " + j);
+        RikudoGrid<DigitCell> current = gridHistory.getCurrent();
+        RikudoGrid<Integer> integerGrid = RikudoGrid.extractFixedCells(current);
+        System.out.println(i + " " + j + " " + integerGrid);
         if (integerGrid.getGrid().get(i).get(j) != 0) {
+            System.out.println("removed");
             integerGrid.getGrid().get(i).set(j, 0);
             solveAndAdd(integerGrid);
         } else {
+            System.out.println("added");
             Bundle b = new Bundle();
             b.putSerializable("i", i);
             b.putSerializable("j", j);
             new PopupNumberFragment(b, this).show(getSupportFragmentManager(), "");
-        }*/
+        }
     }
 
     private void solveAndAdd(final RikudoGrid<Integer> grid) {
         List<List<DigitCell>> solvedGrid = new RikudoSolver(grid).extractInformation();
+        System.out.println("solved " + solvedGrid);
         if (solvedGrid != null) {
             gridHistory.addElement(new RikudoGrid<>(solvedGrid, grid.getFixedEdges()));
         }
     }
 
     private void newFixed(final int i, final int j, final int v) {
-        RikudoGrid<Integer> currentGrid = RikudoGrid.extractCells(gridHistory.getCurrent());
+        System.out.println(i + " " + j + " " + v);
+        RikudoGrid<Integer> currentGrid = RikudoGrid.extractFixedCells(gridHistory.getCurrent());
         currentGrid.getGrid().get(i).set(j,v);
+        solveAndAdd(currentGrid);
+    }
+
+    public void newFixedEdge(final int si, final int sj, final int ei, final int ej) {
+        if (si > ei || si == ei && sj > ej) {
+            newFixedEdge(ei, ej, si, sj);
+        }
+        RikudoGrid<Integer> currentGrid = RikudoGrid.extractFixedCells(gridHistory.getCurrent());
+        int n = currentGrid.getGrid().get(0).size();
+        int lowerOffset = si >= n-1 ? -1 : 0;
+        if (si == ei && sj+1 == ej ||
+        si+1 == ei && sj+lowerOffset+1 == ej ||
+        si+1 == ei && sj+lowerOffset == ej) {
+            Quartet<Integer,Integer,Integer,Integer> edge = new Quartet<>(si, sj, ei, ej);
+            if (currentGrid.getFixedEdges().contains(edge)) {
+                currentGrid.getFixedEdges().remove(edge);
+            }
+            else {
+                currentGrid.getFixedEdges().add(edge);
+            }
+        }
         solveAndAdd(currentGrid);
     }
 

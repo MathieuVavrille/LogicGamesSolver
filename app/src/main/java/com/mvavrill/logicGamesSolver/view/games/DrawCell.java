@@ -4,9 +4,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.util.Log;
 
-import com.mvavrill.logicGamesSolver.model.cells.*;
+import com.mvavrill.logicGamesSolver.model.cells.Cell;
+import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
+import com.mvavrill.logicGamesSolver.model.cells.DoubleIntCell;
+import com.mvavrill.logicGamesSolver.model.cells.EmptyCell;
 
 public class DrawCell {
 
@@ -49,7 +51,7 @@ public class DrawCell {
             }
         } else {
             if (cell.isFixed())
-                drawBackground(canvas,x,y,cellWidth,new int[]{0xFFF0F0F0, 0xFFE0FFE0, 0xFFFFE0E0}[satisfiable]);
+                drawBackground(canvas,x,y,cellWidth,new int[]{0xF0F0F0F0, 0xFFE0FFE0, 0xFFFFE0E0}[satisfiable]);
             else
                 drawWhiteBackground(canvas,x,y,cellWidth);
             paint.setColor(Color.BLACK);
@@ -102,11 +104,17 @@ public class DrawCell {
         hexagonPath.lineTo(x+cellWidth/2, y+radius/2);
         hexagonPath.close();
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(blackFill ? Color.BLACK : Color.WHITE);
+        paint.setColor(blackFill ? Color.BLACK : (cell.isFixed() ? 0xF0F0F0F0 : Color.WHITE));
         canvas.drawPath(hexagonPath, paint);
         paint.setColor(Color.BLACK);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(lineWidth);
         canvas.drawPath(hexagonPath, paint);
+        paint.setTextSize(cellWidth * 0.7f);
+        paint.setStrokeWidth(cellWidth/100f);
+        paint.setStyle(Paint.Style.FILL_AND_STROKE);
+        if (cell.getValue() != 0) {
+            canvas.drawText("" + cell.getValue(), x, y+cellWidth/4f, paint);
+        }
     }
 }

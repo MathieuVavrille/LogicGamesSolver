@@ -1,5 +1,7 @@
 package com.mvavrill.logicGamesSolver.model.games.rikudo;
 
+import androidx.annotation.NonNull;
+
 import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
 
 import org.javatuples.Quartet;
@@ -17,8 +19,8 @@ public class RikudoGrid<T> {
         this.fixedEdges = fixedEdges;
     }
 
-    public RikudoGrid copy() {
-        return new RikudoGrid(grid.stream().map(ArrayList::new).collect(Collectors.toList()), new ArrayList<>(fixedEdges));
+    public RikudoGrid<T> copy() {
+        return new RikudoGrid<>(grid.stream().map(ArrayList::new).collect(Collectors.toList()), new ArrayList<>(fixedEdges));
     }
 
     public List<List<T>> getGrid() {
@@ -27,12 +29,6 @@ public class RikudoGrid<T> {
 
     public List<Quartet<Integer, Integer, Integer, Integer>> getFixedEdges() {
         return fixedEdges;
-    }
-
-    public static RikudoGrid<Integer> extractFixed(final RikudoGrid<DigitCell> cellGrid) {
-        return new RikudoGrid<Integer>(cellGrid.getGrid().stream()
-                .map(line -> line.stream().map(cell -> cell.isFixed() ? cell.getValue() : 0).collect(Collectors.toList()))
-                .collect(Collectors.toList()), cellGrid.getFixedEdges());
     }
 
     /** Removes one layer, on the right and the bottom */
@@ -44,7 +40,7 @@ public class RikudoGrid<T> {
             newLine.remove(newLine.size()-1); // pop last element
             newGrid.add(newLine);
         }
-        return new RikudoGrid<T>(newGrid, fixedEdges.stream()
+        return new RikudoGrid<>(newGrid, fixedEdges.stream()
                 .filter(q -> q.getValue0() < newGrid.size()
                         && q.getValue1() < newGrid.get(q.getValue1()).size()
                         && q.getValue2() < newGrid.size()
@@ -57,7 +53,7 @@ public class RikudoGrid<T> {
     public static RikudoGrid<DigitCell> increaseSize(final RikudoGrid<DigitCell> smallGrid) {
         List<List<DigitCell>> grid = smallGrid.getGrid();
         List<List<DigitCell>> newGrid = new ArrayList<>();
-        List<DigitCell> addedLine = new ArrayList<DigitCell>();
+        List<DigitCell> addedLine = new ArrayList<>();
         for (int i = 0; i < grid.get(0).size()+1; i++) {
             addedLine.add(new DigitCell(false, 0));
         }
@@ -69,22 +65,28 @@ public class RikudoGrid<T> {
             newGrid.add(newLine);
         }
         newGrid.add(addedLine);
-        return new RikudoGrid<DigitCell>(newGrid, smallGrid.getFixedEdges());
+        return new RikudoGrid<>(newGrid, smallGrid.getFixedEdges());
     }
 
     public static RikudoGrid<DigitCell> generateInitialGrid() {
-        return new RikudoGrid<DigitCell>(List.of(
-                List.of(new DigitCell(false,0),new DigitCell(false,0),new DigitCell(false,0)),
-                List.of(new DigitCell(false,0),new DigitCell(false,0),new DigitCell(false,0),new DigitCell(false,0)),
-                List.of(new DigitCell(false,0),new DigitCell(false,0),new DigitCell(false,0),new DigitCell(false,0),new DigitCell(false,0)),
-                List.of(new DigitCell(false,0),new DigitCell(false,0),new DigitCell(false,0),new DigitCell(false,0)),
-                List.of(new DigitCell(false,0),new DigitCell(false,0),new DigitCell(false,0))
+        return new RikudoGrid<>(List.of(
+                List.of(new DigitCell(false, 0), new DigitCell(false, 0), new DigitCell(false, 0)),
+                List.of(new DigitCell(false, 0), new DigitCell(false, 0), new DigitCell(false, 0), new DigitCell(false, 0)),
+                List.of(new DigitCell(false, 0), new DigitCell(false, 0), new DigitCell(false, 0), new DigitCell(false, 0), new DigitCell(false, 0)),
+                List.of(new DigitCell(false, 0), new DigitCell(false, 0), new DigitCell(false, 0), new DigitCell(false, 0)),
+                List.of(new DigitCell(false, 0), new DigitCell(false, 0), new DigitCell(false, 0))
         ), new ArrayList<>());
     }
 
-    public static RikudoGrid<Integer> extractCells(final RikudoGrid<DigitCell> cellGrid) {
-        return new RikudoGrid<Integer>(cellGrid.getGrid().stream()
-                .map(line -> line.stream().map(DigitCell::getValue).collect(Collectors.toList()))
+    public static RikudoGrid<Integer> extractFixedCells(final RikudoGrid<DigitCell> cellGrid) {
+        return new RikudoGrid<>(cellGrid.getGrid().stream()
+                .map(line -> line.stream().map(cell -> cell.isFixed() ? cell.getValue() : 0).collect(Collectors.toList()))
                 .collect(Collectors.toList()), new ArrayList<>(cellGrid.getFixedEdges()));
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return grid + " " + fixedEdges;
     }
 }
