@@ -60,7 +60,7 @@ public class RikudoActivity extends AppCompatActivity implements CallbackWithInt
         gridHistory = new GridHistory<>(undoButton, redoButton, initialGrid, rikudoView, this);
         Button exitButton = findViewById(R.id.rikudo_button_back);
         exitButton.setOnClickListener(view -> finish());
-        rikudoView.setOnTouchListener(rikudoView);
+        //rikudoView.setOnTouchListener(rikudoView);
     }
 
     public void isClicked(int i, int j) {

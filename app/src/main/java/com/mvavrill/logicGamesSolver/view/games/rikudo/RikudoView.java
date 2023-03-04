@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Draws the Digit cells. The boolean tells if it should draw hint or not. The integer is 1 if it is solved, 2 if failed, and 0 otherwise.
  */
-public class RikudoView extends View implements View.OnTouchListener, UpdatableView<RikudoGrid<DigitCell>> {
+public class RikudoView extends View implements UpdatableView<RikudoGrid<DigitCell>> {
 
     private RikudoActivity rikudoActivity;
 
@@ -143,8 +143,7 @@ public class RikudoView extends View implements View.OnTouchListener, UpdatableV
         invalidate();
     }
 
-    @Override
-    public boolean onTouch(View view, MotionEvent event) {
+    public boolean onTouchEvent(MotionEvent event) {
         int action = event.getAction();
         if (action==MotionEvent.ACTION_DOWN)
         {

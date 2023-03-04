@@ -1,11 +1,11 @@
 package com.mvavrill.logicGamesSolver.view.games.sudoku;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -21,7 +21,7 @@ import org.javatuples.Triplet;
 /**
  * Draws the Digit cells. The boolean tells if it should draw hint or not. The integer is 1 if it is solved, 2 if failed, and 0 otherwise.
  */
-public class SudokuView extends View implements GestureDetector.OnGestureListener, UpdatableView<Triplet<DigitCell[][],Boolean,Integer>> {
+public class SudokuView extends View implements UpdatableView<Triplet<DigitCell[][],Boolean,Integer>> {
 
     private SudokuActivity sudokuActivity;
 
@@ -34,20 +34,13 @@ public class SudokuView extends View implements GestureDetector.OnGestureListene
     private int satisfiable = 0;
 
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private GestureDetector gestureDetector;
 
     public SudokuView(Context context) {
         super(context);
-        init();
     }
 
     public SudokuView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init();
-    }
-
-    private void init() {
-        gestureDetector = new GestureDetector(getContext(), this);
     }
 
     @Override
@@ -85,45 +78,15 @@ public class SudokuView extends View implements GestureDetector.OnGestureListene
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        return gestureDetector.onTouchEvent(event);
-    }
-
-    @Override
-    public boolean onDown(MotionEvent motionEvent) {
-        this.onSingleTapUp(motionEvent);
-        return false;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent motionEvent) {
-
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        if (e.getY() < gridWidth) {
+    public boolean onTouchEvent(MotionEvent e) {
+        if (e.getAction() == MotionEvent.ACTION_DOWN && e.getY() < gridWidth) {
             int cellX = (int) (e.getX() / cellWidth);
             int cellY = (int) (e.getY() / cellWidth);
             sudokuActivity.isClicked(cellY, cellX);
         }
         return true;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent motionEvent) {
-
-    }
-
-    @Override
-    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-        return false;
     }
 
     public void setGrid(final DigitCell[][] grid) {
@@ -135,6 +98,7 @@ public class SudokuView extends View implements GestureDetector.OnGestureListene
         this.sudokuActivity = sudokuInputActivity;
     }
 
+    @Override
     public void update(Triplet<DigitCell[][],Boolean,Integer> grid) {
         this.grid = grid.getValue0();
         this.drawHints = grid.getValue1();

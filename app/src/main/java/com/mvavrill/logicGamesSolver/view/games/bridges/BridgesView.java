@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -16,7 +15,7 @@ import com.mvavrill.logicGamesSolver.view.games.UpdatableView;
 
 import org.javatuples.Triplet;
 
-public class BridgesView extends View implements GestureDetector.OnGestureListener, UpdatableView<Triplet<int[][],int[][],int[][]>> {
+public class BridgesView extends View implements UpdatableView<Triplet<int[][],int[][],int[][]>> {
 
     private BridgesActivity bridgesActivity;
     private int[][] islands;
@@ -30,18 +29,12 @@ public class BridgesView extends View implements GestureDetector.OnGestureListen
     private static final float islandSizeRatio = 0.46f;
 
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private GestureDetector gestureDetector;
 
     public BridgesView(Context context) {
         super(context);
-        init();
     }
     public BridgesView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init();
-    }
-    private void init() {
-        gestureDetector = new GestureDetector(getContext(), this);
     }
 
     @Override
@@ -141,44 +134,13 @@ public class BridgesView extends View implements GestureDetector.OnGestureListen
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        return gestureDetector.onTouchEvent(event);
-    }
-
-    @Override
-    public boolean onDown(MotionEvent motionEvent) {
-        this.onSingleTapUp(motionEvent);
-        return false;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent motionEvent) {
-
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        if (e.getY() < gridWidth) {
+    public boolean onTouchEvent(MotionEvent e) {
+        if (e.getAction() == MotionEvent.ACTION_DOWN && e.getY() < gridWidth) {
             int j = (int) (e.getX() / cellSize);
             int i = (int) (e.getY() / cellSize);
             bridgesActivity.isClicked(i, j);
         }
         return true;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent motionEvent) {
-
-    }
-
-    @Override
-    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-        return false;
     }
 
     public void setGridActivity(BridgesActivity bridgesActivity) {

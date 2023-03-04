@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -16,9 +15,8 @@ import com.mvavrill.logicGamesSolver.controller.games.slitherlink.SlitherlinkAct
 import com.mvavrill.logicGamesSolver.view.games.UpdatableView;
 
 import org.javatuples.Quartet;
-import org.javatuples.Triplet;
 
-public class SlitherlinkView extends View implements GestureDetector.OnGestureListener, UpdatableView<Quartet<int[][],int[][],int[][],boolean[][]>> {
+public class SlitherlinkView extends View implements UpdatableView<Quartet<int[][],int[][],int[][],boolean[][]>> {
 
     private SlitherlinkActivity slitherlinkActivity;
 
@@ -35,21 +33,15 @@ public class SlitherlinkView extends View implements GestureDetector.OnGestureLi
     private boolean[][] isInside;
 
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private GestureDetector gestureDetector;
 
     public SlitherlinkView(Context context) {
         super(context);
-        init();
     }
 
     public SlitherlinkView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init();
     }
 
-    private void init() {
-        gestureDetector = new GestureDetector(getContext(), this);
-    }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -148,44 +140,13 @@ public class SlitherlinkView extends View implements GestureDetector.OnGestureLi
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        return gestureDetector.onTouchEvent(event);
-    }
-
-    @Override
-    public boolean onDown(MotionEvent motionEvent) {
-        this.onSingleTapUp(motionEvent);
-        return false;
-    }
-
-    @Override
-    public void onShowPress(MotionEvent motionEvent) {
-
-    }
-
-    @Override
-    public boolean onSingleTapUp(MotionEvent e) {
-        if (gridOffset <= e.getY() && e.getY() < maxHeight && gridOffset < e.getX() && e.getX() < maxWidth) {
-            int j = (int) ((e.getX()-gridOffset) / cellSize);
-            int i = (int) ((e.getY()-gridOffset) / cellSize);
+    public boolean onTouchEvent(MotionEvent e) {
+        if (e.getAction() == MotionEvent.ACTION_DOWN && gridOffset <= e.getY() && e.getY() < maxHeight && gridOffset < e.getX() && e.getX() < maxWidth) {
+            int j = (int) ((e.getX() - gridOffset) / cellSize);
+            int i = (int) ((e.getY() - gridOffset) / cellSize);
             slitherlinkActivity.isClicked(i, j);
         }
         return true;
-    }
-
-    @Override
-    public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-        return false;
-    }
-
-    @Override
-    public void onLongPress(MotionEvent motionEvent) {
-
-    }
-
-    @Override
-    public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-        return false;
     }
 
     public void setGridActivity(SlitherlinkActivity slitherlinkActivity) {
