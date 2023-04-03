@@ -1,27 +1,5 @@
 package com.mvavrill.logicGamesSolver.controller;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.opencv.android.BaseLoaderCallback;
-import org.opencv.android.CameraActivity;
-import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
-import org.opencv.android.LoaderCallbackInterface;
-import org.opencv.android.OpenCVLoader;
-import org.opencv.android.Utils;
-import org.opencv.core.Core;
-import org.opencv.core.CvException;
-import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
-import org.opencv.core.MatOfPoint2f;
-import org.opencv.core.Point;
-import org.opencv.core.Size;
-import org.opencv.android.CameraBridgeViewBase;
-import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
-import org.opencv.imgproc.Imgproc;
-import org.opencv.imgproc.Moments;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -38,6 +16,28 @@ import com.google.mlkit.vision.text.TextRecognizer;
 import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuActivity;
 import com.mvavrill.logicGamesSolver.model.ProbabilisticDigit;
+
+import org.opencv.android.BaseLoaderCallback;
+import org.opencv.android.CameraActivity;
+import org.opencv.android.CameraBridgeViewBase;
+import org.opencv.android.CameraBridgeViewBase.CvCameraViewFrame;
+import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
+import org.opencv.android.LoaderCallbackInterface;
+import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
+import org.opencv.core.Core;
+import org.opencv.core.CvException;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint;
+import org.opencv.core.MatOfPoint2f;
+import org.opencv.core.Point;
+import org.opencv.core.Size;
+import org.opencv.imgproc.Imgproc;
+import org.opencv.imgproc.Moments;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class SudokuCameraActivity extends CameraActivity implements CvCameraViewListener2 {
     private final TextRecognizer textRecognizer = TextRecognition.getClient();

@@ -64,16 +64,12 @@ public class RikudoActivity extends AppCompatActivity implements CallbackWithInt
     }
 
     public void isClicked(int i, int j) {
-        System.out.println("Clicked " + i + " " + j);
         RikudoGrid<DigitCell> current = gridHistory.getCurrent();
         RikudoGrid<Integer> integerGrid = RikudoGrid.extractFixedCells(current);
-        System.out.println(i + " " + j + " " + integerGrid);
         if (integerGrid.getGrid().get(i).get(j) != 0) {
-            System.out.println("removed");
             integerGrid.getGrid().get(i).set(j, 0);
             solveAndAdd(integerGrid);
         } else {
-            System.out.println("added");
             Bundle b = new Bundle();
             b.putSerializable("i", i);
             b.putSerializable("j", j);
@@ -83,14 +79,12 @@ public class RikudoActivity extends AppCompatActivity implements CallbackWithInt
 
     private void solveAndAdd(final RikudoGrid<Integer> grid) {
         List<List<DigitCell>> solvedGrid = new RikudoSolver(grid).extractInformation();
-        System.out.println("solved " + solvedGrid);
         if (solvedGrid != null) {
             gridHistory.addElement(new RikudoGrid<>(solvedGrid, grid.getFixedEdges()));
         }
     }
 
     private void newFixed(final int i, final int j, final int v) {
-        System.out.println(i + " " + j + " " + v);
         RikudoGrid<Integer> currentGrid = RikudoGrid.extractFixedCells(gridHistory.getCurrent());
         currentGrid.getGrid().get(i).set(j,v);
         solveAndAdd(currentGrid);

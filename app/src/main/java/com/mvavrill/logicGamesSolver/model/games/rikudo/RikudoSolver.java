@@ -11,7 +11,9 @@ import org.javatuples.Quartet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class RikudoSolver {
@@ -36,8 +38,16 @@ public class RikudoSolver {
         if (!solver.solve())
             return null;
         List<List<DigitCell>> solvedGrid = gridFromVars(vars);
-        if (solver.solve())
+        System.out.println("first");
+        for (List<DigitCell> line : solvedGrid)
+            System.out.println(line);
+        if (solver.solve()) {
+            List<List<DigitCell>> secondGrid = gridFromVars(vars);
+            System.out.println("second");
+            for (List<DigitCell> line : secondGrid)
+                System.out.println(line);
             return propagatedGrid;
+        }
         else
             return solvedGrid;
     }
@@ -53,13 +63,19 @@ public class RikudoSolver {
         for (int i = 0; i < 2*n-1; i++) {
             vars[i] = model.intVarArray("X-"+i, 2*n-1-Math.abs(i-n+1), 1, nbVars);
         }
-        vars[n-1][n-1].eq(1); // Necessary to have a single solution, preferably it would be null
+        vars[n-1][n-1].eq(1).post(); // Necessary to have a single solution, preferably it would be null
         // Creation of edges
         List<List<List<BoolVar>> > inEdges = Arrays.stream(vars).map(line -> Arrays.stream(vars).map(v -> (List<BoolVar>) new ArrayList<BoolVar>()).collect(Collectors.toList())).collect(Collectors.toList());
         List<List<List<BoolVar>> > outEdges = Arrays.stream(vars).map(line -> Arrays.stream(vars).map(v -> (List<BoolVar>) new ArrayList<BoolVar>()).collect(Collectors.toList())).collect(Collectors.toList());
         int sinkCpt = 0;
         BoolVar[] outSink = new BoolVar[nbVars];
         BoolVar[] inSink = new BoolVar[nbVars];
+        Map<Pair<Integer,Integer>,List<Pair<Integer,Integer>>> neighbors = new HashMap<>();
+        for (int i = 0; i < 2*n-1; i++) {
+            for (int j = 0; j < vars[i].length; j++) {
+                neighbors.put(new Pair<>(i,j), new ArrayList<>());
+            }
+        }
         for (int i = 0; i < 2*n-1; i++) {
             int lowerOffset = i >= n-1 ? -1 : 0;
             for (int j = 0; j < vars[i].length; j++) {
@@ -79,13 +95,38 @@ public class RikudoSolver {
                     }
                     sinkCpt++;
                     if (j < vars[i].length-1 && isNotCenter(i, j+1,n)) {
+                        neighbors.get(new Pair<>(i,j)).add(new Pair<>(i, j+1));
+                        neighbors.get(new Pair<>(i,j+1)).add(new Pair<>(i, j));
                         createAddEdge(i, j, i, j+1, fixedEdges.contains(new Quartet<>(i,j,i,j+1)), vars, inEdges, outEdges, model, "O-", "E-");
                     }
+                    if (i+1 < vars.length && 0 <= j+lowerOffset && isNotCenter(i+1, j+lowerOffset,n)) {
+                        neighbors.get(new Pair<>(i,j)).add(new Pair<>(i+1, j+lowerOffset));
+                        neighbors.get(new Pair<>(i+1,j+lowerOffset)).add(new Pair<>(i, j));
+                        createAddEdge(i, j, i+1, j+lowerOffset, fixedEdges.contains(new Quartet<>(i,j,i+1,j+lowerOffset)), vars, inEdges, outEdges, model, "SO-", "NE-");
+                    }
                     if (i+1 < vars.length && j+lowerOffset+1 < vars[i+1].length && isNotCenter(i+1, j+lowerOffset+1,n)) {
+                        neighbors.get(new Pair<>(i,j)).add(new Pair<>(i+1, j+lowerOffset+1));
+                        neighbors.get(new Pair<>(i+1,j+lowerOffset+1)).add(new Pair<>(i, j));
                         createAddEdge(i, j, i+1, j+lowerOffset+1, fixedEdges.contains(new Quartet<>(i,j,i+1,j+lowerOffset+1)), vars, inEdges, outEdges, model, "SE-", "NO-");
                     }
-                    if (i+1 < vars.length && 0 <= j+lowerOffset && isNotCenter(i+1, j+lowerOffset,n)) {
-                        createAddEdge(i, j, i+1, j+lowerOffset, fixedEdges.contains(new Quartet<>(i,j,i+1,j+lowerOffset)), vars, inEdges, outEdges, model, "SO-", "NE-");
+                }
+            }
+        }
+        System.out.println(neighbors);
+        for (Map.Entry<Pair<Integer,Integer>,List<Pair<Integer,Integer>>> current : neighbors.entrySet()) {
+            Pair<Integer,Integer> currentPos = current.getKey();
+            List<Pair<Integer,Integer>> currentNeighbors = current.getValue();
+            IntVar currentVar = vars[currentPos.getValue0()][currentPos.getValue1()];
+            for (int i = 0; i < 2*n-1; i++) {
+                for (int j = 0; j < vars[i].length; j++) {
+                    Pair<Integer,Integer> considered = new Pair<>(i,j);
+                    if (!considered.equals(currentPos) && isNotCenter(i, j, n)) {
+                        if (!currentNeighbors.contains(considered)) {
+                            currentVar.ne(vars[i][j].add(1)).post();
+                            System.out.println(currentVar);
+                            System.out.println(vars[i][j]);
+                            System.out.println(i + " " + j + " " + current);
+                        }
                     }
                 }
             }

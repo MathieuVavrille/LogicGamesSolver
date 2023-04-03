@@ -7,9 +7,9 @@ import android.widget.Switch;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.mvavrill.logicGamesSolver.R;
+import com.mvavrill.logicGamesSolver.controller.GridHistory;
 import com.mvavrill.logicGamesSolver.controller.UndoRedoWatcher;
 import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
-import com.mvavrill.logicGamesSolver.controller.GridHistory;
 import com.mvavrill.logicGamesSolver.controller.popups.PopupDigits;
 import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
 import com.mvavrill.logicGamesSolver.model.games.sudoku.SudokuSolver;

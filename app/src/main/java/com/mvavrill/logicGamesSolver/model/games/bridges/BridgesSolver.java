@@ -10,7 +10,6 @@ import org.chocosolver.util.objects.graphs.UndirectedGraph;
 import org.chocosolver.util.objects.setDataStructures.SetType;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
-import org.javatuples.Triplet;
 
 import java.util.HashSet;
 import java.util.Set;

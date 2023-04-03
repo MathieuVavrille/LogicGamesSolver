@@ -73,7 +73,6 @@ public class RikudoView extends View implements UpdatableView<RikudoGrid<DigitCe
             }
         }
         for (Quartet<Integer,Integer,Integer,Integer> edge : grid.getFixedEdges()) {
-            System.out.println("draw edge " + edge);
             drawFixedEdge(canvas, edge, gridCells.size(), cellRadius);
         }
     }
@@ -89,7 +88,6 @@ public class RikudoView extends View implements UpdatableView<RikudoGrid<DigitCe
         float mj = (sj+ej)/2;
         float di = (mi-si)/3.5f;
         float dj = (mj-sj)/3.5f;
-        System.out.println(si + " " + sj + " " + ei + " " + ej + " " + mi + " " + mj + " " + di + " " + dj);
         Path squarePath = new Path();
         squarePath.moveTo(mi+di, mj+dj);
         squarePath.lineTo(mi+dj, mj-di);
@@ -155,7 +153,6 @@ public class RikudoView extends View implements UpdatableView<RikudoGrid<DigitCe
             if (newlyClicked == null || previousClicked == null) { // One is the center
                 return true;
             }
-            System.out.println(newlyClicked + " " + previousClicked);
             if (newlyClicked.equals(previousClicked)) {
                 rikudoActivity.isClicked(previousClicked.getValue0(), previousClicked.getValue1());
             }

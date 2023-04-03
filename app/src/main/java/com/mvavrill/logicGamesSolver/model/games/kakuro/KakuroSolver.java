@@ -14,7 +14,6 @@ import org.chocosolver.util.iterators.DisposableValueIterator;
 import org.javatuples.Pair;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;

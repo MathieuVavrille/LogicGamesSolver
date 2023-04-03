@@ -1,10 +1,10 @@
 package com.mvavrill.logicGamesSolver.controller.games.slitherlink;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.GridHistory;

@@ -11,8 +11,6 @@ import org.chocosolver.util.objects.graphs.UndirectedGraph;
 import org.chocosolver.util.objects.setDataStructures.SetType;
 import org.javatuples.Triplet;
 
-import java.util.Arrays;
-
 public class SlitherlinkSolver {
 
     private int[][] numbers; // -1 for don't know, 0-3 for value
