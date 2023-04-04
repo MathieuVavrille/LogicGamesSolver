@@ -13,7 +13,7 @@ import org.javatuples.Triplet;
 
 public class SlitherlinkSolver {
 
-    private int[][] numbers; // -1 for don't know, 0-3 for value
+    private final int[][] numbers; // -1 for don't know, 0-3 for value
 
     public SlitherlinkSolver(final int[][] numbers) {
         this.numbers = numbers;
@@ -30,7 +30,7 @@ public class SlitherlinkSolver {
         postAdjacentThrees(vEdges, hEdges);
         postCellsVerticesTypes(model, vertexType);
         postVertexTypes(model, vEdges, hEdges, vertexType);
-        BoolVar[][] isInside = model.boolVarMatrix("isinside", numbers.length, numbers[0].length);
+        BoolVar[][] isInside = model.boolVarMatrix("isInside", numbers.length, numbers[0].length);
         postInsideConstraints(model, isInside, vEdges, hEdges);
         Solver solver = model.getSolver();
         try {
@@ -123,11 +123,13 @@ public class SlitherlinkSolver {
                 if (numbers[i][j] == 3 && numbers[i][j+1] == 3) {
                     vEdges[j][i].eq(1).post();
                     vEdges[j+1][i].eq(1).post();
-                    if (i > 0)
-                        vEdges[j+1][i-1].eq(0).post();
-                    if (i+1 < vEdges[j+1].length)
-                    vEdges[j+1][i+1].eq(0).post();
                     vEdges[j+2][i].eq(1).post();
+                    if (i > 0) {
+                        vEdges[j + 1][i - 1].eq(0).post();
+                    }
+                    if (i+1 < vEdges[j+1].length) {
+                        vEdges[j + 1][i + 1].eq(0).post();
+                    }
                 }
                 if (numbers[i][j] == 3 && numbers[i+1][j] == 3) {
                     hEdges[i][j].eq(1).post();
@@ -147,7 +149,7 @@ public class SlitherlinkSolver {
         model.table(new IntVar[]{vertexType[0][0], vEdges[0][0], hEdges[0][0]}, topLeftType).post();
         model.table(new IntVar[]{vertexType[0][vertexType[0].length-1], vEdges[vEdges.length-1][0], hEdges[0][hEdges[0].length-1]}, topRightType).post();
         model.table(new IntVar[]{vertexType[vertexType.length-1][0], vEdges[0][vEdges[0].length-1], hEdges[hEdges.length-1][0]}, bottomLeftType).post();
-        model.table(new IntVar[]{vertexType[vertexType.length-1][vertexType[0].length-1], vEdges[vEdges.length-1][vEdges[0].length-1], hEdges[hEdges.length-1][hEdges[0].length-1]}, topLeftType).post();
+        model.table(new IntVar[]{vertexType[vertexType.length-1][vertexType[0].length-1], vEdges[vEdges.length-1][vEdges[0].length-1], hEdges[hEdges.length-1][hEdges[0].length-1]}, bottomRightType).post();
         for (int i = 1; i < vertexType.length-1; i++) {
             model.table(new IntVar[]{vertexType[i][0], vEdges[0][i-1], hEdges[i][0], vEdges[0][i]}, leftType).post();
             model.table(new IntVar[]{vertexType[i][vertexType[0].length-1], vEdges[vEdges.length-1][i-1], hEdges[i][hEdges[0].length-1], vEdges[vEdges.length-1][i]}, rightType).post();
@@ -193,7 +195,7 @@ public class SlitherlinkSolver {
                     inside[i][j] = true;
             }
         }
-        return new Triplet<int[][],int[][],boolean[][]>(vInt, hInt, inside);
+        return new Triplet<>(vInt, hInt, inside);
     }
 
     // Tuples definition
