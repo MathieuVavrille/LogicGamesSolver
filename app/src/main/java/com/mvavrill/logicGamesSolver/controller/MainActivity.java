@@ -25,6 +25,8 @@ import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuActivity;
 import com.mvavrill.logicGamesSolver.controller.menu.InformationActivity;
 import com.mvavrill.logicGamesSolver.controller.menu.SettingsActivity;
 import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
+import com.mvavrill.logicGamesSolver.controller.popups.PopupDigits;
+import com.mvavrill.logicGamesSolver.controller.popups.PopupSpinner;
 
 public class MainActivity extends AppCompatActivity implements CallbackWithInteger {
 
@@ -74,10 +76,6 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
             Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, RikudoActivity.class);
             startActivity(gridActivityIntent);
         });
-        /*Button test = findViewById(R.id.main_test);
-        test.setOnClickListener(view -> {
-            //new PopupDigits(new Bundle(),com.mvavrill.logicGamesSolver.controller.MainActivity.this).show(getSupportFragmentManager(), "");
-        });*/
     }
 
     private boolean hasCameraPermission() {

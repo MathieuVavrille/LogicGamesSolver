@@ -113,7 +113,7 @@ public class DrawCell {
         paint.setTextSize(cellWidth * 0.7f);
         paint.setStrokeWidth(cellWidth/100f);
         paint.setStyle(Paint.Style.FILL_AND_STROKE);
-        if (cell.getValue() != 0) {
+        if (cell.getValue() > 0) {
             canvas.drawText("" + cell.getValue(), x, y+cellWidth/4f, paint);
         }
     }

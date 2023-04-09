@@ -111,11 +111,11 @@ public class KakuroSolver {
         Log.d("Mat", memoizedTuples.get(currentPair)+"");
     }
 
-    private final static int[] ubs = new int[]{-1, 9, 17, 24, 30, 35, 39, 42, 44, 45};
-    private final static int[] lbs = new int[]{-1, 1, 3, 6, 10, 15, 21, 28, 36, 45};
+    public final static int[] UBS = new int[]{-1, 9, 17, 24, 30, 35, 39, 42, 44, 45};
+    public final static int[] LBS = new int[]{-1, 1, 3, 6, 10, 15, 21, 28, 36, 45};
     private void fillTuples(final Tuples allowedTuples, final int index, final int[] currentInstantiation, final int remainingSum) {
         int remainingSize = currentInstantiation.length-index;
-        if (remainingSum < lbs[remainingSize] || remainingSum > ubs[remainingSize])
+        if (remainingSum < LBS[remainingSize] || remainingSum > UBS[remainingSize])
             return;
         if (index == currentInstantiation.length-1) {
             currentInstantiation[index] = remainingSum;

@@ -10,7 +10,7 @@ import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.GridHistory;
 import com.mvavrill.logicGamesSolver.controller.UndoRedoWatcher;
 import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
-import com.mvavrill.logicGamesSolver.controller.popups.PopupNumberFragment;
+import com.mvavrill.logicGamesSolver.controller.popups.PopupSpinner;
 import com.mvavrill.logicGamesSolver.model.cells.Cell;
 import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
 import com.mvavrill.logicGamesSolver.model.cells.DoubleIntCell;
@@ -70,7 +70,7 @@ public class KakuroActivity extends AppCompatActivity implements CallbackWithInt
                 isOutline = true;
             }
         });
-        int initialGridSize = 10;
+        int initialGridSize = 5;
         Cell[][] initialGrid = new EmptyCell[initialGridSize][initialGridSize];
         for (int i = 0; i < initialGridSize; i++) {
             for (int j = 0; j < initialGridSize; j++) {
@@ -99,16 +99,44 @@ public class KakuroActivity extends AppCompatActivity implements CallbackWithInt
             Log.d("Mat", currentGrid[i][j].toString());
             gridHistory.addElement(currentGrid);
         } else {
-            Cell[][] currentGrid = gridHistory.getCurrent();
+            Cell[][] currentGrid = gridHistory.getCurrent(); // first = en haut à droite
             Bundle bundle = new Bundle();
             bundle.putSerializable("i", i);
             bundle.putSerializable("j", j);
             bundle.putSerializable("first", isFirst);
+            System.out.println(isFirst);
             if (currentGrid[i][j] instanceof DigitCell) {
                 //bundle.putSerializable("hints", ((DigitCell) currentGrid[i][j]).allowedValues());
                 //new PopupDigitFragment(bundle, this).show(getSupportFragmentManager(), "");
             } else if (currentGrid[i][j] instanceof DoubleIntCell) {
-                new PopupNumberFragment(bundle, this).show(getSupportFragmentManager(), "");
+                if (isFirst && ((DoubleIntCell) currentGrid[i][j]).getHint1() == -1 || !isFirst && ((DoubleIntCell) currentGrid[i][j]).getHint2() == -1) {
+                    int lineSize = 0;
+                    int curri = i;
+                    int currj = j;
+                    int di = isFirst ? 0 : 1;
+                    int dj = isFirst ? 1 : 0;
+                    while (curri + di < currentGrid.length && currj + dj < currentGrid[di].length && currentGrid[curri + di][currj + dj] instanceof DigitCell) {
+                        lineSize++;
+                        curri += di;
+                        currj += dj;
+                    }
+                    PopupSpinner.fromRange(bundle, this, this.getBaseContext(), KakuroSolver.LBS[lineSize], KakuroSolver.UBS[lineSize]).show(getSupportFragmentManager(), "");
+                    //new PopupNumberFragment(bundle, this).show(getSupportFragmentManager(), "");
+                }
+                else {
+                    Cell[][] copiedGrid = gridCopy(gridHistory.getCurrent(), 0);
+                    if (isFirst) {
+                        copiedGrid[i][j] = ((DoubleIntCell) copiedGrid[i][j]).addFirst(-1);
+                    }
+                    else {
+                        copiedGrid[i][j] = ((DoubleIntCell) copiedGrid[i][j]).addSecond(-1);
+                    }
+                    System.out.println(copiedGrid[i][j]);
+                    Cell[][] newKakuroGrid = new KakuroSolver(copiedGrid).extractInformation();
+                    if (newKakuroGrid != null) {
+                        gridHistory.addElement(newKakuroGrid);
+                    }
+                }
             }
         }
     }

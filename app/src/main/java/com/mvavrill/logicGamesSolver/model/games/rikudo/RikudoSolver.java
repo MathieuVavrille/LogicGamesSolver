@@ -6,6 +6,7 @@ import org.chocosolver.solver.Model;
 import org.chocosolver.solver.Solver;
 import org.chocosolver.solver.variables.BoolVar;
 import org.chocosolver.solver.variables.IntVar;
+import org.chocosolver.util.iterators.DisposableValueIterator;
 import org.javatuples.Pair;
 import org.javatuples.Quartet;
 
@@ -19,9 +20,13 @@ import java.util.stream.Collectors;
 public class RikudoSolver {
 
     private final RikudoGrid<Integer> rikudoGrid;
+    private final int n;
+    private final int nbVars;
 
     public RikudoSolver(final RikudoGrid<Integer> rikudoGrid) {
         this.rikudoGrid = rikudoGrid;
+        this.n = rikudoGrid.getGrid().get(0).size();
+        this.nbVars = 3*n*(n-1);
     }
 
     public List<List<DigitCell>> extractInformation() {
@@ -55,9 +60,7 @@ public class RikudoSolver {
     private Pair<Model, IntVar[][]> makeModel() {
         List<List<Integer>> initialValues = rikudoGrid.getGrid();
         List<Quartet<Integer,Integer,Integer,Integer>> fixedEdges = rikudoGrid.getFixedEdges();
-        int n = initialValues.get(0).size();
         Model model = new Model("Test");
-        int nbVars = 3*n*(n-1);
         // Variables
         IntVar[][] vars = new IntVar[2*n-1][];
         for (int i = 0; i < 2*n-1; i++) {
@@ -186,7 +189,12 @@ public class RikudoSolver {
                     resLine.add(new DigitCell(rikudoGrid.getGrid().get(i).get(j) != 0, vars[i][j].getValue()));
                 }
                 else {
-                    resLine.add(new DigitCell(false, 0, null));
+                    boolean[] hints = new boolean[nbVars+1];
+                    DisposableValueIterator iterator = vars[i][j].getValueIterator(true);
+                    while(iterator.hasNext()){
+                        hints[iterator.next()] = true;
+                    }
+                    resLine.add(new DigitCell(hints));
                 }
             }
             res.add(resLine);

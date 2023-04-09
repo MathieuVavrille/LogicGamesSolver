@@ -54,14 +54,15 @@ public class RikudoGrid<T> {
         List<List<DigitCell>> grid = smallGrid.getGrid();
         List<List<DigitCell>> newGrid = new ArrayList<>();
         List<DigitCell> addedLine = new ArrayList<>();
+        boolean[] hints = new boolean[]{true};
         for (int i = 0; i < grid.get(0).size()+1; i++) {
-            addedLine.add(new DigitCell(false, 0));
+            addedLine.add(new DigitCell(hints));
         }
         newGrid.add(addedLine);
         for (int i = 0; i < grid.size(); i++) {
             List<DigitCell> newLine = new ArrayList<>(grid.get(i));
-            newLine.add(0, new DigitCell(false, 0)); // pop last element
-            newLine.add(new DigitCell(false, 0)); // pop last element
+            newLine.add(0, new DigitCell(hints)); // pop last element
+            newLine.add(new DigitCell(hints)); // pop last element
             newGrid.add(newLine);
         }
         newGrid.add(addedLine);
@@ -69,12 +70,13 @@ public class RikudoGrid<T> {
     }
 
     public static RikudoGrid<DigitCell> generateInitialGrid() {
+        boolean[] hints = new boolean[]{true};
         return new RikudoGrid<>(List.of(
-                List.of(new DigitCell(false, 0), new DigitCell(false, 0), new DigitCell(false, 0)),
-                List.of(new DigitCell(false, 0), new DigitCell(false, 0), new DigitCell(false, 0), new DigitCell(false, 0)),
-                List.of(new DigitCell(false, 0), new DigitCell(false, 0), new DigitCell(false, 0), new DigitCell(false, 0), new DigitCell(false, 0)),
-                List.of(new DigitCell(false, 0), new DigitCell(false, 0), new DigitCell(false, 0), new DigitCell(false, 0)),
-                List.of(new DigitCell(false, 0), new DigitCell(false, 0), new DigitCell(false, 0))
+                List.of(new DigitCell(hints), new DigitCell(hints), new DigitCell(hints)),
+                List.of(new DigitCell(hints), new DigitCell(hints), new DigitCell(hints), new DigitCell(hints)),
+                List.of(new DigitCell(hints), new DigitCell(hints), new DigitCell(hints), new DigitCell(hints), new DigitCell(hints)),
+                List.of(new DigitCell(hints), new DigitCell(hints), new DigitCell(hints), new DigitCell(hints)),
+                List.of(new DigitCell(hints), new DigitCell(hints), new DigitCell(hints))
         ), new ArrayList<>());
     }
 

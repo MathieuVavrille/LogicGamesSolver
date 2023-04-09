@@ -10,7 +10,7 @@ import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.GridHistory;
 import com.mvavrill.logicGamesSolver.controller.UndoRedoWatcher;
 import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
-import com.mvavrill.logicGamesSolver.controller.popups.PopupNumberFragment;
+import com.mvavrill.logicGamesSolver.controller.popups.PopupSpinner;
 import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
 import com.mvavrill.logicGamesSolver.model.games.rikudo.RikudoGrid;
 import com.mvavrill.logicGamesSolver.model.games.rikudo.RikudoSolver;
@@ -18,6 +18,7 @@ import com.mvavrill.logicGamesSolver.view.games.rikudo.RikudoView;
 
 import org.javatuples.Quartet;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -66,14 +67,22 @@ public class RikudoActivity extends AppCompatActivity implements CallbackWithInt
     public void isClicked(int i, int j) {
         RikudoGrid<DigitCell> current = gridHistory.getCurrent();
         RikudoGrid<Integer> integerGrid = RikudoGrid.extractFixedCells(current);
-        if (integerGrid.getGrid().get(i).get(j) != 0) {
+        if (integerGrid.getGrid().get(i).get(j) > 0) {
             integerGrid.getGrid().get(i).set(j, 0);
             solveAndAdd(integerGrid);
         } else {
             Bundle b = new Bundle();
             b.putSerializable("i", i);
             b.putSerializable("j", j);
-            new PopupNumberFragment(b, this).show(getSupportFragmentManager(), "");
+            int n = current.getGrid().get(0).size();
+            boolean[] hints = current.getGrid().get(i).get(j).getHints();
+            List<Integer> possibleValues = new ArrayList<>();
+            for (int val = 1; val <= 3*n*(n-1); val++) {
+                if (val >= hints.length || hints[val]) {
+                    possibleValues.add(val);
+                }
+            }
+            new PopupSpinner(b, this, this.getBaseContext(), possibleValues.stream().mapToInt(v -> v).toArray()).show(getSupportFragmentManager(), "");
         }
     }
 
