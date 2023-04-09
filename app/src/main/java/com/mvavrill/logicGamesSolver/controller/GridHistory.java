@@ -3,7 +3,7 @@ package com.mvavrill.logicGamesSolver.controller;
 import android.util.Log;
 import android.widget.Button;
 
-import com.mvavrill.logicGamesSolver.view.games.UpdatableView;
+import com.mvavrill.logicGamesSolver.view.UpdatableView;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -8,11 +8,11 @@
     android:orientation="vertical"
     android:padding="5dp"
     android:id="@+id/slitherlink_constraint_layout"
-    tools:context=".controller.games.slitherlink.SlitherlinkActivity">
+    tools:context=".game.slitherlink.SlitherlinkActivity">
 
     <view
         android:id="@+id/slitherlink_grid_view"
-        class="com.mvavrill.logicGamesSolver.view.games.slitherlink.SlitherlinkView"
+        class="com.mvavrill.logicGamesSolver.game.slitherlink.SlitherlinkView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="3:4"

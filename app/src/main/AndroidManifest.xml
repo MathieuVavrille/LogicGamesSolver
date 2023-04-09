@@ -37,23 +37,23 @@
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".controller.games.sudoku.SudokuActivity"
+            android:name=".game.sudoku.SudokuActivity"
             android:exported="false"
             android:screenOrientation="fullSensor" />
         <activity
-            android:name=".controller.games.kakuro.KakuroActivity"
+            android:name=".game.kakuro.KakuroActivity"
             android:exported="false"
             android:screenOrientation="fullSensor" />
         <activity
-            android:name=".controller.games.slitherlink.SlitherlinkActivity"
+            android:name=".game.slitherlink.SlitherlinkActivity"
             android:exported="false"
             android:screenOrientation="fullSensor" />
         <activity
-            android:name=".controller.games.bridges.BridgesActivity"
+            android:name=".game.bridges.BridgesActivity"
             android:exported="false"
             android:screenOrientation="fullSensor" />
         <activity
-            android:name=".controller.games.rikudo.RikudoActivity"
+            android:name=".game.rikudo.RikudoActivity"
             android:exported="false"
             android:screenOrientation="fullSensor" />
     </application>

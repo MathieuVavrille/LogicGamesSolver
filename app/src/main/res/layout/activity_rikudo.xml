@@ -8,11 +8,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    tools:context=".controller.games.rikudo.RikudoActivity">
+    tools:context=".game.rikudo.RikudoActivity">
 
     <view
         android:id="@+id/rikudo_grid_view"
-        class="com.mvavrill.logicGamesSolver.view.games.rikudo.RikudoView"
+        class="com.mvavrill.logicGamesSolver.game.rikudo.RikudoView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"

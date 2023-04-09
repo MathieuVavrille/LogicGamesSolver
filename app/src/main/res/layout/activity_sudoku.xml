@@ -8,11 +8,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    tools:context=".controller.games.sudoku.SudokuActivity">
+    tools:context=".game.sudoku.SudokuActivity">
 
     <view
         android:id="@+id/sudoku_input_grid_view"
-        class="com.mvavrill.logicGamesSolver.view.games.sudoku.SudokuView"
+        class="com.mvavrill.logicGamesSolver.game.sudoku.SudokuView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"

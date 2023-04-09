@@ -14,7 +14,7 @@ import com.google.mlkit.vision.text.Text;
 import com.google.mlkit.vision.text.TextRecognition;
 import com.google.mlkit.vision.text.TextRecognizer;
 import com.mvavrill.logicGamesSolver.R;
-import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuActivity;
+import com.mvavrill.logicGamesSolver.game.sudoku.SudokuActivity;
 import com.mvavrill.logicGamesSolver.model.ProbabilisticDigit;
 
 import org.opencv.android.BaseLoaderCallback;

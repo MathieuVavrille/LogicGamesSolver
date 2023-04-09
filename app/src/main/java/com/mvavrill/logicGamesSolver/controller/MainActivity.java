@@ -17,16 +17,14 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.mvavrill.logicGamesSolver.R;
-import com.mvavrill.logicGamesSolver.controller.games.bridges.BridgesActivity;
-import com.mvavrill.logicGamesSolver.controller.games.kakuro.KakuroActivity;
-import com.mvavrill.logicGamesSolver.controller.games.rikudo.RikudoActivity;
-import com.mvavrill.logicGamesSolver.controller.games.slitherlink.SlitherlinkActivity;
-import com.mvavrill.logicGamesSolver.controller.games.sudoku.SudokuActivity;
+import com.mvavrill.logicGamesSolver.game.bridges.BridgesActivity;
+import com.mvavrill.logicGamesSolver.game.kakuro.KakuroActivity;
+import com.mvavrill.logicGamesSolver.game.rikudo.RikudoActivity;
+import com.mvavrill.logicGamesSolver.game.slitherlink.SlitherlinkActivity;
+import com.mvavrill.logicGamesSolver.game.sudoku.SudokuActivity;
 import com.mvavrill.logicGamesSolver.controller.menu.InformationActivity;
 import com.mvavrill.logicGamesSolver.controller.menu.SettingsActivity;
 import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
-import com.mvavrill.logicGamesSolver.controller.popups.PopupDigits;
-import com.mvavrill.logicGamesSolver.controller.popups.PopupSpinner;
 
 public class MainActivity extends AppCompatActivity implements CallbackWithInteger {
 

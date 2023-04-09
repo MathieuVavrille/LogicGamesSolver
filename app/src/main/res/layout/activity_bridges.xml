@@ -8,11 +8,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    tools:context=".controller.games.bridges.BridgesActivity">
+    tools:context=".game.bridges.BridgesActivity">
 
     <view
         android:id="@+id/bridges_grid_view"
-        class="com.mvavrill.logicGamesSolver.view.games.bridges.BridgesView"
+        class="com.mvavrill.logicGamesSolver.game.bridges.BridgesView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintDimensionRatio="1:1"
