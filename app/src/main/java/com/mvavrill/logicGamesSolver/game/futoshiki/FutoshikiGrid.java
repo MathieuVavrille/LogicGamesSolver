@@ -1,7 +1,12 @@
 package com.mvavrill.logicGamesSolver.game.futoshiki;
 
+import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
+
+import java.util.Arrays;
+
 public class FutoshikiGrid<T> {
 
+    private final static int INITIAL_SIZE = 5;
     private final T[][] grid;
     private final int[][] lineIneq;
     private final int[][] columnIneq;
@@ -10,6 +15,68 @@ public class FutoshikiGrid<T> {
         this.grid = grid;
         this.lineIneq = lineIneq;
         this.columnIneq = columnIneq;
+    }
+
+    public static FutoshikiGrid<DigitCell> generateInitialGrid() {
+        DigitCell[][] grid = new DigitCell[INITIAL_SIZE][INITIAL_SIZE];
+        boolean[] hints = new boolean[INITIAL_SIZE+1];
+        Arrays.fill(hints, true);
+        for (int i = 0; i < INITIAL_SIZE; i++) {
+            for (int j = 0; j < INITIAL_SIZE; j++) {
+                grid[i][j] = new DigitCell(hints);
+            }
+        }
+        return new FutoshikiGrid<>(grid, new int[INITIAL_SIZE][INITIAL_SIZE - 1], new int[INITIAL_SIZE - 1][INITIAL_SIZE]);
+    }
+
+    public static FutoshikiGrid<DigitCell> changeSize(final FutoshikiGrid<DigitCell> inputGrid, final int increase) {
+        DigitCell[][] newGrid = new DigitCell[inputGrid.grid.length+increase][inputGrid.grid.length+increase];
+        boolean[] hints = new boolean[newGrid.length];
+        Arrays.fill(hints, true);
+        for (int i = 0; i < newGrid.length; i++) {
+            for (int j = 0; j < newGrid.length; j++) {
+                if (i < inputGrid.grid.length && j < inputGrid.grid[i].length && inputGrid.grid[i][j].isFixed()) {
+                    newGrid[i][j] = new DigitCell(true, inputGrid.grid[i][j].getValue());
+                }
+                else {
+                    newGrid[i][j] = new DigitCell(hints);
+                }
+            }
+        }
+        int[][] lineIneq = new int[newGrid.length][];
+        for (int i = 0; i < newGrid.length; i++) {
+            if (i < inputGrid.lineIneq.length) {
+                lineIneq[i] = Arrays.copyOf(inputGrid.lineIneq[i], newGrid.length-1);
+            }
+            else {
+                lineIneq[i] = new int[newGrid.length-1];
+            }
+        }
+        int[][] columnIneq = new int[newGrid.length-1][];
+        for (int i = 0; i < newGrid.length-1; i++) {
+            if (i < inputGrid.columnIneq.length) {
+                columnIneq[i] = Arrays.copyOf(inputGrid.columnIneq[i], newGrid.length);
+            }
+            else {
+                columnIneq[i] = new int[newGrid.length];
+            }
+        }
+        return new FutoshikiGrid<>(newGrid, lineIneq, inputGrid.getColumnIneq());
+    }
+
+    public static FutoshikiGrid<Integer> extractFixedCells(final FutoshikiGrid<DigitCell> inputGrid) {
+        Integer[][] fixedGrid = new Integer[inputGrid.grid.length][inputGrid.grid.length];
+        for (int i = 0; i < inputGrid.grid.length; i++) {
+            for (int j = 0; j < inputGrid.grid.length; j++) {
+                if (inputGrid.grid[i][j].isFixed()) {
+                    fixedGrid[i][j] = inputGrid.grid[i][j].getValue();
+                }
+                else {
+                    fixedGrid[i][j] = 0;
+                }
+            }
+        }
+        return new FutoshikiGrid<>(fixedGrid, inputGrid.lineIneq, inputGrid.columnIneq);
     }
 
     public T[][] getGrid() {

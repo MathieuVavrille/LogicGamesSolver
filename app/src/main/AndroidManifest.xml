@@ -56,6 +56,10 @@
             android:name=".game.rikudo.RikudoActivity"
             android:exported="false"
             android:screenOrientation="fullSensor" />
+        <activity
+            android:name=".game.futoshiki.FutoshikiActivity"
+            android:exported="false"
+            android:screenOrientation="fullSensor" />
     </application>
 
 </manifest>

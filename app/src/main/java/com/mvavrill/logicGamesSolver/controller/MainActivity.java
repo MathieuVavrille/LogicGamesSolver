@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat;
 
 import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.game.bridges.BridgesActivity;
+import com.mvavrill.logicGamesSolver.game.futoshiki.FutoshikiActivity;
 import com.mvavrill.logicGamesSolver.game.kakuro.KakuroActivity;
 import com.mvavrill.logicGamesSolver.game.rikudo.RikudoActivity;
 import com.mvavrill.logicGamesSolver.game.slitherlink.SlitherlinkActivity;
@@ -72,6 +73,11 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
         Button rikudo = findViewById(R.id.main_button_rikudo);
         rikudo.setOnClickListener(view -> {
             Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, RikudoActivity.class);
+            startActivity(gridActivityIntent);
+        });
+        Button futoshiki = findViewById(R.id.main_button_futoshiki);
+        futoshiki.setOnClickListener(view -> {
+            Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, FutoshikiActivity.class);
             startActivity(gridActivityIntent);
         });
     }

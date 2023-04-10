@@ -50,6 +50,27 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
+                    android:src="@drawable/background_preview_slitherlink" />
+
+                <Button
+                    android:id="@+id/main_button_futoshiki"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="30dp"
+                    android:text="Futoshiki"
+                    android:textSize="30sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="130dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/background_preview_sudoku" />
 
                 <Button
@@ -58,9 +79,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_margin="16dp"
-                    android:layout_marginLeft="30dp"
+                    android:layout_marginStart="30dp"
                     android:text="Sudoku"
                     android:textSize="30sp" />
 

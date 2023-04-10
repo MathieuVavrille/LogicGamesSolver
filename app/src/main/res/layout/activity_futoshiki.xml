@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sudoku_input_constraint_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".game.futoshiki.FutoshikiActivity">
+
+    <view
+        android:id="@+id/futoshiki_grid_view"
+        class="com.mvavrill.logicGamesSolver.game.futoshiki.FutoshikiView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+    <Button
+        android:id="@+id/futoshiki_button_increase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/futoshiki_button_decrease"
+        app:layout_constraintTop_toBottomOf="@id/futoshiki_grid_view"
+        app:layout_constraintBottom_toTopOf="@id/futoshiki_button_undo"
+        android:text="Increase"
+        android:textSize="20sp" />
+    <Button
+        android:id="@+id/futoshiki_button_decrease"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/futoshiki_button_increase"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/futoshiki_button_increase"
+        app:layout_constraintBottom_toBottomOf="@id/futoshiki_button_increase"
+        android:text="Decrease"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/futoshiki_button_undo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/futoshiki_button_redo"
+        app:layout_constraintTop_toBottomOf="@id/futoshiki_button_increase"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Undo"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/futoshiki_button_redo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/futoshiki_button_undo"
+        app:layout_constraintRight_toLeftOf="@id/futoshiki_button_back"
+        app:layout_constraintTop_toTopOf="@id/futoshiki_button_undo"
+        app:layout_constraintBottom_toBottomOf="@id/futoshiki_button_undo"
+        android:text="Redo"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/futoshiki_button_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/futoshiki_button_redo"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/futoshiki_button_undo"
+        app:layout_constraintBottom_toBottomOf="@id/futoshiki_button_undo"
+        android:text="Back"
+        android:textSize="20sp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

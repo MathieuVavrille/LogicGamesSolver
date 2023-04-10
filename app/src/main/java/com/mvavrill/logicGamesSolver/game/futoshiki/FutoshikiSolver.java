@@ -49,7 +49,7 @@ public class FutoshikiSolver {
             model.allDifferent(vars[i]).post();
             model.allDifferent(ArrayUtils.getColumn(vars, i)).post();
             for (int j = 0; j < initialGrid.length; j++) {
-                if (initialGrid[i][j] != 0) {
+                if (initialGrid[i][j] > 0) {
                     vars[i][j].eq(initialGrid[i][j]).post();
                 }
             }
@@ -88,7 +88,7 @@ public class FutoshikiSolver {
                     res[i][j] = new DigitCell(initialGrid[i][j] != 0, vars[i][j].getValue());
                 }
                 else {
-                    boolean[] hints = new boolean[initialGrid.length];
+                    boolean[] hints = new boolean[initialGrid.length+1];
                     DisposableValueIterator iterator = vars[i][j].getValueIterator(true);
                     while(iterator.hasNext()){
                         hints[iterator.next()] = true;
