@@ -22,6 +22,7 @@ public class FutoshikiView extends View implements UpdatableView<FutoshikiGrid<D
 
     private FutoshikiActivity futoshikiActivity;
 
+    private Pair<Integer,Integer> previousClicked;
     private int gridWidth;
     private float gridSeparatorSize;
     private float cellWidth;
@@ -61,7 +62,7 @@ public class FutoshikiView extends View implements UpdatableView<FutoshikiGrid<D
         DigitCell[][] gridCells = grid.getGrid();
         for (int i = 0; i < gridCells.length; i++) {
             for (int j = 0; j < gridCells.length; j++) {
-                DrawCell.draw(canvas, gridCells[i][j], cellWidth/4+j*3*cellWidth/2, cellWidth/4+i*3*cellWidth/2, cellWidth, false, 0);
+                DrawCell.draw(canvas, gridCells[i][j], cellWidth/4+j*3*cellWidth/2, cellWidth/4+i*3*cellWidth/2, cellWidth, true, 0);
                 float xcenter = 3*cellWidth/4+j*3*cellWidth/2;
                 float ycenter = 3*cellWidth/4+i*3*cellWidth/2;
                 Path squarePath = new Path();
@@ -79,19 +80,35 @@ public class FutoshikiView extends View implements UpdatableView<FutoshikiGrid<D
         int[][] lineIneq = grid.getLineIneq();
         for (int i = 0; i < gridCells.length; i++) {
             for (int j = 0; j < gridCells.length-1; j++) {
-                drawInequality(canvas, i, j, lineIneq[i][j]);
+                drawInequality(canvas, (j+1)*3*cellWidth/2, i*3*cellWidth/2+3*cellWidth/4, true, lineIneq[i][j]);
             }
         }
         int[][] columnIneq = grid.getColumnIneq();
         for (int i = 0; i < gridCells.length-1; i++) {
             for (int j = 0; j < gridCells.length; j++) {
-                drawInequality(canvas, i, j, columnIneq[i][j]);
+                drawInequality(canvas, j*3*cellWidth/2+3*cellWidth/4, (i+1)*3*cellWidth/2, false, columnIneq[i][j]);
             }
         }
     }
 
-    private void drawInequality(final Canvas canvas, final int i, final int j, final int ineq) {
-
+    private void drawInequality(final Canvas canvas, final float x, final float y, final boolean isLine, final int ineq) {
+        if (ineq != 0) {
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setColor(Color.BLACK);
+            paint.setStrokeWidth(gridSeparatorSize);
+            Path ineqPath = new Path();
+            if (isLine) {
+                ineqPath.moveTo(x+ineq*cellWidth/8, y-cellWidth/4);
+                ineqPath.lineTo(x-ineq*cellWidth/8, y);
+                ineqPath.lineTo(x+ineq*cellWidth/8, y+cellWidth/4);
+            }
+            else {
+                ineqPath.moveTo(x-cellWidth/4, y+ineq*cellWidth/8);
+                ineqPath.lineTo(x, y-ineq*cellWidth/8);
+                ineqPath.lineTo(x+cellWidth/4, y+ineq*cellWidth/8);
+            }
+            canvas.drawPath(ineqPath, paint);
+        }
     }
 
     public void setGridActivity(FutoshikiActivity futoshikiInputActivity) {
@@ -104,13 +121,25 @@ public class FutoshikiView extends View implements UpdatableView<FutoshikiGrid<D
         invalidate();
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    @Override
-    public boolean onTouchEvent(MotionEvent e) {
-        if (e.getAction() == MotionEvent.ACTION_DOWN && e.getY() < gridWidth) {
-            int cellX = (int) (e.getX() / (gridWidth/grid.getGrid().length));
-            int cellY = (int) (e.getY() / (gridWidth/grid.getGrid().length));
-            futoshikiActivity.isClicked(cellY, cellX);
+    private Pair<Integer,Integer> getPosClicked(final float x, final float y) {
+        return new Pair<>((int) (y/(3*cellWidth/2)), (int) (x/(3*cellWidth/2)));
+    }
+
+    public boolean onTouchEvent(MotionEvent event) {
+        int action = event.getAction();
+        if (action==MotionEvent.ACTION_DOWN)
+        {
+            previousClicked = getPosClicked(event.getX(), event.getY());
+        }
+        if (action==MotionEvent.ACTION_UP)
+        {
+            Pair<Integer,Integer> newlyClicked = getPosClicked(event.getX(), event.getY());
+            if (newlyClicked.equals(previousClicked)) {
+                futoshikiActivity.isClicked(previousClicked.getValue0(), previousClicked.getValue1());
+            }
+            else {
+                futoshikiActivity.isClickedIneq(previousClicked.getValue0(), previousClicked.getValue1(), newlyClicked.getValue0(), newlyClicked.getValue1());
+            }
         }
         return true;
     }

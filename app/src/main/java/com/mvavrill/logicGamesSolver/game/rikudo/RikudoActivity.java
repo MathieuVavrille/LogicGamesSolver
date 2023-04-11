@@ -67,6 +67,9 @@ public class RikudoActivity extends AppCompatActivity implements CallbackWithInt
         if (integerGrid.getGrid().get(i).get(j) > 0) {
             integerGrid.getGrid().get(i).set(j, 0);
             solveAndAdd(integerGrid);
+        } else if (current.getGrid().get(i).get(j).getHints() == null) {
+            integerGrid.getGrid().get(i).set(j, current.getGrid().get(i).get(j).getValue());
+            solveAndAdd(integerGrid);
         } else {
             Bundle b = new Bundle();
             b.putSerializable("i", i);

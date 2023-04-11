@@ -67,6 +67,9 @@ public class FutoshikiActivity extends AppCompatActivity implements CallbackWith
         if (integerGrid.getGrid()[i][j] > 0) {
             integerGrid.getGrid()[i][j] = 0;
             solveAndAdd(integerGrid);
+        } else if (current.getGrid()[i][j].getHints() == null) {
+            integerGrid.getGrid()[i][j] = current.getGrid()[i][j].getValue();
+            solveAndAdd(integerGrid);
         } else {
             Bundle b = new Bundle();
             b.putSerializable("i", i);
@@ -82,6 +85,18 @@ public class FutoshikiActivity extends AppCompatActivity implements CallbackWith
             Log.d("LogMat", "test " + possibleValues);
             Log.d("LogMat", Arrays.toString(hints));
             new PopupSpinner(b, this, this.getBaseContext(), possibleValues.stream().mapToInt(v -> v).toArray()).show(getSupportFragmentManager(), "");
+        }
+    }
+
+    public void isClickedIneq(final int s1, final int e1, final int s2, final int e2) {
+        FutoshikiGrid<Integer> integerGrid = FutoshikiGrid.extractFixedCells(gridHistory.getCurrent());
+        if (s1 == s2 && Math.abs(e1-e2) == 1) {
+            integerGrid.getLineIneq()[s1][Math.min(e1,e2)] = (integerGrid.getLineIneq()[s1][Math.min(e1,e2)] == 0) ? (e1 < e2 ? 1 : -1) : 0;
+            solveAndAdd(integerGrid);
+        }
+        if (e1 == e2 && Math.abs(s1-s2) == 1) {
+            integerGrid.getColumnIneq()[Math.min(s1,s2)][e1] = (integerGrid.getColumnIneq()[Math.min(s1,s2)][e1] == 0) ? (s1 < s2 ? 1 : -1) : 0;
+            solveAndAdd(integerGrid);
         }
     }
 

@@ -1,5 +1,7 @@
 package com.mvavrill.logicGamesSolver.game.futoshiki;
 
+import android.util.Log;
+
 import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
 
 import org.chocosolver.solver.Model;
@@ -18,6 +20,7 @@ public class FutoshikiSolver {
     }
 
     public DigitCell[][] extractInformation() {
+        Log.d("LogMat", fullGrid.toString());
         Pair<Model, IntVar[][]> modelAndVars = makeModel();
         Solver solver = modelAndVars.getValue0().getSolver();
         IntVar[][] vars = modelAndVars.getValue1();
@@ -85,7 +88,7 @@ public class FutoshikiSolver {
         for (int i = 0; i < vars.length; i++) {
             for (int j = 0; j < vars[i].length; j++) {
                 if (vars[i][j].isInstantiated()) {
-                    res[i][j] = new DigitCell(initialGrid[i][j] != 0, vars[i][j].getValue());
+                    res[i][j] = new DigitCell(initialGrid[i][j] > 0, vars[i][j].getValue());
                 }
                 else {
                     boolean[] hints = new boolean[initialGrid.length+1];

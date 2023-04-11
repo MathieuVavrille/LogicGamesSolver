@@ -37,7 +37,7 @@ public class DrawCell {
             return;
         if (cell.getHints() != null) {
             drawWhiteBackground(canvas, x, y, cellWidth);
-            if (drawHints) {
+            /*if (drawHints) {
                 boolean[] hints = cell.getHints();
                 paint.setColor(0xFFC0C0C0);
                 paint.setTextSize(cellWidth / 4f);
@@ -48,7 +48,7 @@ public class DrawCell {
                         }
                     }
                 }
-            }
+            }*/ // TODO better drawing of hints
         } else {
             if (cell.isFixed())
                 drawBackground(canvas,x,y,cellWidth,new int[]{0xF0F0F0F0, 0xFFE0FFE0, 0xFFFFE0E0}[satisfiable]);

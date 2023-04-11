@@ -1,12 +1,14 @@
 package com.mvavrill.logicGamesSolver.game.futoshiki;
 
+import android.util.Log;
+
 import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
 
 import java.util.Arrays;
 
 public class FutoshikiGrid<T> {
 
-    private final static int INITIAL_SIZE = 5;
+    private final static int INITIAL_SIZE = 3;
     private final T[][] grid;
     private final int[][] lineIneq;
     private final int[][] columnIneq;
@@ -76,7 +78,15 @@ public class FutoshikiGrid<T> {
                 }
             }
         }
-        return new FutoshikiGrid<>(fixedGrid, inputGrid.lineIneq, inputGrid.columnIneq);
+        int[][] lineIneq = new int[inputGrid.lineIneq.length][];
+        for (int i = 0; i < inputGrid.lineIneq.length; i++) {
+            lineIneq[i] = Arrays.copyOf(inputGrid.lineIneq[i], inputGrid.lineIneq[i].length);
+        }
+        int[][] columnIneq = new int[inputGrid.columnIneq.length][];
+        for (int i = 0; i < inputGrid.columnIneq.length; i++) {
+            columnIneq[i] = Arrays.copyOf(inputGrid.columnIneq[i], inputGrid.columnIneq[i].length);
+        }
+        return new FutoshikiGrid<>(fixedGrid, lineIneq, columnIneq);
     }
 
     public T[][] getGrid() {
@@ -89,5 +99,19 @@ public class FutoshikiGrid<T> {
 
     public int[][] getColumnIneq() {
         return columnIneq;
+    }
+
+    public String toString() {
+        StringBuilder s = new StringBuilder();
+        for (T[] line : grid) {
+            s.append(Arrays.toString(line)).append("\n");
+        }
+        for (int[] line : lineIneq) {
+            s.append(Arrays.toString(line)).append("\n");
+        }
+        for (int[] column : columnIneq) {
+            s.append(Arrays.toString(column)).append("\n");
+        }
+        return s.toString();
     }
 }
