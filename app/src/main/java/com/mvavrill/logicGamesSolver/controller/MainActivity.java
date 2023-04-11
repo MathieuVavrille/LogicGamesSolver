@@ -17,6 +17,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.mvavrill.logicGamesSolver.R;
+import com.mvavrill.logicGamesSolver.controller.popups.PopupButtons;
 import com.mvavrill.logicGamesSolver.game.bridges.BridgesActivity;
 import com.mvavrill.logicGamesSolver.game.futoshiki.FutoshikiActivity;
 import com.mvavrill.logicGamesSolver.game.kakuro.KakuroActivity;
@@ -79,6 +80,10 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
         futoshiki.setOnClickListener(view -> {
             Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, FutoshikiActivity.class);
             startActivity(gridActivityIntent);
+        });
+        Button test = findViewById(R.id.main_button_test);
+        test.setOnClickListener(view -> {
+            new PopupButtons().show(getSupportFragmentManager(), "");
         });
     }
 
