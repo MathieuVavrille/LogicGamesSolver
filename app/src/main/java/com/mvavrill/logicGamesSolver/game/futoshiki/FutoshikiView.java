@@ -26,6 +26,7 @@ public class FutoshikiView extends View implements UpdatableView<FutoshikiGrid<D
     private int gridWidth;
     private float gridSeparatorSize;
     private float cellWidth;
+    private final Path squarePath = new Path();
 
 
     private FutoshikiGrid<DigitCell> grid = FutoshikiGrid.generateInitialGrid();
@@ -65,7 +66,7 @@ public class FutoshikiView extends View implements UpdatableView<FutoshikiGrid<D
                 DrawCell.draw(canvas, gridCells[i][j], cellWidth/4+j*3*cellWidth/2, cellWidth/4+i*3*cellWidth/2, cellWidth, true, 0);
                 float xcenter = 3*cellWidth/4+j*3*cellWidth/2;
                 float ycenter = 3*cellWidth/4+i*3*cellWidth/2;
-                Path squarePath = new Path();
+                squarePath.reset();
                 squarePath.moveTo(xcenter - cellWidth/2, ycenter-cellWidth/2);
                 squarePath.lineTo(xcenter + cellWidth/2, ycenter-cellWidth/2);
                 squarePath.lineTo(xcenter + cellWidth/2, ycenter+cellWidth/2);
@@ -125,6 +126,7 @@ public class FutoshikiView extends View implements UpdatableView<FutoshikiGrid<D
         return new Pair<>((int) (y/(3*cellWidth/2)), (int) (x/(3*cellWidth/2)));
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     public boolean onTouchEvent(MotionEvent event) {
         int action = event.getAction();
         if (action==MotionEvent.ACTION_DOWN)

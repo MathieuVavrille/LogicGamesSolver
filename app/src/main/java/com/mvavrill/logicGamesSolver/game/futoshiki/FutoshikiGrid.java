@@ -1,6 +1,6 @@
 package com.mvavrill.logicGamesSolver.game.futoshiki;
 
-import android.util.Log;
+import androidx.annotation.NonNull;
 
 import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
 
@@ -33,7 +33,7 @@ public class FutoshikiGrid<T> {
 
     public static FutoshikiGrid<DigitCell> changeSize(final FutoshikiGrid<DigitCell> inputGrid, final int increase) {
         DigitCell[][] newGrid = new DigitCell[inputGrid.grid.length+increase][inputGrid.grid.length+increase];
-        boolean[] hints = new boolean[newGrid.length];
+        boolean[] hints = new boolean[newGrid.length+1];
         Arrays.fill(hints, true);
         for (int i = 0; i < newGrid.length; i++) {
             for (int j = 0; j < newGrid.length; j++) {
@@ -63,7 +63,7 @@ public class FutoshikiGrid<T> {
                 columnIneq[i] = new int[newGrid.length];
             }
         }
-        return new FutoshikiGrid<>(newGrid, lineIneq, inputGrid.getColumnIneq());
+        return new FutoshikiGrid<>(newGrid, lineIneq, columnIneq);
     }
 
     public static FutoshikiGrid<Integer> extractFixedCells(final FutoshikiGrid<DigitCell> inputGrid) {
@@ -101,6 +101,8 @@ public class FutoshikiGrid<T> {
         return columnIneq;
     }
 
+    @NonNull
+    @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
         for (T[] line : grid) {
@@ -109,6 +111,7 @@ public class FutoshikiGrid<T> {
         for (int[] line : lineIneq) {
             s.append(Arrays.toString(line)).append("\n");
         }
+        s.append("-\n");
         for (int[] column : columnIneq) {
             s.append(Arrays.toString(column)).append("\n");
         }
