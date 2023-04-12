@@ -96,7 +96,7 @@ public class FutoshikiView extends View implements UpdatableView<FutoshikiGrid<D
         if (ineq != 0) {
             paint.setStyle(Paint.Style.STROKE);
             paint.setColor(Color.BLACK);
-            paint.setStrokeWidth(gridSeparatorSize);
+            paint.setStrokeWidth(1.5f*gridSeparatorSize);
             Path ineqPath = new Path();
             if (isLine) {
                 ineqPath.moveTo(x+ineq*cellWidth/8, y-cellWidth/4);

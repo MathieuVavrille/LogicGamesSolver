@@ -6,10 +6,4 @@
     android:id="@+id/constraint_layout_main_layout"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Button
-        android:id="@+id/constraint_layout_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Test"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

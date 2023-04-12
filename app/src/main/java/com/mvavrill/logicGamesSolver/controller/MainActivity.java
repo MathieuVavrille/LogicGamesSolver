@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
         });
         Button test = findViewById(R.id.main_button_test);
         test.setOnClickListener(view -> {
-            new PopupButtons().show(getSupportFragmentManager(), "");
+            new PopupButtons(new int[]{1,2,3,4,5,7,8,9,10,11,12,13,15,15,16,17,18,19,20}, new boolean[]{true, true, false, false, true, false, true, false,true, true, false, false, true, false, true, false,true, true, false, false, true, false, true, false,true, true, false, false, true, false, true, false,true, true, false, false, true, false, true, false}).show(getSupportFragmentManager(), "");
         });
     }
 
