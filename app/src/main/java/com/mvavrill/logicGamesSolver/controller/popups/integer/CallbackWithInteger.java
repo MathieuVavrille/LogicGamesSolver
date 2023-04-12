@@ -1,4 +1,4 @@
-package com.mvavrill.logicGamesSolver.controller.popups;
+package com.mvavrill.logicGamesSolver.controller.popups.integer;
 
 import android.os.Bundle;
 

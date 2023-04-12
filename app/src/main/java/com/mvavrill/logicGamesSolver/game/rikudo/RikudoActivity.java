@@ -9,8 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.GridHistory;
 import com.mvavrill.logicGamesSolver.controller.UndoRedoWatcher;
-import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
-import com.mvavrill.logicGamesSolver.controller.popups.PopupSpinner;
+import com.mvavrill.logicGamesSolver.controller.popups.integer.CallbackWithInteger;
+import com.mvavrill.logicGamesSolver.controller.popups.integer.PopupNumberFactory;
+import com.mvavrill.logicGamesSolver.controller.popups.integer.PopupSpinner;
 import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
 
 import org.javatuples.Quartet;
@@ -82,7 +83,7 @@ public class RikudoActivity extends AppCompatActivity implements CallbackWithInt
                     possibleValues.add(val);
                 }
             }
-            new PopupSpinner(b, this, this.getBaseContext(), possibleValues.stream().mapToInt(v -> v).toArray()).show(getSupportFragmentManager(), "");
+            new PopupNumberFactory(b, this).valueArrayAllowedRange(possibleValues.stream().mapToInt(v -> v).toArray(), 1, 3*n*(n-1)).show(getSupportFragmentManager(), "");
         }
     }
 

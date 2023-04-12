@@ -37,7 +37,7 @@ public class FutoshikiGrid<T> {
         Arrays.fill(hints, true);
         for (int i = 0; i < newGrid.length; i++) {
             for (int j = 0; j < newGrid.length; j++) {
-                if (i < inputGrid.grid.length && j < inputGrid.grid[i].length && inputGrid.grid[i][j].isFixed()) {
+                if (i < inputGrid.grid.length && j < inputGrid.grid[i].length && inputGrid.grid[i][j].isFixed() && inputGrid.grid[i][j].getValue() <= newGrid.length) {
                     newGrid[i][j] = new DigitCell(true, inputGrid.grid[i][j].getValue());
                 }
                 else {

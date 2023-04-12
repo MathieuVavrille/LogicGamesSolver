@@ -10,14 +10,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.GridHistory;
 import com.mvavrill.logicGamesSolver.controller.UndoRedoWatcher;
-import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
-import com.mvavrill.logicGamesSolver.controller.popups.PopupSpinner;
-import com.mvavrill.logicGamesSolver.game.futoshiki.FutoshikiGrid;
-import com.mvavrill.logicGamesSolver.game.futoshiki.FutoshikiSolver;
-import com.mvavrill.logicGamesSolver.game.futoshiki.FutoshikiView;
+import com.mvavrill.logicGamesSolver.controller.popups.integer.CallbackWithInteger;
+import com.mvavrill.logicGamesSolver.controller.popups.integer.PopupNumberFactory;
+import com.mvavrill.logicGamesSolver.controller.popups.integer.PopupSpinner;
 import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
-
-import org.javatuples.Quartet;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -84,7 +80,7 @@ public class FutoshikiActivity extends AppCompatActivity implements CallbackWith
             }
             Log.d("LogMat", "test " + possibleValues);
             Log.d("LogMat", Arrays.toString(hints));
-            new PopupSpinner(b, this, this.getBaseContext(), possibleValues.stream().mapToInt(v -> v).toArray()).show(getSupportFragmentManager(), "");
+            new PopupNumberFactory(b, this).valueArrayAllowedRange(possibleValues.stream().mapToInt(v -> v).toArray(), 1, n).show(getSupportFragmentManager(), "");
         }
     }
 

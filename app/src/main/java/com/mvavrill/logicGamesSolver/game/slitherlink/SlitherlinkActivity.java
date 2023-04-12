@@ -9,8 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.GridHistory;
 import com.mvavrill.logicGamesSolver.controller.UndoRedoWatcher;
-import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
-import com.mvavrill.logicGamesSolver.controller.popups.PopupDigits;
+import com.mvavrill.logicGamesSolver.controller.popups.integer.CallbackWithInteger;
+import com.mvavrill.logicGamesSolver.controller.popups.integer.PopupDigits;
+import com.mvavrill.logicGamesSolver.controller.popups.integer.PopupNumberFactory;
 
 import org.javatuples.Quartet;
 import org.javatuples.Triplet;
@@ -89,7 +90,7 @@ public class SlitherlinkActivity extends AppCompatActivity implements CallbackWi
         Bundle b = new Bundle();
         b.putSerializable("i", i);
         b.putSerializable("j", j);
-        new PopupDigits(b, this, 4).show(getSupportFragmentManager(), "");
+        new PopupNumberFactory(b, this).valueRange(0, 3).show(getSupportFragmentManager(), "");
     }
 
     private int[][] numbersCopy(final int[][] numbers, final int increaseI, final int increaseJ) {

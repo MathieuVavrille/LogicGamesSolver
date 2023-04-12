@@ -9,8 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.GridHistory;
 import com.mvavrill.logicGamesSolver.controller.UndoRedoWatcher;
-import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
-import com.mvavrill.logicGamesSolver.controller.popups.PopupSpinner;
+import com.mvavrill.logicGamesSolver.controller.popups.integer.CallbackWithInteger;
+import com.mvavrill.logicGamesSolver.controller.popups.integer.PopupNumberFactory;
+import com.mvavrill.logicGamesSolver.controller.popups.integer.PopupSpinner;
 import com.mvavrill.logicGamesSolver.model.cells.Cell;
 import com.mvavrill.logicGamesSolver.model.cells.DigitCell;
 import com.mvavrill.logicGamesSolver.model.cells.DoubleIntCell;
@@ -118,8 +119,7 @@ public class KakuroActivity extends AppCompatActivity implements CallbackWithInt
                         curri += di;
                         currj += dj;
                     }
-                    PopupSpinner.fromRange(bundle, this, this.getBaseContext(), KakuroSolver.LBS[lineSize], KakuroSolver.UBS[lineSize]).show(getSupportFragmentManager(), "");
-                    //new PopupNumberFragment(bundle, this).show(getSupportFragmentManager(), "");
+                    new PopupNumberFactory(bundle, this).valueRange(KakuroSolver.LBS[lineSize], KakuroSolver.UBS[lineSize]).show(getSupportFragmentManager(), "");
                 }
                 else {
                     Cell[][] copiedGrid = gridCopy(gridHistory.getCurrent(), 0);

@@ -1,4 +1,4 @@
-package com.mvavrill.logicGamesSolver.controller.popups;
+package com.mvavrill.logicGamesSolver.controller.popups.integer;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -6,7 +6,6 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -21,11 +20,15 @@ import com.mvavrill.logicGamesSolver.R;
 
 public class PopupButtons extends DialogFragment {
 
+    private final Bundle callbackData;
+    private final CallbackWithInteger callback;
     private final int[] values;
     private final boolean[] activated;
 
-    public PopupButtons(final int[] values, final boolean[] activated) {
+    public PopupButtons(final Bundle callbackData, final CallbackWithInteger callback, final int[] values, final boolean[] activated) {
         super();
+        this.callbackData = callbackData;
+        this.callback = callback;
         this.values = values;
         this.activated = activated;
     }
@@ -51,6 +54,12 @@ public class PopupButtons extends DialogFragment {
 
     private Button[][] createButtons(final int parentId, final Dialog dialog) {
         int mod = intSqrt(values.length);
+        if (values.length == 8) {
+            mod = 4;
+        }
+        else if (values.length == 10 || 12 < values.length && values.length <= 15) {
+            mod = 5;
+        }
         int idCpt = 0;
         Button[][] buttons = new Button[mod][];
         for (int i = 0; i < mod; i++) {
@@ -62,7 +71,7 @@ public class PopupButtons extends DialogFragment {
                 buttons[i][j].setEnabled(activated[idCpt]);
                 buttons[i][j].setTextSize(40);
                 buttons[i][j].setOnClickListener(v -> {
-                    Log.d("LogMat", "" + values[currCpt]);
+                    callback.callbackWithInteger(callbackData, values[currCpt]);
                     dialog.dismiss();
                 });
                 buttons[i][j].setId(++idCpt);

@@ -17,7 +17,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.mvavrill.logicGamesSolver.R;
-import com.mvavrill.logicGamesSolver.controller.popups.PopupButtons;
+import com.mvavrill.logicGamesSolver.controller.popups.integer.PopupButtons;
 import com.mvavrill.logicGamesSolver.game.bridges.BridgesActivity;
 import com.mvavrill.logicGamesSolver.game.futoshiki.FutoshikiActivity;
 import com.mvavrill.logicGamesSolver.game.kakuro.KakuroActivity;
@@ -26,7 +26,7 @@ import com.mvavrill.logicGamesSolver.game.slitherlink.SlitherlinkActivity;
 import com.mvavrill.logicGamesSolver.game.sudoku.SudokuActivity;
 import com.mvavrill.logicGamesSolver.controller.menu.InformationActivity;
 import com.mvavrill.logicGamesSolver.controller.menu.SettingsActivity;
-import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
+import com.mvavrill.logicGamesSolver.controller.popups.integer.CallbackWithInteger;
 
 public class MainActivity extends AppCompatActivity implements CallbackWithInteger {
 
@@ -80,10 +80,6 @@ public class MainActivity extends AppCompatActivity implements CallbackWithInteg
         futoshiki.setOnClickListener(view -> {
             Intent gridActivityIntent = new Intent(com.mvavrill.logicGamesSolver.controller.MainActivity.this, FutoshikiActivity.class);
             startActivity(gridActivityIntent);
-        });
-        Button test = findViewById(R.id.main_button_test);
-        test.setOnClickListener(view -> {
-            new PopupButtons(new int[]{1,2,3,4,5,7,8,9,10,11,12,13,15,15,16,17,18,19,20}, new boolean[]{true, true, false, false, true, false, true, false,true, true, false, false, true, false, true, false,true, true, false, false, true, false, true, false,true, true, false, false, true, false, true, false,true, true, false, false, true, false, true, false}).show(getSupportFragmentManager(), "");
         });
     }
 

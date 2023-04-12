@@ -11,16 +11,17 @@ import android.widget.EditText;
 import androidx.fragment.app.DialogFragment;
 
 import com.mvavrill.logicGamesSolver.R;
+import com.mvavrill.logicGamesSolver.controller.popups.integer.CallbackWithInteger;
 
 /**
  * An implementation of a DialogFragment to input a number.
  */
-public class PopupNumberFragment extends DialogFragment {
+public class PopupEditText extends DialogFragment {
 
     private final Bundle callbackData;
     private final CallbackWithInteger callback;
 
-    public PopupNumberFragment(final Bundle callbackData, final CallbackWithInteger callback) {
+    public PopupEditText(final Bundle callbackData, final CallbackWithInteger callback) {
         super();
         this.callbackData = callbackData;
         this.callback = callback;

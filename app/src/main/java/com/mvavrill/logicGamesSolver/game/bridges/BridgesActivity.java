@@ -8,8 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.mvavrill.logicGamesSolver.R;
 import com.mvavrill.logicGamesSolver.controller.GridHistory;
 import com.mvavrill.logicGamesSolver.controller.UndoRedoWatcher;
-import com.mvavrill.logicGamesSolver.controller.popups.CallbackWithInteger;
-import com.mvavrill.logicGamesSolver.controller.popups.PopupDigits;
+import com.mvavrill.logicGamesSolver.controller.popups.integer.CallbackWithInteger;
+import com.mvavrill.logicGamesSolver.controller.popups.integer.PopupDigits;
+import com.mvavrill.logicGamesSolver.controller.popups.integer.PopupNumberFactory;
 
 import org.javatuples.Pair;
 import org.javatuples.Triplet;
@@ -76,15 +77,14 @@ public class BridgesActivity extends AppCompatActivity implements CallbackWithIn
             solveAndAdd(newGrid);
         } else {
             if (!isTooClose(i,j,grid)) {
-                boolean[] hints = new boolean[10];
-                Arrays.fill(hints, true);
-                for (int k = 5 + ((i == 0 || i == grid.length - 1) ? 0 : 2) + ((j == 0 || j == grid.length - 1) ? 0 : 2); k < 10; k++)
-                    hints[k] = false;
+                boolean[] hints = new boolean[8];
+                for (int k = 0; k < 8 - ((i == 0 || i == grid.length - 1) ? 2 : 0) - ((j == 0 || j == grid.length - 1) ? 2 : 0); k++)
+                    hints[k] = true;
                 Bundle b = new Bundle();
                 b.putSerializable("i", i);
                 b.putSerializable("j", j);
                 b.putSerializable("hints", hints);
-                new PopupDigits(b, this, 8).show(getSupportFragmentManager(), "");
+                new PopupNumberFactory(b, this).valueArrayAllowedArray(new int[]{1,2,3,4,5,6,7,8}, hints).show(getSupportFragmentManager(), "");
             }
         }
     }
